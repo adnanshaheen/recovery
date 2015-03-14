@@ -1,11 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Core", "..\..\Libraries\Core\Core_2010.vcxproj", "{008B6187-F0F2-4ED0-8EEA-EEFB2E3DE98D}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Core", "..\..\Libraries\Core\Core.vcxproj", "{008B6187-F0F2-4ED0-8EEA-EEFB2E3DE98D}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DiskBoard", "..\..\Libraries\DiskBoard\DiskBoard_2010.vcxproj", "{1E81F871-B226-406F-A65B-2E21CAAF9F71}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DiskBoard", "..\..\Libraries\DiskBoard\DiskBoard.vcxproj", "{1E81F871-B226-406F-A65B-2E21CAAF9F71}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Test", "..\..\Test\Test_2010.vcxproj", "{8D1CAC4C-6871-4710-B9A1-9D6D30713FE5}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Test", "..\..\Test\Test.vcxproj", "{8D1CAC4C-6871-4710-B9A1-9D6D30713FE5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
