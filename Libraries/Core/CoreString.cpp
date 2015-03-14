@@ -157,7 +157,9 @@ CCoreString::CCoreString(LPCWSTR pszStr, int nLength)
 #ifdef _UNICODE
 	if (nLength > 0 && CreateBuffer(nLength))
 	{
+#pragma warning (disable : 4996)
 		wcsncpy(m_pData, pszStr, nLength);
+#pragma warning (default : 4996)
 		m_pData[nLength] = 0;
 	}
 	else
@@ -240,7 +242,9 @@ void CCoreString::Assign(LPCWSTR pszStr)
 #ifndef _UNICODE
 		// TODO: impliment unicode array
 #else
+#pragma warning (disable : 4996)
 		wcsncpy(m_pData, pszStr, nLen);
+#pragma warning (default : 4996)
 		m_pData[nLen] = 0;
 #endif // _UNICODE
 	}
@@ -423,8 +427,10 @@ const CCoreString& CCoreString::operator += (LPCTSTR pszStr)
 	if (nSize > 0 && this->CreateBuffer(nSize))
 	{
 		m_pData[0] = _T('\0');
+#pragma warning (disable : 4996)
 		if (csOld.GetLength() > 0) _tcscpy(m_pData, csOld);
 		if (GET_TLENGTH(pszStr) > 0) _tcscat(m_pData, pszStr);
+#pragma warning (default : 4996)
 		m_pData[nSize] = _T('\0');
 	}
 	return *this;
@@ -1163,8 +1169,9 @@ void CCoreString::FormatV(LPCTSTR pszFormat, va_list argList)
 
 		CCoreString csFormat(pszFormat);
 		csFormat.Replace(_T("I64"), _T("ll"));
+#pragma warning (disable : 4996)
 		int iRes = _vstprintf(m_pData, (LPCTSTR) csFormat, argListSave);
-
+#pragma warning (default : 4996)
 		ASSERT(iRes <= nMaxLen);
 	}
 	va_end(argListSave);
