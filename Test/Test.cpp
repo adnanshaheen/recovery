@@ -33,9 +33,9 @@ int main(char* argv[], int argc)
 
 	CCoreString csLibrary;
 #ifdef DEBUG
-	csLibrary = _T("../../../lib/Debug/DiskBoard/DiskBoard.dll");
+	csLibrary = _T("../../lib/Debug/DiskBoard.dll");
 #else
-	csLibrary = _T("../../../lib/Release/DiskBoard/DiskBoard.dll");
+	csLibrary = _T("../../lib/Release/DiskBoard.dll");
 #endif // DEBUG
 	HMODULE hModule = LoadLibrary(csLibrary);
 	if (hModule == NULL || hModule == INVALID_HANDLE_VALUE)
@@ -43,7 +43,7 @@ int main(char* argv[], int argc)
 		// Library could not be loaded
 		DWORD dwError = GetLastError();
 		CCoreString csError;
-		csError.Format(_T("Error %d occured while opening library %s."), dwError, csLibrary);
+		csError.Format(_T("Error %d occured while opening library DiskBoard.dll"), dwError);
 		ASSERT(FALSE);
 		return -1;
 	}
