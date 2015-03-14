@@ -14,6 +14,11 @@
 // types
 //
 
+#undef DEBUG
+#ifdef _DEBUG
+#define DEBUG
+#endif // _DEBUG
+
 #ifdef WIN32
 //
 // WIN32 data types
