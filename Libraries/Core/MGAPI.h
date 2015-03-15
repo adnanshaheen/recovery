@@ -65,13 +65,29 @@ static CCoreString GetUniqueFileName(LPCTSTR pszFilePath = NULL, LPCTSTR pszExte
 			// Delete the created file, we only want the unique file name
 			::DeleteFile(csFileName);
 
-			int iPos = csFileName.ReverseFind(_T('.'));
-			csFileName = csFileName.Left(iPos + 1);
-			csFileName += pszExtension;
+			if (pszExtension) {
+				int iPos = csFileName.ReverseFind(_T('.'));
+				csFileName = csFileName.Left(iPos + 1);
+				csFileName += pszExtension;
+			}
 			return csFileName;
 		}
 	}
 	return _T("");
+}
+
+static CCoreString fnGetModuleFileName(HMODULE hModule)
+{
+#ifndef WINPE
+	std::vector<TCHAR> filePath(MAX_PATH * 2);
+	::GetModuleFileName(hModule, &filePath[0], MAX_PATH * 2);
+	return (&filePath[0]);
+#else
+	CCoreString csPath;
+	csPath = kszPath;
+	csPath += kszApp;
+	return csPath;
+#endif
 }
 
 //

@@ -21,6 +21,7 @@
 //
 CLogFile::CLogFile()
 {
+	m_pFile = new CCoreFile();
 }
 
 //
@@ -36,6 +37,7 @@ CLogFile::CLogFile(const CLogFile& pLogFile)
 //
 /*virtual */CLogFile::~CLogFile()
 {
+	//m_pFile->DeleteFile();
 }
 
 //
@@ -47,7 +49,7 @@ CLogFile::CLogFile(const CLogFile& pLogFile)
 	// with write mode.
 	// with name lpszLogFile.
 	// with reading data from keys file, if there is any.
-	return m_pFile->CreateFile(GetUniqueFileName(),
+	return m_pFile->CreateFile(GetUniqueFileName(pszLogFile),
 							GENERIC_READ | GENERIC_WRITE,
 							FILE_SHARE_WRITE,
 							CREATE_ALWAYS,FILE_ATTRIBUTE_NORMAL);

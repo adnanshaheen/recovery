@@ -14,6 +14,8 @@
 #include "LogFile.h"
 #include "PartInfo.h"
 #include "Partitioner.h"
+#include "CoreString.h"
+#include "MGAPI.h"
 
 //
 // Constructor
@@ -99,7 +101,9 @@ CAbstractLog* CDiskBoardInterface::CreateLogFile() const
 {
 	CAbstractLog* pLog = new CLogFile();
 	if (pLog) {
-		pLog->Initialize(NULL, kszApp);
+		CCoreString csLogFile = fnGetModuleFileName(NULL);
+		csLogFile = csLogFile.Left(csLogFile.ReverseFind(PATH_SEPARATOR));
+		pLog->Initialize(NULL, csLogFile);
 	}
 
 	return pLog;

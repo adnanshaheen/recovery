@@ -265,6 +265,12 @@ inline void ASSERT_MACRO(BOOL bResult, LPCSTR pszFileName, int nLineNo)
  */
 const TCHAR kszApp[]	= _T("recovery");
 
+#ifdef WIN32
+#define PATH_SEPARATOR	_T('\\')
+#else
+#define PATH_SEPARATOR	_T('/')
+#endif // WIN32
+
 #endif // TYPES_HEADER
 
 //

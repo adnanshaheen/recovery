@@ -54,9 +54,22 @@ int main(char* argv[], int argc)
 		(pCreateDiskBoardInterface) GetProcAddress(hModule, "CreateDiskBoardInterface");
 
 	CAbstractLog* m_pLog = NULL;
+	CAbstractPartitioner* m_pPartitioner = NULL;
 	CAbstractDiskBoardInterface* pDiskInterface = pCreateDiskInterface();
 	if (pDiskInterface) {
-		pDiskInterface->CreatePartitioner(m_pLog);
+		m_pLog = pDiskInterface->CreateLogFile();
+		m_pPartitioner = pDiskInterface->CreatePartitioner(m_pLog);
+
+		/* start process here */
+
+		pDiskInterface->DeletePartitioner(m_pPartitioner);
+		pDiskInterface->DeleteLogFile(m_pLog);
+	}
+
+	pDeleteDiskBoardInterface pDeleteDiskInterface =
+		(pDeleteDiskBoardInterface) GetProcAddress(hModule, "DeleteDiskBoardInterface");
+	if (pDeleteDiskInterface) {
+		pDeleteDiskInterface(pDiskInterface);
 	}
 
 	FreeLibrary(hModule);
