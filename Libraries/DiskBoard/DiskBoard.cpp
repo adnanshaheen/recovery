@@ -7,7 +7,7 @@
 // Purpose : Disk Board DLL interface implementation.
 //
 
-#include "Types.h"
+#include "Support.h"
 #include "DiskBoard.h"
 #include "DiskBoardInterface.h"
 

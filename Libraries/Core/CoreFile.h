@@ -48,14 +48,12 @@ public:
 
 	// Read the file.
 	virtual int		ReadFile(void* pBuffer, DWORD dwBytesToRead, DWORD* pBytesRead = NULL);
-	virtual int		ReadFile(LPCTSTR pszFileName, BYTE* pBuffer, DWORD dwBytesToRead, DWORD* pBytesRead = NULL);
 
 	// Read a single line from file.
 	virtual int		ReadLine(std::basic_string<TCHAR>& cLine, DWORD* pBytesRead = NULL);
 
 	// Write the file.
 	virtual int		WriteFile(const void* pBuffer, DWORD dwBytesToWrite, DWORD* pBytesWritten = NULL);
-	virtual int		WriteFile(LPCTSTR pszFileName, const BYTE* pBuffer, DWORD dwBytesToWrite, DWORD* pBytesWritten = NULL);
 
 	// Write a single line to file.
 	virtual int		WriteLine(std::basic_string<TCHAR>& cLine, DWORD* pBytesWritten = NULL);
@@ -93,8 +91,8 @@ public:
 	virtual BOOL	GetFilePointer(INT64& i64FilePos);
 
 	// Set File pointer.
-	virtual BOOL	SetFilePointer(INT64 i64FilePos, MG_FILE_MOVE eMoveMethod = MG_FILE_POS_BEGIN);
-	virtual BOOL	SetFilePointer(INT64 i64FilePos, INT64& i64NewPos, MG_FILE_MOVE eMoveMethod = MG_FILE_POS_BEGIN);
+	virtual BOOL	SetFilePointer(INT64 i64FilePos, DWORD dwMoveMethod = MG_FILE_POS_BEGIN);
+	virtual BOOL	SetFilePointer(INT64 i64FilePos, INT64& i64NewPos, DWORD dwMoveMethod = MG_FILE_POS_BEGIN);
 
 	// Get/Set File size.
 	virtual BOOL	GetFileSize(INT64& i64FileSize);

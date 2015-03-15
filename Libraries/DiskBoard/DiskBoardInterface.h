@@ -30,9 +30,20 @@ public:
 	virtual ~CDiskBoardInterface();
 
 	// Create/Delete CDisk
-	virtual CAbstractDisk*		CreateDisk(CAbstractLog* pLog) const;
-	virtual void				DeleteDisk(CAbstractDisk* pDisk);
+	virtual CAbstractDisk*			CreateDisk(CAbstractLog* pLog) const;
+	virtual void					DeleteDisk(CAbstractDisk* pDisk);
 
+	// Create/Delete Partitioner
+	virtual CAbstractPartitioner*	CreatePartitioner(CAbstractLog* pLog) const;
+	virtual void					DeletePartitioner(CAbstractPartitioner* pPartitioner);
+
+	// Create/Delete Partition Info
+	virtual CAbstractPartInfo*		CreatePartInfo(CAbstractLog* pLog) const;
+	virtual void					DeletePartInfo(CAbstractPartInfo* pPartInfo);
+
+	// Create/Delete log
+	virtual CAbstractLog*			CreateLogFile() const;
+	virtual void					DeleteLogFile(CAbstractLog* pLog);
 };
 
 //

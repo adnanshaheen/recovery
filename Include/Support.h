@@ -252,6 +252,19 @@ inline void ASSERT_MACRO(BOOL bResult, LPCSTR pszFileName, int nLineNo)
 #define assert		ASSERT
 #endif // assert
 
+/**
+ * macros
+ */
+#define TEST_AND_THROW(a,b)		if (a) throw b;
+#define TEST_AND_RETURN(a,b)	if (a) return b;
+#define DELETEME(a)				if (a) delete a, a = NULL;
+#define DELETE_ARRAY(a)			if (a) delete[] a, a = NULL;
+
+/**
+ * defines
+ */
+const TCHAR kszApp[]	= _T("recovery");
+
 #endif // TYPES_HEADER
 
 //

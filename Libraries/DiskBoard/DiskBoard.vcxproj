@@ -87,10 +87,15 @@
     <ClCompile Include="Disk.cpp" />
     <ClCompile Include="DiskBoard.cpp" />
     <ClCompile Include="DiskBoardInterface.cpp" />
+    <ClCompile Include="PartInfo.cpp" />
+    <ClCompile Include="Partitioner.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Disk.h" />
     <ClInclude Include="DiskBoard.h" />
     <ClInclude Include="DiskBoardInterface.h" />
+    <ClInclude Include="PartInfo.h" />
+    <ClInclude Include="Partitioner.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="DiskBoard.rc" />

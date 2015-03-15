@@ -7,11 +7,13 @@
 // Purpose : Do not submit any code before its been tested from here.
 //
 
-#include "Types.h"
+#include "Support.h"
 #include "CoreString.h"
 #include "DateTime.h"
 
 #include <iostream>
+
+#include "AbstractDiskBoardInterface.h"
 
 int main(char* argv[], int argc)
 {
@@ -46,6 +48,15 @@ int main(char* argv[], int argc)
 		csError.Format(_T("Error %d occured while opening library DiskBoard.dll"), dwError);
 		ASSERT(FALSE);
 		return -1;
+	}
+
+	pCreateDiskBoardInterface pCreateDiskInterface =
+		(pCreateDiskBoardInterface) GetProcAddress(hModule, "CreateDiskBoardInterface");
+
+	CAbstractLog* m_pLog = NULL;
+	CAbstractDiskBoardInterface* pDiskInterface = pCreateDiskInterface();
+	if (pDiskInterface) {
+		pDiskInterface->CreatePartitioner(m_pLog);
 	}
 
 	FreeLibrary(hModule);

@@ -12,7 +12,7 @@
 //
 //#include <WinDef.h>
 #include <string>
-#include "Types.h"
+#include "Support.h"
 #include "CoreFile.h"
 #include "MGAPI.h"
 #include "AbstractLog.h"
@@ -197,19 +197,6 @@ CCoreFile::CCoreFile(const CCoreFile& pFile)
 
 	return 0;
 }
-/*virtual */int CCoreFile::ReadFile(LPCTSTR pszFileName, BYTE* pBuffer, DWORD dwBytesToRead, DWORD* pBytesRead/* = NULL*/)
-{
-	// Open the file pszFileName.
-	// Read the file.
-
-	int iRes = 0;
-	iRes = this->CreateFile(pszFileName, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_TEMPORARY);
-
-	if (iRes > 0)
-		iRes = this->ReadFile(pBuffer, dwBytesToRead, pBytesRead);
-
-	return iRes;
-}
 
 //
 // Read a single line from file.
@@ -312,15 +299,6 @@ CCoreFile::CCoreFile(const CCoreFile& pFile)
 	catch (int)
 	{
 	}
-
-	return iRes;
-}
-/*virtual */int CCoreFile::WriteFile(LPCTSTR pszFileName, const BYTE* pBuffer, DWORD dwBytesToWrite, DWORD* pBytesWritten/* = NULL*/)
-{
-	int iRes = this->CreateFile(pszFileName, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_TEMPORARY);
-
-	if (iRes >= 0)
-		iRes = this->WriteFile(pBuffer, dwBytesToWrite, pBytesWritten);
 
 	return iRes;
 }
@@ -622,14 +600,14 @@ CCoreFile::CCoreFile(const CCoreFile& pFile)
 //
 // Set File pointer.
 //
-/*virtual */BOOL CCoreFile::SetFilePointer(INT64 i64FilePos, MG_FILE_MOVE eMoveMethod/* = MG_FILE_POS_BEGIN*/)
+/*virtual */BOOL CCoreFile::SetFilePointer(INT64 i64FilePos, DWORD dwMoveMethod/* = MG_FILE_POS_BEGIN*/)
 {
 	INT64 i64NewPos = 0;
-	return SetFilePointer(i64FilePos, i64NewPos, eMoveMethod);
+	return SetFilePointer(i64FilePos, i64NewPos, dwMoveMethod);
 }
-/*virtual */BOOL CCoreFile::SetFilePointer(INT64 i64FilePos, INT64& i64NewPos, MG_FILE_MOVE eMoveMethod/* = MG_FILE_POS_BEGIN*/)
+/*virtual */BOOL CCoreFile::SetFilePointer(INT64 i64FilePos, INT64& i64NewPos, DWORD dwMoveMethod/* = MG_FILE_POS_BEGIN*/)
 {
-		if (!this->IsFileOpen())
+	if (!this->IsFileOpen())
 	{
 		// File is not open.
 		// Return with error.
@@ -641,11 +619,14 @@ CCoreFile::CCoreFile(const CCoreFile& pFile)
 	LONG nHigh = 0;
 	nLow = static_cast<LONG> (i64FilePos);
 	nHigh = static_cast<LONG> (i64FilePos >> 32);
-	DWORD dwLow = ::SetFilePointer(m_hFile, nLow, &nHigh, eMoveMethod);
+	DWORD dwLow = ::SetFilePointer(m_hFile, nLow, &nHigh, dwMoveMethod);
 	if (dwLow == MG_FILE_POINTER_INVALID && m_pLog != NULL)
 	{
-		m_pLog->AddLog(_T("File %s position could not be set due to %s!!!"), __TFILE__, __LINE__,
-			m_csFileName, GetErrorMessage(::GetLastError()));
+		m_pLog->AddLog(_T("File %s position could not be set due to %s!!!"),
+			__TFILE__,
+			__LINE__,
+			m_csFileName,
+			GetErrorMessage(::GetLastError()));
 
 		return FALSE;
 	}

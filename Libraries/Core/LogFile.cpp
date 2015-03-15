@@ -10,9 +10,10 @@
 //
 // headers
 //
-#include "Types.h"
+#include "Support.h"
 #include "LogFile.h"
 #include "CoreString.h"
+#include "CoreFile.h"
 #include "MGAPI.h"
 
 //
@@ -27,6 +28,7 @@ CLogFile::CLogFile()
 //
 CLogFile::CLogFile(const CLogFile& pLogFile)
 {
+	m_pFile = new CCoreFile();
 }
 
 //
@@ -45,7 +47,7 @@ CLogFile::CLogFile(const CLogFile& pLogFile)
 	// with write mode.
 	// with name lpszLogFile.
 	// with reading data from keys file, if there is any.
-	return this->CreateFile(GetUniqueFileName(),
+	return m_pFile->CreateFile(GetUniqueFileName(),
 							GENERIC_READ | GENERIC_WRITE,
 							FILE_SHARE_WRITE,
 							CREATE_ALWAYS,FILE_ATTRIBUTE_NORMAL);
@@ -72,7 +74,7 @@ CLogFile::CLogFile(const CLogFile& pLogFile)
 
 	CCoreString csMessage;
 	csMessage.Format(_T("%s\nFILE NAME:%s"), pszMessage, pszFileName != NULL ? pszFileName : _T("Unknown"));
-	return WriteFile(csMessage, csMessage.GetLength());
+	return m_pFile->WriteFile(csMessage, csMessage.GetLength());
 }
 
 //

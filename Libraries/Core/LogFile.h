@@ -13,12 +13,13 @@
 //
 // header
 //
+#include "AbstractLog.h"
 #include "AbstractFile.h"
 
 //
 // class
 //
-class CLogFile : private CAbstractFile
+class CLogFile : public CAbstractLog
 {
 public:
 	// Constructor/Destructor
@@ -67,6 +68,9 @@ public:
 private:
 	// Append log file to main log.
 	BOOL			AppendLogFile();
+
+private:
+	CAbstractFile* m_pFile;
 };
 
 //
