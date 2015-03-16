@@ -59,7 +59,7 @@ static CCoreString GetUniqueFileName(LPCTSTR pszFilePath = NULL, LPCTSTR pszExte
 	if (GetShortPathName(pszFilePath, &szShortFilePath[0], dwSize)) {
 		dwSize = MAX_PATH * 2;
 		std::vector<TCHAR> filePath(dwSize);
-		if (GetTempFileName(&szShortFilePath[0], _T("RECOVERYxxxxx"), 0, &filePath[0])) {
+		if (GetTempFileName(&szShortFilePath[0], _T("MGRY"), 0, &filePath[0])) {
 			CCoreString csFileName = &filePath[0];
 
 			// Delete the created file, we only want the unique file name
