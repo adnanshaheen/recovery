@@ -57,10 +57,12 @@ void CDiskBoardInterface::DeleteDisk(CAbstractDisk* pDisk)
 //
 CAbstractPartitioner* CDiskBoardInterface::CreatePartitioner(CAbstractLog* pLog) const
 {
-	CAbstractPartitioner* pPartitioner = new CPartitioner(pLog);
+	CAbstractPartitioner* pPartitioner = new CPartitioner(this, pLog);
 #ifdef DEBUG
 	if (pPartitioner == NULL && pLog != NULL)
 		pLog->AddLog(_T("Error initializing Partitioner object!!!"), __TFILE__, __LINE__);
+	else if (pPartitioner && pLog)
+		pLog->AddLog(_T("Partitioner initialized!"), __TFILE__, __LINE__);
 #endif // DEBUG
 	return pPartitioner;
 }
@@ -82,6 +84,8 @@ CAbstractPartInfo* CDiskBoardInterface::CreatePartInfo(CAbstractLog* pLog) const
 #ifdef DEBUG
 	if (pPartInfo == NULL && pLog != NULL)
 		pLog->AddLog(_T("Error initializing PartInfo object!!!"), __TFILE__, __LINE__);
+	else if (pPartInfo && pLog)
+		pLog->AddLog(_T("Partition Info Tree initialized!"), __TFILE__, __LINE__);
 #endif // DEBUG
 	return pPartInfo;
 }

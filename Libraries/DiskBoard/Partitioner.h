@@ -16,9 +16,14 @@ class CAbstractLog;
 class CPartitioner : public CAbstractPartitioner
 {
 public:
-	CPartitioner(CAbstractLog* pLog);
+	CPartitioner(const CAbstractDiskBoardInterface* pDiskBoard, CAbstractLog* pLog);
 	virtual ~CPartitioner();
 
 	virtual BOOL			Initialize();
+
+private:
+	CAbstractLog* m_pLog;
+	CAbstractPartInfo* m_pPartInfo;
+	const CAbstractDiskBoardInterface* m_pDiskBoard;
 };
 

@@ -13,6 +13,8 @@
 
 #include <iostream>
 
+#include "AbstractPartInfo.h"
+#include "AbstractPartitioner.h"
 #include "AbstractDiskBoardInterface.h"
 
 int main(char* argv[], int argc)
@@ -61,6 +63,7 @@ int main(char* argv[], int argc)
 		m_pPartitioner = pDiskInterface->CreatePartitioner(m_pLog);
 
 		/* start process here */
+		m_pPartitioner->Initialize();
 
 		pDiskInterface->DeletePartitioner(m_pPartitioner);
 		pDiskInterface->DeleteLogFile(m_pLog);
