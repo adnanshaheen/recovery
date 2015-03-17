@@ -19,11 +19,14 @@ public:
 	CPartitioner(const CAbstractDiskBoardInterface* pDiskBoard, CAbstractLog* pLog);
 	virtual ~CPartitioner();
 
-	virtual BOOL			Initialize();
+	virtual BOOL						Initialize();
 
 private:
-	CAbstractLog* m_pLog;
-	CAbstractPartInfo* m_pPartInfo;
-	const CAbstractDiskBoardInterface* m_pDiskBoard;
+	void								AddHardDiskInfo(CAbstractDisk* pDisk, CAbstractPartInfo** pDiskInfo);
+
+private:
+	CAbstractLog*						m_pLog;
+	CAbstractPartInfo*					m_pPartInfo;
+	const CAbstractDiskBoardInterface*	m_pDiskBoard;
 };
 

@@ -14,10 +14,21 @@
 // types
 //
 
+#include <string>
+#include <assert.h>
+#include <windows.h>
+#include <tchar.h>
+
 #undef DEBUG
 #ifdef _DEBUG
 #define DEBUG
 #endif // _DEBUG
+
+/**
+ * consts/defines
+ */
+const TCHAR kszApp[]	= _T("recovery");
+#define MAX_HDD_SUPPORTED 50
 
 #ifdef WIN32
 //
@@ -26,6 +37,7 @@
 #define MG_DECL						__cdecl
 
 #define MG_INVALID_FILE				((DWORD)-1)
+#define PATH_SEPARATOR	_T('\\')
 
 #else // WIN32
 //
@@ -34,6 +46,7 @@
 #define MG_DECL
 
 #define MG_INVALID_FILE		-1
+#define PATH_SEPARATOR	_T('/')
 
 typedef enum eMediaType
 {
@@ -160,6 +173,22 @@ typedef enum eWorkType
 {
 } MG_WORK_TYPE;
 
+typedef enum {
+	_E_REP_DRIVE_ERROR   = -6,
+	_E_REP_READ_FAIL     = -5,
+	_E_REP_DEVICEIO_FAIL = -4,
+	_E_REP_MEMORY_FAIL   = -3,
+	_E_REP_GEOMTRY_FAIL  = -2,
+	_E_REP_HANDLE_FAIL   = -1,
+	_E_REP_SUCCESS       = 0,
+};
+
+typedef enum {
+	MG_PARTINFO_DISK	= 0x00000001,
+	MG_PARTINFO_GUID	= 0x00000002,
+	MG_PARTINFO_EFI		= 0x00000004,
+};
+
 //
 // COMMON CONST
 //
@@ -215,10 +244,6 @@ typedef enum eWorkType
 #define STRLWR(a)					for(size_t i=0;i<_tcslen(a);++i)\
 									{ a[i]=tolower(a[i]); }
 
-#include <string>
-#include <assert.h>
-#include <windows.h>
-#include <tchar.h>
 inline void ASSERT_MACRO(BOOL bResult, LPCSTR pszFileName, int nLineNo)
 {
 	if (!bResult)
@@ -259,17 +284,6 @@ inline void ASSERT_MACRO(BOOL bResult, LPCSTR pszFileName, int nLineNo)
 #define TEST_AND_RETURN(a,b)	if (a) return b;
 #define DELETEME(a)				if (a) delete a, a = NULL;
 #define DELETE_ARRAY(a)			if (a) delete[] a, a = NULL;
-
-/**
- * defines
- */
-const TCHAR kszApp[]	= _T("recovery");
-
-#ifdef WIN32
-#define PATH_SEPARATOR	_T('\\')
-#else
-#define PATH_SEPARATOR	_T('/')
-#endif // WIN32
 
 #endif // TYPES_HEADER
 

@@ -14,6 +14,21 @@
 // APIs
 //
 
+#include "CoreString.h"
+
+/**
+ * Get/Set last error number of application
+ */
+static int g_err_no = 0;
+static int GetErrorNumber()
+{
+	return g_err_no;
+}
+static void SetErrorNumber(int err_no)
+{
+	g_err_no = err_no;
+}
+
 // Get error message from error code.
 static CCoreString GetErrorMessage(DWORD dwErrorCode)
 {

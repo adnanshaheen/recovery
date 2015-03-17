@@ -20,6 +20,9 @@ class CAbstractPartInfo
 public:
 	virtual						~CAbstractPartInfo() {};
 
+	// insert/delete info
+	virtual CAbstractPartInfo*	Insert(CAbstractPartInfo* pParent, CAbstractPartInfo* pInsertAfter, DWORD dwFlags) = 0;
+
 	// iterate on items
 	virtual CAbstractPartInfo*	GetParent() const = 0;
 	virtual CAbstractPartInfo*	GetChild() const = 0;

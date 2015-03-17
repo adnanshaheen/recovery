@@ -19,6 +19,9 @@ public:
 	CPartInfo(CAbstractLog* pLog);
 	virtual ~CPartInfo();
 
+	// insert/delete info
+	virtual CAbstractPartInfo*	Insert(CAbstractPartInfo* pParent, CAbstractPartInfo* pInsertAfter, DWORD dwFlags);
+
 	// iterate on items
 	virtual CAbstractPartInfo*	GetParent() const;
 	virtual CAbstractPartInfo*	GetChild() const;
@@ -46,5 +49,8 @@ public:
 	// Get/Set Partition Type
 	virtual BYTE				GetPartitionType() const;
 	virtual void				SetPartitionType(BYTE cType);
+
+private:
+	CAbstractLog*				m_pLog;
 };
 

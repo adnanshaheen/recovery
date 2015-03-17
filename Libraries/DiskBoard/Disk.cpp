@@ -283,7 +283,7 @@ CDisk::CDisk(CAbstractLog* pLog)
 //
 /*virtual */BOOL CDisk::IsDiskExists() const
 {
-	return FALSE;
+	return m_pFile ? m_pFile->IsFileOpen() : FALSE;
 }
 
 //

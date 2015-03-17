@@ -11,10 +11,44 @@
 
 CPartInfo::CPartInfo(CAbstractLog* pLog)
 {
+	m_pLog = pLog;
 }
 
 CPartInfo::~CPartInfo()
 {
+}
+
+/**
+ * Insert PartInfo
+ */
+CAbstractPartInfo* CPartInfo::Insert(CAbstractPartInfo* pParent, CAbstractPartInfo* pInsertAfter, DWORD dwFlags)
+{
+	if (!pParent) {
+		ASSERT(FALSE);
+		return NULL;
+	}
+
+	CAbstractPartInfo* pPartInfo = new CPartInfo(m_pLog);
+	if (pPartInfo) {
+		if (dwFlags & MG_PARTINFO_DISK) {
+			pPartInfo->SetParent(pParent);
+			pPartInfo->SetFlags(MG_PARTINFO_DISK, TRUE);
+			if (pInsertAfter) {
+				pPartInfo->SetNext(pInsertAfter->GetNext());
+				pInsertAfter->SetNext(pPartInfo);
+			}
+			else {
+				while (pParent->GetChild())
+					pParent = pParent->GetChild();
+
+				pParent->SetChild(pPartInfo);
+			}
+		}
+		else {
+		}
+	}
+
+	return pPartInfo;
 }
 
 // iterate on items
