@@ -94,6 +94,7 @@
     <ClInclude Include="Disk.h" />
     <ClInclude Include="DiskBoard.h" />
     <ClInclude Include="DiskBoardInterface.h" />
+    <ClInclude Include="PartitionTable.h" />
     <ClInclude Include="PartInfo.h" />
     <ClInclude Include="Partitioner.h" />
   </ItemGroup>
