@@ -15,18 +15,30 @@
 #include "AbstractLog.h"
 #include "AbstractFile.h"
 #include "CoreString.h"
+#include "CoreFile.h"
+#include "MGAPI.h"
+
 //
 // constructor
 //
 CDisk::CDisk()
 {
 	m_pLog = NULL;
-	m_pFile = NULL;
+	m_pFile = new CCoreFile();
+
+	m_ui64StartSector = 0;
+	m_ui64DiskSize = 0;
+	ZeroMemory(&m_cDiskGeometry, sizeof(m_cDiskGeometry));
 }
+
 CDisk::CDisk(CAbstractLog* pLog)
 {
 	m_pLog = pLog;
-	m_pFile = NULL;
+	m_pFile = new CCoreFile(m_pLog);
+
+	m_ui64StartSector = 0;
+	m_ui64DiskSize = 0;
+	ZeroMemory(&m_cDiskGeometry, sizeof(m_cDiskGeometry));
 }
 
 //
@@ -34,6 +46,8 @@ CDisk::CDisk(CAbstractLog* pLog)
 //
 /*virtual */CDisk::~CDisk()
 {
+	DELETEME(m_pLog);
+	DELETEME(m_pFile);
 }
 
 //
@@ -52,7 +66,7 @@ CDisk::CDisk(CAbstractLog* pLog)
 	}
 
 	CCoreString csDisk;
-	csDisk.Format(_T("PHYSICALDRIVE%d"), nDisk);
+	csDisk.Format(_T("\\\\.\\PHYSICALDRIVE%d"), nDisk);
 	return OpenDisk(csDisk, dwFlags);
 }
 
@@ -77,13 +91,35 @@ CDisk::CDisk(CAbstractLog* pLog)
 								dwFlags,
 								FILE_SHARE_READ | FILE_SHARE_WRITE,
 								OPEN_EXISTING,
-								FILE_FLAG_SEQUENTIAL_SCAN | FILE_FLAG_NO_BUFFERING);
+								FILE_FLAG_SEQUENTIAL_SCAN | FILE_FLAG_NO_BUFFERING/* | FILE_FLAG_BACKUP_SEMANTICS*/);
 
 	// Error check.
 	if (iRes < 0)
 	{
 		// Error already logged at CAbstractFile
 		return -1;
+	}
+
+	DWORD dwBytesReturned = 0;
+	if (!DeviceIoControl(
+		m_pFile->GetFileHandle(),
+		IOCTL_DISK_GET_DRIVE_GEOMETRY,
+		NULL,
+		0,
+		&m_cDiskGeometry,
+		sizeof(m_cDiskGeometry),
+		&dwBytesReturned,
+		NULL)) {
+
+			if (m_pLog) {
+
+				m_pLog->AddLog(
+					_T("DeviceIoControl failed with error (0x%x) %s"),
+					__TFILE__,
+					__LINE__,
+					GetLastError(),
+					GetErrorMessage(::GetLastError()));
+			}
 	}
 
 	return 0;
@@ -151,7 +187,7 @@ CDisk::CDisk(CAbstractLog* pLog)
 		return -1;
 	}
 
-	if ((m_ui64DiskSize == 0) || ((i64DiskPos + dwSectorsRead) > m_ui64DiskSize))
+	if ((m_ui64DiskSize) && ((i64DiskPos + dwSectorsRead) > m_ui64DiskSize))
 	{
 #ifdef DEBUG
 		if (m_pLog != NULL)
@@ -315,7 +351,9 @@ CDisk::CDisk(CAbstractLog* pLog)
 //
 /*virtual */BOOL CDisk::GetSectorSize(size_t* pBytesPerSector) const
 {
-	return FALSE;
+	if (pBytesPerSector)
+		*pBytesPerSector = m_cDiskGeometry.BytesPerSector;
+	return IsDiskExists() ? TRUE : FALSE;
 }
 
 //

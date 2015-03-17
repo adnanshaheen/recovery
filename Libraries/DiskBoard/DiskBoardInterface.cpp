@@ -40,6 +40,8 @@ CAbstractDisk* CDiskBoardInterface::CreateDisk(CAbstractLog *pLog) const
 #ifdef DEBUG
 	if (pDisk == NULL && pLog != NULL)
 		pLog->AddLog(_T("Error initializing Disk object!!!"), __TFILE__, __LINE__);
+	else if (pDisk && pLog)
+		pLog->AddLog(_T("Disk initialized!"), __TFILE__, __LINE__);
 #endif // DEBUG
 	return pDisk;
 }

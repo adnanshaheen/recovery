@@ -22,7 +22,11 @@ public:
 	virtual BOOL						Initialize();
 
 private:
+	/** Add hard disk info item in tree */
 	void								AddHardDiskInfo(CAbstractDisk* pDisk, CAbstractPartInfo** pDiskInfo);
+
+	/** Read partition table, and add info items in tree */
+	BOOL								ReadPartitions(CAbstractDisk* pDisk, CAbstractPartInfo* pDiskInfo);
 
 private:
 	CAbstractLog*						m_pLog;

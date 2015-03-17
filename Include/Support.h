@@ -174,6 +174,7 @@ typedef enum eWorkType
 } MG_WORK_TYPE;
 
 typedef enum {
+	_E_REP_PARAM_ERROR   = -7,
 	_E_REP_DRIVE_ERROR   = -6,
 	_E_REP_READ_FAIL     = -5,
 	_E_REP_DEVICEIO_FAIL = -4,

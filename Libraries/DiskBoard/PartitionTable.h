@@ -138,20 +138,20 @@ class CPartitionEntry
 	BYTE	m_data[16];
 public:
 	// Access methods:
-	BYTE					Status() const				{ return m_data[0];								}
-	BYTE&					Status()					{ return m_data[0];								}
-	CHeadSectorCylinder		Start() const				{ return *(CHeadSectorCylinder*) &m_data[1];	}
-	CHeadSectorCylinder&	Start()						{ return *(CHeadSectorCylinder*) &m_data[1];	}
-	BYTE					PartitionType() const		{ return m_data[4];								}
-	BYTE&					PartitionType()				{ return m_data[4];								}
-	CHeadSectorCylinder		End() const					{ return *(CHeadSectorCylinder*) &m_data[5];	}
-	CHeadSectorCylinder&	End()						{ return *(CHeadSectorCylinder*) &m_data[5];	}
-	DWORD					DistOfFirstSector() const	{ return *(DWORD*) &m_data[8];					}
-	DWORD&					DistOfFirstSector()			{ return *(DWORD*) &m_data[8];					}
-	DWORD					NumSectors() const			{ return *(DWORD*) &m_data[12];					}
-	DWORD&					NumSectors()				{ return *(DWORD*) &m_data[12];					}
-	BOOL					IsValid() const				{ return (PartitionType() != 0);				}
-	BOOL					IsGPT() const				{ return PartitionType() == 0xEE ? TRUE : FALSE	}
+	BYTE					Status() const				{ return m_data[0];									}
+	BYTE&					Status()					{ return m_data[0];									}
+	CHeadSectorCylinder		Start() const				{ return *(CHeadSectorCylinder*) &m_data[1];		}
+	CHeadSectorCylinder&	Start()						{ return *(CHeadSectorCylinder*) &m_data[1];		}
+	BYTE					PartitionType() const		{ return m_data[4];									}
+	BYTE&					PartitionType()				{ return m_data[4];									}
+	CHeadSectorCylinder		End() const					{ return *(CHeadSectorCylinder*) &m_data[5];		}
+	CHeadSectorCylinder&	End()						{ return *(CHeadSectorCylinder*) &m_data[5];		}
+	DWORD					DistOfFirstSector() const	{ return *(DWORD*) &m_data[8];						}
+	DWORD&					DistOfFirstSector()			{ return *(DWORD*) &m_data[8];						}
+	DWORD					NumSectors() const			{ return *(DWORD*) &m_data[12];						}
+	DWORD&					NumSectors()				{ return *(DWORD*) &m_data[12];						}
+	BOOL					IsValid() const				{ return (PartitionType() != 0);					}
+	BOOL					IsGPT() const				{ return PartitionType() == 0xEE ? TRUE : FALSE;	}
 
 	BOOL operator == (const CPartitionEntry& Entry)
 	{

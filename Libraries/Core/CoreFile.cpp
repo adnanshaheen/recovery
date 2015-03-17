@@ -23,10 +23,12 @@
 //
 CCoreFile::CCoreFile()
 {
+	m_hFile = NULL;
 }
 CCoreFile::CCoreFile(CAbstractLog *pLog)
 {
 	m_pLog = pLog;
+	m_hFile = NULL;
 }
 
 //
@@ -94,7 +96,7 @@ CCoreFile::CCoreFile(const CCoreFile& pFile)
 	ASSERT(m_hFile != NULL || m_hFile != INVALID_HANDLE_VALUE);
 
 	// Set the file handle correctly.
-	m_hFile = m_hFile != NULL || m_hFile != INVALID_HANDLE_VALUE ? m_hFile : NULL;
+	m_hFile = (m_hFile != NULL || m_hFile != INVALID_HANDLE_VALUE) ? m_hFile : NULL;
 	if (m_hFile == NULL)
 	{
 		// Log the errors, file could not be created.
@@ -455,7 +457,7 @@ CCoreFile::CCoreFile(const CCoreFile& pFile)
 //
 /*virtual */BOOL CCoreFile::CloseFile()
 {
-	if (this->IsFileOpen())
+	if (!IsFileOpen())
 	{
 		// No file is opened. So return success.
 		return TRUE;
