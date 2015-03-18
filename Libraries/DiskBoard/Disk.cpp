@@ -343,7 +343,25 @@ CDisk::CDisk(CAbstractLog* pLog)
 //
 /*virtual */BOOL CDisk::GetTotalSectors(INT64* p64Sectors) const
 {
-	return FALSE;
+	if (!IsDiskExists() || m_cDiskGeometry.BytesPerSector == 0)
+		return FALSE;
+
+	UINT64 ui64NumSecs = *((UINT64*) &m_cDiskGeometry.Cylinders)		*
+						  (UINT64) m_cDiskGeometry.TracksPerCylinder	*
+						  (UINT64) m_cDiskGeometry.SectorsPerTrack;
+
+	if (((ui64NumSecs >> 32) & 0xFFFFFFFF) != 0) {
+
+		ASSERT(FALSE);
+		return FALSE;
+	}
+
+	if (p64Sectors) {
+		*p64Sectors = ui64NumSecs;
+		//*p64Sectors += m_dwNumOfSectorsAfterGeom;
+	}
+
+	return TRUE;
 }
 
 //

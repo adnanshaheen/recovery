@@ -31,6 +31,7 @@ BOOL CPartitioner::Initialize()
 	BOOL bRes = FALSE;
 	CAbstractDisk* pDisk = NULL;
 	CAbstractPartInfo* pDiskInfo = NULL;
+	INT64 i64Sectors = 0;
 
 	try {
 		pDisk = m_pDiskBoard->CreateDisk(m_pLog);
@@ -49,6 +50,9 @@ BOOL CPartitioner::Initialize()
 
 				/* add disk info, as we have found one */
 				AddHardDiskInfo(pDisk, &pDiskInfo);
+				pDisk->GetTotalSectors(&i64Sectors);
+				pDiskInfo->SetSectors(i64Sectors);
+
 				ReadPartitions(pDisk, pDiskInfo);
 			}
 		}
@@ -108,8 +112,8 @@ BOOL CPartitioner::ReadPartitions(CAbstractDisk* pDisk, CAbstractPartInfo* pDisk
 
 					if (m_pPartInfo) {
 						pInfo = m_pPartInfo->Insert(
-							m_pPartInfo,
 							pDiskInfo,
+							pInfo,
 							cPartitionTable[nPart].IsGPT() ? MG_PARTINFO_GUID : 0);
 					}
 				}

@@ -20,14 +20,18 @@ class CAbstractPartInfo
 public:
 	virtual						~CAbstractPartInfo() {};
 
-	// insert/delete info
+	/**
+	 * Insert PartInfo
+	 * @pParent : parent node
+	 * @pInsertAfter : insert item after this item
+	 * @dwFlags: flags
+	 */
 	virtual CAbstractPartInfo*	Insert(CAbstractPartInfo* pParent, CAbstractPartInfo* pInsertAfter, DWORD dwFlags) = 0;
 
 	// iterate on items
 	virtual CAbstractPartInfo*	GetParent() const = 0;
 	virtual CAbstractPartInfo*	GetChild() const = 0;
 	virtual CAbstractPartInfo*	GetNext() const = 0;
-	virtual CAbstractPartInfo*	GetPrev() const = 0;
 
 	// set items
 	virtual void				SetParent(CAbstractPartInfo* pParent) = 0;
@@ -40,8 +44,8 @@ public:
 	virtual void				SetFlags(DWORD dwFlag, BOOL bAdd) = 0;
 
 	// Get/Set number of sectors
-	virtual INT64				GetNumofSectors() const = 0;
-	virtual void				SetNumofSectors(INT64 i64Sectors) = 0;
+	virtual INT64				GetSectors() const = 0;
+	virtual void				SetSectors(INT64 i64Sectors) = 0;
 
 	// Get/Set start sector
 	virtual INT64				GetStartSector() const = 0;

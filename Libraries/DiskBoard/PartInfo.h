@@ -12,6 +12,7 @@
 #include "AbstractPartInfo.h"
 
 class CAbstractLog;
+class CPartInfoData;
 
 class CPartInfo : public CAbstractPartInfo
 {
@@ -19,14 +20,18 @@ public:
 	CPartInfo(CAbstractLog* pLog);
 	virtual ~CPartInfo();
 
-	// insert/delete info
+	/**
+	 * Insert PartInfo
+	 * @pParent : parent node
+	 * @pInsertAfter : insert item after this item
+	 * @dwFlags: flags
+	 */
 	virtual CAbstractPartInfo*	Insert(CAbstractPartInfo* pParent, CAbstractPartInfo* pInsertAfter, DWORD dwFlags);
 
 	// iterate on items
 	virtual CAbstractPartInfo*	GetParent() const;
 	virtual CAbstractPartInfo*	GetChild() const;
 	virtual CAbstractPartInfo*	GetNext() const;
-	virtual CAbstractPartInfo*	GetPrev() const;
 
 	// set items
 	virtual void				SetParent(CAbstractPartInfo* pParent);
@@ -39,8 +44,8 @@ public:
 	virtual void				SetFlags(DWORD dwFlag, BOOL bAdd);
 
 	// Get/Set number of sectors
-	virtual INT64				GetNumofSectors() const;
-	virtual void				SetNumofSectors(INT64 i64Sectors);
+	virtual INT64				GetSectors() const;
+	virtual void				SetSectors(INT64 i64Sectors);
 
 	// Get/Set start sector
 	virtual INT64				GetStartSector() const;
@@ -52,5 +57,6 @@ public:
 
 private:
 	CAbstractLog*				m_pLog;
+	CPartInfoData*				m_pPartInfoData;
 };
 
