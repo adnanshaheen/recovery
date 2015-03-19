@@ -46,7 +46,6 @@ CDisk::CDisk(CAbstractLog* pLog)
 //
 /*virtual */CDisk::~CDisk()
 {
-	DELETEME(m_pLog);
 	DELETEME(m_pFile);
 }
 
