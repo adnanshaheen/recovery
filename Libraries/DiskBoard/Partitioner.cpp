@@ -54,6 +54,7 @@ BOOL CPartitioner::Initialize()
 				pDiskInfo->SetSectors(i64Sectors);
 
 				ReadPartitions(pDisk, pDiskInfo);
+				pDisk->CloseDisk();
 			}
 		}
 	}
@@ -115,6 +116,11 @@ BOOL CPartitioner::ReadPartitions(CAbstractDisk* pDisk, CAbstractPartInfo* pDisk
 							pDiskInfo,
 							pInfo,
 							cPartitionTable[nPart].IsGPT() ? MG_PARTINFO_GUID : 0);
+						if (pInfo) {
+
+							pInfo->SetPartitionType(cPartitionTable[nPart].PartitionType());
+							pInfo->SetSectors(cPartitionTable[nPart].NumSectors());
+						}
 					}
 				}
 			}

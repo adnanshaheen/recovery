@@ -17,6 +17,14 @@ public:
 		m_pParent = NULL;
 		m_pNext = NULL;
 		m_pChild = NULL;
+		m_nDiskNumber = -1;			// Disk number
+		m_nPartitionNumber = -1;	// Partition number
+
+		m_i64Sectors = 0;			// Number of sectors
+		m_i64StartSector = 0;		// Start sector of this item
+		m_i64PTableStartSector = 0;	// Start sector of partition table.
+
+		m_PartitionType = 0;		// File system used on the partition
 		m_dwInfoFlags = 0;
 	}
 

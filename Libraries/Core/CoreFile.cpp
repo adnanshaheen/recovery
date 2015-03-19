@@ -469,6 +469,9 @@ CCoreFile::CCoreFile(const CCoreFile& pFile)
 		m_pLog->AddLog(_T("File %s could not be closed due to %s!!!"), __TFILE__, __LINE__,
 			m_csFileName, GetErrorMessage(::GetLastError()));
 	}
+	else {
+		m_hFile = NULL;
+	}
 
 	return bRes;
 }
