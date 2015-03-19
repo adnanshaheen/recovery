@@ -96,7 +96,7 @@ CCoreFile::CCoreFile(const CCoreFile& pFile)
 	ASSERT(m_hFile != NULL || m_hFile != INVALID_HANDLE_VALUE);
 
 	// Set the file handle correctly.
-	m_hFile = (m_hFile != NULL || m_hFile != INVALID_HANDLE_VALUE) ? m_hFile : NULL;
+	m_hFile = (m_hFile == NULL || m_hFile == INVALID_HANDLE_VALUE) ? NULL : m_hFile;
 	if (m_hFile == NULL)
 	{
 		// Log the errors, file could not be created.
