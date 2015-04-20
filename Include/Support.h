@@ -190,6 +190,10 @@ typedef enum {
 	MG_PARTINFO_EFI		= 0x00000004,
 };
 
+typedef enum {
+	MG_PARTTYPE_HFSPLUS	= 0xAF,
+};
+
 //
 // COMMON CONST
 //
