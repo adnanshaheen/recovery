@@ -71,6 +71,7 @@ CAbstractPartInfo* CPartInfo::Insert(CAbstractPartInfo* pParent, CAbstractPartIn
 	CAbstractPartInfo* pPartInfo = new CPartInfo(m_pLog);
 	if (pPartInfo) {
 
+		pPartInfo->SetFlags(dwFlags, TRUE);
 		pPartInfo->SetParent(pParent);
 		if (pInsertAfter)
 		{
@@ -159,3 +160,38 @@ void CPartInfo::SetPartitionType(BYTE cType)
 {
 	m_pPartInfoData->m_PartitionType = cType;
 }
+
+/**
+ * Get disk number
+ */
+int CPartInfo::GetDiskNumber() const
+{
+	return m_pPartInfoData->m_nDiskNumber;
+}
+/**
+ * Set disk number
+ * param
+ * @nDiskNumber : disk number to set
+ */
+void CPartInfo::SetDiskNumber(int nDiskNumber)
+{
+	m_pPartInfoData->m_nDiskNumber = nDiskNumber;
+}
+
+/**
+ * Get partition number
+ */
+int CPartInfo::GetPartitionNumber() const
+{
+	return m_pPartInfoData->m_nPartitionNumber;
+}
+/**
+ * Set partition number
+ * param
+ * @nPartitionNumber : partition number to set
+ */
+void CPartInfo::SetPartitionNumber(int nPartitionNumber)
+{
+	m_pPartInfoData->m_nPartitionNumber = nPartitionNumber;
+}
+

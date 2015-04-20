@@ -55,6 +55,27 @@ public:
 	virtual BYTE				GetPartitionType() const = 0;
 	virtual void				SetPartitionType(BYTE cType) = 0;
 
+	/**
+	 * Get disk number
+	 */
+	virtual int					GetDiskNumber() const = 0;
+	/**
+	 * Set disk number
+	 * param
+	 * @nDiskNumber : disk number to set
+	 */
+	virtual void				SetDiskNumber(int nDiskNumber) = 0;
+
+	/**
+	 * Get partition number
+	 */
+	virtual int					GetPartitionNumber() const = 0;
+	/**
+	 * Set partition number
+	 * param
+	 * @nPartitionNumber : partition number to set
+	 */
+	virtual void				SetPartitionNumber(int nPartitionNumber) = 0;
 };
 
 //
