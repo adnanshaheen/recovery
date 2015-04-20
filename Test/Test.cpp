@@ -13,9 +13,65 @@
 
 #include <iostream>
 
+#include "AbstractDisk.h"
 #include "AbstractPartInfo.h"
 #include "AbstractPartitioner.h"
 #include "AbstractDiskBoardInterface.h"
+
+CAbstractPartInfo* m_pPartInfo = NULL;
+CAbstractLog* m_pLog = NULL;
+CAbstractPartitioner* m_pPartitioner = NULL;
+CAbstractDiskBoardInterface* pDiskInterface = NULL;
+
+int TestRead()
+{
+	int nRes = 0;
+
+	CAbstractDisk* pDisk = pDiskInterface->CreateDisk(m_pLog);
+	if (pDisk) {
+
+		pDisk->OpenDisk(m_pPartInfo->GetDiskNumber(), GENERIC_READ);
+		BYTE pBuffer[512] = { 0 };
+		DWORD dwBytesRead = 0;
+		DWORD nSector = 0;
+		while (TRUE) {
+
+			nRes = pDisk->ReadDisk(pBuffer,
+				m_pPartInfo->GetSectors() + m_pPartInfo->GetStartSector() + nSector,
+				1,
+				dwBytesRead);
+			++ nSector;
+			TEST_AND_RETURN(nRes != 0, nRes);
+		}
+	}
+
+	return nRes;
+}
+
+void PrintDisks(CAbstractPartitioner* pPartitioner)
+{
+	if (pPartitioner) {
+
+		CAbstractPartInfo* pDiskInfo = pPartitioner->GetDiskItem();
+		while (pDiskInfo) {
+
+			if (pDiskInfo->IsFlagExists(MG_PARTINFO_DISK)) {
+
+				CAbstractPartInfo* pPartInfo = pDiskInfo->GetChild();
+				while (pPartInfo) {
+
+					if (pPartInfo->GetPartitionType() == MG_PARTTYPE_HFSPLUS) {
+
+						m_pPartInfo = pPartInfo;
+					}
+					pPartInfo = pPartInfo->GetNext();
+				}
+			}
+
+			pDiskInfo = pDiskInfo->GetNext();
+		}
+	}
+}
 
 int main(char* argv[], int argc)
 {
@@ -55,15 +111,15 @@ int main(char* argv[], int argc)
 	pCreateDiskBoardInterface pCreateDiskInterface =
 		(pCreateDiskBoardInterface) GetProcAddress(hModule, "CreateDiskBoardInterface");
 
-	CAbstractLog* m_pLog = NULL;
-	CAbstractPartitioner* m_pPartitioner = NULL;
-	CAbstractDiskBoardInterface* pDiskInterface = pCreateDiskInterface();
+	pDiskInterface = pCreateDiskInterface();
 	if (pDiskInterface) {
 		m_pLog = pDiskInterface->CreateLogFile();
 		m_pPartitioner = pDiskInterface->CreatePartitioner(m_pLog);
 
 		/* start process here */
 		m_pPartitioner->Initialize();
+		PrintDisks(m_pPartitioner);
+		TestRead();
 
 		pDiskInterface->DeletePartitioner(m_pPartitioner);
 		pDiskInterface->DeleteLogFile(m_pLog);
