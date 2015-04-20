@@ -107,6 +107,7 @@ public:
 								TCHAR* pPath, size_t nPathBufferLength) const;
 
 private:
+	int				m_nDiskNumber;
 	UINT64			m_ui64StartSector;
 	UINT64			m_ui64DiskSize;
 	DISK_GEOMETRY	m_cDiskGeometry;

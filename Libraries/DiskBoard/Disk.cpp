@@ -26,6 +26,7 @@ CDisk::CDisk()
 	m_pLog = NULL;
 	m_pFile = new CCoreFile();
 
+	m_nDiskNumber = -1;
 	m_ui64StartSector = 0;
 	m_ui64DiskSize = 0;
 	ZeroMemory(&m_cDiskGeometry, sizeof(m_cDiskGeometry));
@@ -36,6 +37,7 @@ CDisk::CDisk(CAbstractLog* pLog)
 	m_pLog = pLog;
 	m_pFile = new CCoreFile(m_pLog);
 
+	m_nDiskNumber = -1;
 	m_ui64StartSector = 0;
 	m_ui64DiskSize = 0;
 	ZeroMemory(&m_cDiskGeometry, sizeof(m_cDiskGeometry));
@@ -66,6 +68,7 @@ CDisk::CDisk(CAbstractLog* pLog)
 
 	CCoreString csDisk;
 	csDisk.Format(_T("\\\\.\\PHYSICALDRIVE%d"), nDisk);
+	m_nDiskNumber = nDisk;
 	return OpenDisk(csDisk, dwFlags);
 }
 
@@ -267,8 +270,8 @@ CDisk::CDisk(CAbstractLog* pLog)
 	i64DiskPos += m_ui64StartSector;
 	BOOL bRes = m_pFile->SetFilePointer(i64DiskPos, i64NewPos);
 
-	i64NewPos /= m_cDiskGeometry.BytesPerSector;
-	i64NewPos -= m_ui64StartSector;
+	//i64NewPos /= m_cDiskGeometry.BytesPerSector;
+	//i64NewPos -= m_ui64StartSector;
 
 	return bRes ? 0 : -1;
 }
@@ -378,7 +381,10 @@ CDisk::CDisk(CAbstractLog* pLog)
 //
 /*virtual */BOOL CDisk::GetDiskNumber(int* pDiskNumber) const
 {
-	return FALSE;
+	if (pDiskNumber)
+		*pDiskNumber = m_nDiskNumber;
+
+	return TRUE;
 }
 
 //
