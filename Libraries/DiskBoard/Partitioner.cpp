@@ -52,6 +52,7 @@ BOOL CPartitioner::Initialize()
 				AddHardDiskInfo(pDisk, &pDiskInfo);
 				pDisk->GetTotalSectors(&i64Sectors);
 				pDiskInfo->SetSectors(i64Sectors);
+				pDiskInfo->SetDiskNumber(nDrive);
 
 				ReadPartitions(pDisk, pDiskInfo);
 				pDisk->CloseDisk();
@@ -68,6 +69,11 @@ BOOL CPartitioner::Initialize()
 		DELETEME(pDisk);
 
 	return bRes;
+}
+
+CAbstractPartInfo* CPartitioner::GetDiskItem() const
+{
+	return m_pPartInfo->GetChild();
 }
 
 void CPartitioner::AddHardDiskInfo(CAbstractDisk* pDisk, CAbstractPartInfo** pDiskInfo)
@@ -118,6 +124,9 @@ BOOL CPartitioner::ReadPartitions(CAbstractDisk* pDisk, CAbstractPartInfo* pDisk
 							cPartitionTable[nPart].IsGPT() ? MG_PARTINFO_GUID : 0);
 						if (pInfo) {
 
+							int nDiskNumber = -1;
+							pDisk->GetDiskNumber(&nDiskNumber);
+							pInfo->SetDiskNumber(nDiskNumber);
 							pInfo->SetPartitionType(cPartitionTable[nPart].PartitionType());
 							pInfo->SetSectors(cPartitionTable[nPart].NumSectors());
 						}

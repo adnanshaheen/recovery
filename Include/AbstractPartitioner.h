@@ -21,6 +21,11 @@ public:
 	virtual ~CAbstractPartitioner() {};
 
 	virtual BOOL			Initialize() = 0;
+
+	/**
+	 * Get root of disks/partitions information tree
+	 */
+	virtual CAbstractPartInfo*			GetDiskItem() const = 0;
 };
 
 //

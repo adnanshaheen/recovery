@@ -21,6 +21,11 @@ public:
 
 	virtual BOOL						Initialize();
 
+	/**
+	 * Get root of disks/partitions information tree
+	 */
+	virtual CAbstractPartInfo*			GetDiskItem() const;
+
 private:
 	/** Add hard disk info item in tree */
 	void								AddHardDiskInfo(CAbstractDisk* pDisk, CAbstractPartInfo** pDiskInfo);
