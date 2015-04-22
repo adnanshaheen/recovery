@@ -376,48 +376,48 @@ typedef u64 sbe64;
 
 #if defined(_WIN32_WINNT)
 
-	#define __printf_fmt_char ""
-	#define __printf_type_char int
-	#define __printf_fmt_short ""
-	#define __printf_type_short int
-	#define __printf_fmt_int ""
-	#define __printf_type_int int
-	#define __printf_fmt_long "l"
-	#define __printf_type_long long
-	#define __printf_fmt_long_long "ll"
-	#define __printf_type_long_long long long
-	#define __printf_fmt_size_t "ll"
-	#define __printf_type_ssize_t long long
-	#define __printf_type_size_t unsigned long long
-	#define __printf_fmt_wchar_char "C"
-	#define __printf_type_wchar_char wchar_t
+	#define __printf_fmt_char         _T("%")
+	#define __printf_fmt_short        _T("%")
+	#define __printf_fmt_int          _T("%")
+	#define __printf_fmt_long         _T("%l")
+	#define __printf_fmt_long_long    _T("%ll")
+	#define __printf_fmt_size_t       _T("%ll")
+	#define __printf_fmt_wchar_char   _T("%C")
+	#define __printf_type_char        int
+	#define __printf_type_short       int
+	#define __printf_type_int         int
+	#define __printf_type_long        long
+	#define __printf_type_long_long   long long
+	#define __printf_type_ssize_t     long long
+	#define __printf_type_size_t      unsigned long long
+	#define __printf_type_wchar_char  wchar_t
 
 #else
 
-	#define __printf_fmt_char "hh"
-	#define __printf_type_char char
-	#define __printf_fmt_short "h"
-	#define __printf_type_short short
-	#define __printf_fmt_int ""
-	#define __printf_type_int int
-	#define __printf_fmt_long "l"
-	#define __printf_type_long long
-	#define __printf_fmt_long_long "ll"
-	#define __printf_type_long_long long long
-	#define __printf_fmt_size_t "z"
-	#define __printf_type_ssize_t ssize_t
-	#define __printf_type_size_t size_t
-	#define __printf_fmt_wchar_char "lc"
-	#define __printf_type_wchar_char wchar_t
+	#define __printf_fmt_char         _T("%hh")
+	#define __printf_fmt_short        _T("%h")
+	#define __printf_fmt_int          _T("%")
+	#define __printf_fmt_long         _T("%l")
+	#define __printf_fmt_long_long    _T("%ll")
+	#define __printf_fmt_size_t       _T("%z")
+	#define __printf_fmt_wchar_char   _T("%lc")
+	#define __printf_type_char        char
+	#define __printf_type_short       short
+	#define __printf_type_int         int
+	#define __printf_type_long        long
+	#define __printf_type_long_long   long long
+	#define __printf_type_ssize_t     ssize_t
+	#define __printf_type_size_t      size_t
+	#define __printf_type_wchar_char  wchar_t
 
 #endif /* defined(_WIN32_WINNT) */
 
 /* char printf format placeholders. */
-#define FMThhd __printf_fmt_char "d"
-#define FMThhu __printf_fmt_char "u"
-#define FMThho __printf_fmt_char "o"
-#define FMThhx __printf_fmt_char "x"
-#define FMThhX __printf_fmt_char "X"
+#define FMThhd __printf_fmt_char _T("d")
+#define FMThhu __printf_fmt_char _T("u")
+#define FMThho __printf_fmt_char _T("o")
+#define FMThhx __printf_fmt_char _T("x")
+#define FMThhX __printf_fmt_char _T("X")
 
 /* char printf argument cast macros. */
 #define ARGhhd(x) ((__printf_type_char) (x))
@@ -427,11 +427,11 @@ typedef u64 sbe64;
 #define ARGhhX(x) ((unsigned __printf_type_char) (x))
 
 /* short printf format placeholders. */
-#define FMThd __printf_fmt_short "d"
-#define FMThu __printf_fmt_short "u"
-#define FMTho __printf_fmt_short "o"
-#define FMThx __printf_fmt_short "x"
-#define FMThX __printf_fmt_short "X"
+#define FMThd __printf_fmt_short _T("d")
+#define FMThu __printf_fmt_short _T("u")
+#define FMTho __printf_fmt_short _T("o")
+#define FMThx __printf_fmt_short _T("x")
+#define FMThX __printf_fmt_short _T("X")
 
 /* short printf argument cast macros. */
 #define ARGhd(x) ((__printf_type_short) (x))
@@ -441,11 +441,11 @@ typedef u64 sbe64;
 #define ARGhX(x) ((unsigned __printf_type_short) (x))
 
 /* int printf format placeholders. */
-#define FMTd __printf_fmt_int "d"
-#define FMTu __printf_fmt_int "u"
-#define FMTo __printf_fmt_int "o"
-#define FMTx __printf_fmt_int "x"
-#define FMTX __printf_fmt_int "X"
+#define FMTd __printf_fmt_int _T("d")
+#define FMTu __printf_fmt_int _T("u")
+#define FMTo __printf_fmt_int _T("o")
+#define FMTx __printf_fmt_int _T("x")
+#define FMTX __printf_fmt_int _T("X")
 
 /* int printf argument cast macros. */
 #define ARGd(x) ((__printf_type_int) (x))
@@ -455,11 +455,11 @@ typedef u64 sbe64;
 #define ARGX(x) ((unsigned __printf_type_int) (x))
 
 /* long printf format placeholders. */
-#define FMTld __printf_fmt_long "d"
-#define FMTlu __printf_fmt_long "u"
-#define FMTlo __printf_fmt_long "o"
-#define FMTlx __printf_fmt_long "x"
-#define FMTlX __printf_fmt_long "X"
+#define FMTld __printf_fmt_long _T("d")
+#define FMTlu __printf_fmt_long _T("u")
+#define FMTlo __printf_fmt_long _T("o")
+#define FMTlx __printf_fmt_long _T("x")
+#define FMTlX __printf_fmt_long _T("X")
 
 /* long printf argument cast macros. */
 #define ARGld(x) ((__printf_type_long) (x))
@@ -469,11 +469,11 @@ typedef u64 sbe64;
 #define ARGlX(x) ((unsigned __printf_type_long) (x))
 
 /* long long printf format placeholders. */
-#define FMTlld __printf_fmt_long_long "d"
-#define FMTllu __printf_fmt_long_long "u"
-#define FMTllo __printf_fmt_long_long "o"
-#define FMTllx __printf_fmt_long_long "x"
-#define FMTllX __printf_fmt_long_long "X"
+#define FMTlld __printf_fmt_long_long _T("d")
+#define FMTllu __printf_fmt_long_long _T("u")
+#define FMTllo __printf_fmt_long_long _T("o")
+#define FMTllx __printf_fmt_long_long _T("x")
+#define FMTllX __printf_fmt_long_long _T("X")
 
 /* long long printf argument cast macros. */
 #define ARGlld(x) ((__printf_type_long_long) (x))
@@ -483,11 +483,11 @@ typedef u64 sbe64;
 #define ARGllX(x) ((unsigned __printf_type_long_long) (x))
 
 /* [s]size_t printf format placeholders. */
-#define FMTzd __printf_fmt_size_t "d"
-#define FMTzu __printf_fmt_size_t "u"
-#define FMTzo __printf_fmt_size_t "o"
-#define FMTzx __printf_fmt_size_t "x"
-#define FMTzX __printf_fmt_size_t "X"
+#define FMTzd __printf_fmt_size_t _T("d")
+#define FMTzu __printf_fmt_size_t _T("u")
+#define FMTzo __printf_fmt_size_t _T("o")
+#define FMTzx __printf_fmt_size_t _T("x")
+#define FMTzX __printf_fmt_size_t _T("X")
 
 /* [s]size_t printf argument cast macros. */
 #define ARGzd(x) ((__printf_type_ssize_t) (x))
