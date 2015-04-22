@@ -24,6 +24,8 @@
 #define DEBUG
 #endif // _DEBUG
 
+#include "bits.h"
+
 /**
  * consts/defines
  */
