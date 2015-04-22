@@ -33,6 +33,12 @@ private:
 	/** Read partition table, and add info items in tree */
 	BOOL								ReadPartitions(CAbstractDisk* pDisk, CAbstractPartInfo* pDiskInfo);
 
+	/** Read GUID partition table, and add info items in tree */
+	BOOL	ReadGPTPartitions(CAbstractDisk* pDisk, CAbstractPartInfo* pDiskInfo, CAbstractPartInfo* pInsertAfter);
+
+	/** Print GUID partition table header values */
+	void	PrintGUIDHeader(void* pBuffer) const;
+
 private:
 	CAbstractLog*						m_pLog;
 	CAbstractPartInfo*					m_pPartInfo;

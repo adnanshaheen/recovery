@@ -265,6 +265,79 @@ private:
 	WORD				m_cMagicAA55;			// Magic value to mark a correct root sector
 };
 
+class CGPTHeader
+{
+public:
+	CGPTHeader()
+	{
+		m_cMagic = 0;
+		m_nRevision = 0;
+		m_nHeaderSize = 0;
+		m_nCRC32_Header = 0;
+		m_nReserved = 0;
+		m_i64LBA = 0;
+		m_i64BackupLBA = 0;
+		m_i64FirstLBA = 0;
+		m_i64LastLBA = 0;
+		ZeroMemory(m_DiskGUID, sizeof(m_DiskGUID));
+		m_i64StartingLBA = 0;
+		m_nNumber = 0;
+		m_nSize = 0;
+		m_nCRC32_Table = 0;
+	}
+
+	~CGPTHeader()
+	{
+	}
+
+	BOOL IsValid() const
+	{
+		return m_cMagic == 0x5452415020494645ULL;
+	}
+
+public:
+	s64 m_cMagic;		  /* Signature ("EFI PART", 45h 46h 49h 20h 50h 41h 52h 54h or 0x5452415020494645ULL */
+    s32 m_nRevision;	  /* (for GPT version 1.0 (through at least UEFI version 2.3.1), the value is 00h 00h 01h 00h) */
+    s32 m_nHeaderSize;    /* size in little endian (in bytes, usually 5Ch 00h 00h 00h meaning 92 bytes) */
+    s32 m_nCRC32_Header;  /* of header (offset +0 up to header size), with this field zeroed during calculation */
+    s32 m_nReserved;      /* must be zero */
+    s64 m_i64LBA;         /* LBA (location of this header copy) */
+    s64 m_i64BackupLBA;   /* LBA (location of the other header copy) */
+    s64 m_i64FirstLBA;    /* usable LBA for partitions (primary partition table last LBA + 1) */
+    s64 m_i64LastLBA;     /* usable LBA (secondary partition table first LBA - 1) */
+    u8  m_DiskGUID[16];   /* also referred as UUID on UNIXes */
+    s64 m_i64StartingLBA; /* of array of partition entries (always 2 in primary copy) */
+    s32 m_nNumber;        /* of partition entries in array */
+    s32 m_nSize;          /* of a single partition entry (usually 128) */
+    s32 m_nCRC32_Table;   /* of partition array */
+};
+
+class CGPTPartitions
+{
+public:
+	CGPTPartitions()
+	{
+		ZeroMemory(m_PartTypeGUID, sizeof(m_PartTypeGUID));
+		ZeroMemory(m_PartGUID, sizeof(m_PartGUID));
+		m_i64FirstLBA = 0;
+		m_i64LastLBA = 0;
+		m_i64AttrFlags = 0;
+		ZeroMemory(m_cPartName, sizeof(m_cPartName));
+	}
+
+	~CGPTPartitions()
+	{
+	}
+
+private:
+	u8 m_PartTypeGUID[16]; /* partition type GUID */
+	u8 m_PartGUID[16];     /* partition GUID */
+	s64 m_i64FirstLBA;     /* start of entry */
+	s64 m_i64LastLBA;      /* end of entry */
+	s64 m_i64AttrFlags;    /* attribute flags (e.g. bit 60 denotes read-only) */
+	u16 m_cPartName[36];   /* entry name (36 UTF-16LE code units) */
+};
+
 #pragma pack()
 
 //
