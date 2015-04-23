@@ -128,7 +128,7 @@ BOOL CPartInfo::IsFlagExists(DWORD dwFlag) const
 }
 void CPartInfo::SetFlags(DWORD dwFlag, BOOL bAdd)
 {
-	m_pPartInfoData->m_dwInfoFlags = (m_pPartInfoData->m_dwInfoFlags & ~dwFlag) || (bAdd ? dwFlag : 0);
+	m_pPartInfoData->m_dwInfoFlags = (m_pPartInfoData->m_dwInfoFlags & ~dwFlag) || bAdd ? dwFlag : 0;
 }
 
 // Get/Set number of sectors
