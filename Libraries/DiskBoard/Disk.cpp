@@ -267,11 +267,12 @@ CDisk::CDisk(CAbstractLog* pLog)
 	}
 
 	// Set the new sector number from the start of drive.
+	i64DiskPos *= m_cDiskGeometry.BytesPerSector;
 	i64DiskPos += m_ui64StartSector;
 	BOOL bRes = m_pFile->SetFilePointer(i64DiskPos, i64NewPos);
 
-	//i64NewPos /= m_cDiskGeometry.BytesPerSector;
-	//i64NewPos -= m_ui64StartSector;
+	i64NewPos /= m_cDiskGeometry.BytesPerSector;
+	i64NewPos -= m_ui64StartSector;
 
 	return bRes ? 0 : -1;
 }
