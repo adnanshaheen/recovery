@@ -295,7 +295,17 @@ public:
 		return m_cMagic == 0x5452415020494645ULL;
 	}
 
-public:
+	s64 GetFirstEntry() const
+	{
+		return m_i64FirstLBA;
+	}
+
+	s32 GetSize() const
+	{
+		return m_nSize;
+	}
+
+private:
 	s64 m_cMagic;		  /* Signature ("EFI PART", 45h 46h 49h 20h 50h 41h 52h 54h or 0x5452415020494645ULL */
     s32 m_nRevision;	  /* (for GPT version 1.0 (through at least UEFI version 2.3.1), the value is 00h 00h 01h 00h) */
     s32 m_nHeaderSize;    /* size in little endian (in bytes, usually 5Ch 00h 00h 00h meaning 92 bytes) */

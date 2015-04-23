@@ -174,8 +174,11 @@ BOOL CPartitioner::ReadGPTPartitions(CAbstractDisk* pDisk, CAbstractPartInfo* pD
 	BOOL bRes = TRUE;
 	size_t nSectorSize = 0;
 	DWORD dwSectorsRead = 0;
+	s32 nIndex = 2;
 	BYTE* pBuffer = NULL;
+	BYTE* pPartEntry = NULL;
 	CGPTHeader cPartitionTableHeader;
+	CGPTPartitions cGPTPartition;
 	CAbstractPartInfo* pInfo = NULL;
 
 	try {
@@ -189,14 +192,34 @@ BOOL CPartitioner::ReadGPTPartitions(CAbstractDisk* pDisk, CAbstractPartInfo* pD
 		ZeroMemory(pBuffer, nSectorSize);
 
 		if (pDisk->ReadDisk(pBuffer, 1, 1, dwSectorsRead) != 0) {
-			m_pLog->AddLog(_T("Drive read failed at sector 0"), __TFILE__, __LINE__);
+			m_pLog->AddLog(_T("Drive read failed at sector 1"), __TFILE__, __LINE__);
 			throw _E_REP_DRIVE_ERROR;
 		}
 
 		cPartitionTableHeader = *(CGPTHeader*) pBuffer;
 		if (cPartitionTableHeader.IsValid()) {
 
-			PrintGUIDHeader(&cPartitionTableHeader);
+			/*
+			 * We have a valid "EFI PART"
+			 * start reading partition entries
+			 */
+			pPartEntry = new BYTE[nSectorSize];
+			ZeroMemory(pPartEntry, nSectorSize);
+
+			if (pDisk->ReadDisk(pPartEntry, nIndex ++, 1, dwSectorsRead) != 0) {
+				CCoreString csMessage;
+				csMessage.Format(_T("Drive read failed at sector " FMTlld), ARGlld(cPartitionTableHeader.GetFirstEntry()));
+				m_pLog->AddLog(csMessage, __TFILE__, __LINE__);
+				throw _E_REP_DRIVE_ERROR;
+			}
+
+			cGPTPartition = *(CGPTPartitions*) pPartEntry;
+
+			cGPTPartition = *(CGPTPartitions*) (pPartEntry + cPartitionTableHeader.GetSize());
+
+			cGPTPartition = *(CGPTPartitions*) (pPartEntry + cPartitionTableHeader.GetSize() * 2);
+
+			cGPTPartition = *(CGPTPartitions*) (pPartEntry + cPartitionTableHeader.GetSize() * 3);
 		}
 	}
 	catch (int nException) {
@@ -205,72 +228,10 @@ BOOL CPartitioner::ReadGPTPartitions(CAbstractDisk* pDisk, CAbstractPartInfo* pD
 	catch (...) {
 	}
 
+	if (pPartEntry)
+		DELETE_ARRAY(pPartEntry);
 	if (pBuffer)
 		DELETE_ARRAY(pBuffer);
 
 	return bRes;
 }
-
-#ifdef DEBUG
-void CPartitioner::PrintGUIDHeader(void* pBuffer) const
-{
-	CGPTHeader* pHeader = (CGPTHeader*) pBuffer;
-	if (pHeader) {
-
-		m_pLog->AddLog(_T("*** GUID PARTITION TABLE HEADER ***"));
-
-		CCoreString cMessage;
-		cMessage.Format(FMTlld, ARGlld(pHeader->m_cMagic));
-		m_pLog->AddLog(_T("Magic: "));
-		m_pLog->AddLog(cMessage);
-
-		cMessage.Format(FMTd, ARGd(pHeader->m_nRevision));
-		m_pLog->AddLog(_T("Revision: "));
-		m_pLog->AddLog(cMessage);
-
-		cMessage.Format(FMTd, ARGd(pHeader->m_nHeaderSize));
-		m_pLog->AddLog(_T("Header Size: "));
-		m_pLog->AddLog(cMessage);
-
-		cMessage.Format(FMTd, ARGd(pHeader->m_nCRC32_Header));
-		m_pLog->AddLog(_T("Header CRC: "));
-		m_pLog->AddLog(cMessage);
-
-		cMessage.Format(FMTd, ARGd(pHeader->m_i64LBA));
-		m_pLog->AddLog(_T("Current LBA: "));
-		m_pLog->AddLog(cMessage);
-
-		cMessage.Format(FMTlld, ARGlld(pHeader->m_i64BackupLBA));
-		m_pLog->AddLog(_T("Backup LBA: "));
-		m_pLog->AddLog(cMessage);
-
-		cMessage.Format(FMTlld, ARGlld(pHeader->m_i64FirstLBA));
-		m_pLog->AddLog(_T("First LBA Partition: "));
-		m_pLog->AddLog(cMessage);
-
-		cMessage.Format(FMTlld, ARGlld(pHeader->m_i64LastLBA));
-		m_pLog->AddLog(_T("Last LBA Partition: "));
-		m_pLog->AddLog(cMessage);
-
-		cMessage.Format(FMTlc, ARGlc(pHeader->m_DiskGUID));
-		m_pLog->AddLog(_T("Disk GUID: "));
-		m_pLog->AddLog(cMessage);
-
-		cMessage.Format(FMTlld, ARGlld(pHeader->m_i64StartingLBA));
-		m_pLog->AddLog(_T("Partition entry LBA: "));
-		m_pLog->AddLog(cMessage);
-
-		cMessage.Format(FMTd, ARGd(pHeader->m_nNumber));
-		m_pLog->AddLog(_T("Partition entries: "));
-		m_pLog->AddLog(cMessage);
-
-		cMessage.Format(FMTd, ARGd(pHeader->m_nSize));
-		m_pLog->AddLog(_T("Size of partition entry: "));
-		m_pLog->AddLog(cMessage);
-
-		cMessage.Format(FMTd, ARGd(pHeader->m_nCRC32_Table));
-		m_pLog->AddLog(_T("Partition array CRC: "));
-		m_pLog->AddLog(cMessage);
-	}
-}
-#endif /* DEBUG */
