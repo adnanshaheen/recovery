@@ -39,6 +39,9 @@ private:
 	/** Add partitions in map */
 	CAbstractPartInfo*	AddPartition(CAbstractPartInfo* pDiskInfo, CAbstractPartInfo* pInsertAfter, void* pPartBuffer);
 
+	/** Read partition types */
+	BOOL	ReadGPTPartType(CAbstractDisk* pDisk, CAbstractPartInfo* pDiskInfo);
+
 private:
 	CAbstractLog*						m_pLog;
 	CAbstractPartInfo*					m_pPartInfo;

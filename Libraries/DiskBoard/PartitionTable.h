@@ -361,12 +361,20 @@ public:
 	{
 	}
 
+	/**
+	 * IsValid
+	 * is this unused partition entry
+	 */
 	BOOL IsValid() const
 	{
 		GUID Unused = { 0x00000000, 0x0000, 0x0000, { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 } };
 		return m_PartTypeGUID == Unused ? TRUE : FALSE;
 	}
 
+	/**
+	 * PartitionType
+	 * get partition type guid
+	 */
 	GUID PartitionType() const
 	{
 		/*
@@ -465,6 +473,10 @@ public:
 		return m_PartTypeGUID;
 	}
 
+	/**
+	 * NumSectors
+	 * get number of sectors
+	 */
 	u64 NumSectors() const
 	{
 		return m_i64LastLBA - m_i64FirstLBA;
@@ -481,9 +493,22 @@ public:
 		return (m_PartTypeGUID == WindowsDataDisk || m_PartTypeGUID == LinuxFSDataDisk) ? TRUE : FALSE;
 	}
 
+	/**
+	 * TODO: GetPartitionTypeString
+	 * get partition type string
+	 */
 	CCoreString GetPartitionTypeString() const
 	{
 		return "";
+	}
+
+	/**
+	 * GetStartSector
+	 * get the start sector of partition
+	 */
+	u64 GetStartSector() const
+	{
+		return m_i64FirstLBA;
 	}
 
 private:

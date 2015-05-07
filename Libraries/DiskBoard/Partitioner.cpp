@@ -135,6 +135,7 @@ BOOL CPartitioner::ReadPartitions(CAbstractDisk* pDisk, CAbstractPartInfo* pDisk
 							pInfo->SetDiskNumber(nDiskNumber);
 							pInfo->SetPartitionType(cPartitionTable[nPart].PartitionType());
 							pInfo->SetSectors(cPartitionTable[nPart].NumSectors());
+							//pInfo->SetStartSector(cPartitionTable[nPart].Start());
 
 							if (pInfo->IsFlagExists(MG_PARTINFO_GUID)) {
 
@@ -146,7 +147,8 @@ BOOL CPartitioner::ReadPartitions(CAbstractDisk* pDisk, CAbstractPartInfo* pDisk
 								if (!bRes)
 									throw _E_REP_GUID_PART_FAIL;
 
-
+								pDiskInfo->SetFlags(MG_PARTINFO_GUID, TRUE);
+								bRes = ReadGPTPartType(pDisk, pDiskInfo);
 							}
 						}
 					}
@@ -266,20 +268,69 @@ CAbstractPartInfo* CPartitioner::AddPartition(CAbstractPartInfo* pDiskInfo, CAbs
 {
 	CAbstractPartInfo* pInfo = NULL;
 	CGPTPartitions* pGPTPartition = (CGPTPartitions*) pPartBuffer;
-	if (pGPTPartition && pGPTPartition->IsValid()) {
-		if (m_pPartInfo) {
 
-			pInfo = m_pPartInfo->Insert(
-				pDiskInfo,
-				pInsertAfter,
-				MG_PARTINFO_GUID);
-			if (pInfo) {
+	try {
+		if (!pGPTPartition || !pDiskInfo) {
+			ASSERT(FALSE);
+			throw _E_REP_PARAM_ERROR;
+		}
 
-				pInfo->SetPartitionTypeGUID(pGPTPartition->PartitionType());
-				pInfo->SetSectors(pGPTPartition->NumSectors());
+		if (pGPTPartition->IsValid()) {
+			if (m_pPartInfo) {
+
+				pInfo = m_pPartInfo->Insert(
+					pDiskInfo,
+					pInsertAfter,
+					MG_PARTINFO_GUID);
+				if (pInfo) {
+
+					pInfo->SetPartitionTypeGUID(pGPTPartition->PartitionType());
+					pInfo->SetSectors(pGPTPartition->NumSectors());
+					pInfo->SetStartSector(pGPTPartition->GetStartSector());
+					if (pGPTPartition->IsDataDisk())
+						pInfo->SetFlags(MG_PARTINFO_DATA, TRUE);
+				}
 			}
 		}
 	}
+	catch (int nException) {
+		SetErrorNumber(nException);
+	}
+	catch (...) {
+		SetErrorNumber(_E_REP_UNEXPECTED);
+	}
 
 	return pInsertAfter;
+}
+
+
+BOOL CPartitioner::ReadGPTPartType(CAbstractDisk* pDisk, CAbstractPartInfo* pDiskInfo)
+{
+	BOOL bRes = TRUE;
+
+	try {
+		if (!pDisk || !pDiskInfo) {
+			ASSERT(FALSE);
+			throw _E_REP_PARAM_ERROR;
+		}
+
+		CAbstractPartInfo* pPartInfo = pDiskInfo->GetChild();
+		while (pPartInfo) {
+
+			/* currently only checking for windows data partitions */
+			if (pPartInfo->IsFlagExists(MG_PARTINFO_DATA)) {
+
+			}
+		}
+	}
+	catch (int nException) {
+		SetErrorNumber(nException);
+		bRes = FALSE;
+	}
+	catch (...) {
+		SetErrorNumber(_E_REP_UNEXPECTED);
+		bRes = FALSE;
+	}
+
+	return bRes;
 }
