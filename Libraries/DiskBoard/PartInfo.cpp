@@ -41,6 +41,7 @@ public:
 	INT64				m_i64PTableStartSector;		// Start sector of partition table.
 
 	BYTE				m_PartitionType;			// File system used on the partition
+	GUID				m_GuidPartitionType;		// File system used on the guid partition
 	DWORD				m_dwInfoFlags;
 };
 
@@ -159,6 +160,21 @@ BYTE CPartInfo::GetPartitionType() const
 void CPartInfo::SetPartitionType(BYTE cType)
 {
 	m_pPartInfoData->m_PartitionType = cType;
+}
+
+/**
+ * Get partition type GUID
+ */
+GUID CPartInfo::GetPartitionTypeGUID() const
+{
+	return m_pPartInfoData->m_GuidPartitionType;
+}
+/**
+ * Set partition type GUID
+ */
+void CPartInfo::SetPartitionTypeGUID(GUID Type)
+{
+	m_pPartInfoData->m_GuidPartitionType = Type;
 }
 
 /**

@@ -36,6 +36,9 @@ private:
 	/** Read GUID partition table, and add info items in tree */
 	BOOL	ReadGPTPartitions(CAbstractDisk* pDisk, CAbstractPartInfo* pDiskInfo, CAbstractPartInfo* pInsertAfter);
 
+	/** Add partitions in map */
+	CAbstractPartInfo*	AddPartition(CAbstractPartInfo* pDiskInfo, CAbstractPartInfo* pInsertAfter, void* pPartBuffer);
+
 private:
 	CAbstractLog*						m_pLog;
 	CAbstractPartInfo*					m_pPartInfo;

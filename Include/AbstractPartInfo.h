@@ -56,6 +56,15 @@ public:
 	virtual void				SetPartitionType(BYTE cType) = 0;
 
 	/**
+	 * Get partition type GUID
+	 */
+	virtual GUID				GetPartitionTypeGUID() const = 0;
+	/**
+	 * Set partition type GUID
+	 */
+	virtual void				SetPartitionTypeGUID(GUID Type) = 0;
+
+	/**
 	 * Get disk number
 	 */
 	virtual int					GetDiskNumber() const = 0;

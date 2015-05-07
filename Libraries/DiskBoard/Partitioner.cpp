@@ -142,7 +142,11 @@ BOOL CPartitioner::ReadPartitions(CAbstractDisk* pDisk, CAbstractPartInfo* pDisk
 								 * This is GUID disk
 								 * Read the partitions
 								 */
-								ReadGPTPartitions(pDisk, pDiskInfo, pInfo);
+								bRes = ReadGPTPartitions(pDisk, pDiskInfo, pInfo);
+								if (!bRes)
+									throw _E_REP_GUID_PART_FAIL;
+
+
 							}
 						}
 					}
@@ -152,8 +156,11 @@ BOOL CPartitioner::ReadPartitions(CAbstractDisk* pDisk, CAbstractPartInfo* pDisk
 	}
 	catch (int nException) {
 		SetErrorNumber(nException);
+		bRes = FALSE;
 	}
 	catch (...) {
+		SetErrorNumber(_E_REP_UNEXPECTED);
+		bRes = FALSE;
 	}
 
 	if (pBuffer)
@@ -204,28 +211,47 @@ BOOL CPartitioner::ReadGPTPartitions(CAbstractDisk* pDisk, CAbstractPartInfo* pD
 			 * start reading partition entries
 			 */
 			pPartEntry = new BYTE[nSectorSize];
-			ZeroMemory(pPartEntry, nSectorSize);
+			int nDiskNumber = -1;
 
-			if (pDisk->ReadDisk(pPartEntry, nIndex ++, 1, dwSectorsRead) != 0) {
-				CCoreString csMessage;
-				csMessage.Format(_T("Drive read failed at sector " FMTlld), ARGlld(cPartitionTableHeader.GetFirstEntry()));
-				m_pLog->AddLog(csMessage, __TFILE__, __LINE__);
-				throw _E_REP_DRIVE_ERROR;
+			for (int nPart = 0; nPart < cPartitionTableHeader.GetPartitions(); ++ nPart) {
+
+				ZeroMemory(pPartEntry, nSectorSize);
+
+				if (pDisk->ReadDisk(pPartEntry, nIndex ++, 1, dwSectorsRead) != 0) {
+
+					CCoreString csMessage;
+					csMessage.Format(_T("Drive read failed at sector " FMTlld), ARGlld(cPartitionTableHeader.GetFirstEntry()));
+					m_pLog->AddLog(csMessage, __TFILE__, __LINE__);
+					throw _E_REP_DRIVE_ERROR;
+				}
+
+				pInfo = AddPartition(pDiskInfo, pInsertAfter, pPartEntry);
+				if (pInfo) {
+					nDiskNumber = -1;
+					pDisk->GetDiskNumber(&nDiskNumber);
+					pInfo->SetDiskNumber(nDiskNumber);
+				}
+				pInfo = AddPartition(pDiskInfo, pInfo, pPartEntry + cPartitionTableHeader.GetSize());
+				if (pInfo)
+					pInfo->SetDiskNumber(nDiskNumber);
+
+				pInfo = AddPartition(pDiskInfo, pInfo, pPartEntry + cPartitionTableHeader.GetSize() * 2);
+				if (pInfo)
+					pInfo->SetDiskNumber(nDiskNumber);
+
+				pInfo = AddPartition(pDiskInfo, pInfo, pPartEntry + cPartitionTableHeader.GetSize() * 3);
+				if (pInfo)
+					pInfo->SetDiskNumber(nDiskNumber);
 			}
-
-			cGPTPartition = *(CGPTPartitions*) pPartEntry;
-
-			cGPTPartition = *(CGPTPartitions*) (pPartEntry + cPartitionTableHeader.GetSize());
-
-			cGPTPartition = *(CGPTPartitions*) (pPartEntry + cPartitionTableHeader.GetSize() * 2);
-
-			cGPTPartition = *(CGPTPartitions*) (pPartEntry + cPartitionTableHeader.GetSize() * 3);
 		}
 	}
 	catch (int nException) {
 		SetErrorNumber(nException);
+		bRes = FALSE;
 	}
 	catch (...) {
+		SetErrorNumber(_E_REP_UNEXPECTED);
+		bRes = FALSE;
 	}
 
 	if (pPartEntry)
@@ -234,4 +260,26 @@ BOOL CPartitioner::ReadGPTPartitions(CAbstractDisk* pDisk, CAbstractPartInfo* pD
 		DELETE_ARRAY(pBuffer);
 
 	return bRes;
+}
+
+CAbstractPartInfo* CPartitioner::AddPartition(CAbstractPartInfo* pDiskInfo, CAbstractPartInfo* pInsertAfter, void* pPartBuffer)
+{
+	CAbstractPartInfo* pInfo = NULL;
+	CGPTPartitions* pGPTPartition = (CGPTPartitions*) pPartBuffer;
+	if (pGPTPartition && pGPTPartition->IsValid()) {
+		if (m_pPartInfo) {
+
+			pInfo = m_pPartInfo->Insert(
+				pDiskInfo,
+				pInsertAfter,
+				MG_PARTINFO_GUID);
+			if (pInfo) {
+
+				pInfo->SetPartitionTypeGUID(pGPTPartition->PartitionType());
+				pInfo->SetSectors(pGPTPartition->NumSectors());
+			}
+		}
+	}
+
+	return pInsertAfter;
 }

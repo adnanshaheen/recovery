@@ -230,7 +230,7 @@ public:
 		ASSERT(sizeof *this == 512);
 	}
 
-	int PartEntries(void) const
+	int PartEntries() const
 	{
 		return (sizeof(m_cPartEntry) / sizeof(CPartitionEntry));	// 4
 	}
@@ -253,9 +253,9 @@ public:
 		return m_cPartEntry[iIndex];
 	}
 
-	BOOL IsValid(void) const
+	BOOL IsValid() const
 	{
-		return (m_cMagicAA55 == 0xAA55);
+		return m_cMagicAA55 == 0xAA55 ? TRUE : FALSE;
 	}
 
 private:
@@ -279,7 +279,7 @@ public:
 		m_i64BackupLBA = 0;
 		m_i64FirstLBA = 0;
 		m_i64LastLBA = 0;
-		ZeroMemory(m_DiskGUID, sizeof(m_DiskGUID));
+		ZeroMemory(&m_DiskGUID, sizeof(m_DiskGUID));
 		m_i64StartingLBA = 0;
 		m_nNumber = 0;
 		m_nSize = 0;
@@ -290,36 +290,58 @@ public:
 	{
 	}
 
+	/**
+	 * IsValid
+	 * Check for validity of GUID Header
+	 */
 	BOOL IsValid() const
 	{
 		return m_cMagic == 0x5452415020494645ULL;
 	}
 
-	s64 GetFirstEntry() const
+	/**
+	 * GetFirstEntry
+	 * get first entry LBA
+	 */
+	u64 GetFirstEntry() const
 	{
 		return m_i64FirstLBA;
 	}
 
-	s32 GetSize() const
+	/**
+	 * GetSize
+	 * get GUID header size
+	 */
+	u32 GetSize() const
 	{
 		return m_nSize;
 	}
 
+	/**
+	 * GetPartitions
+	 * get number of partitions
+	 */
+	u32 GetPartitions() const
+	{
+		return m_nNumber;
+	}
+
 private:
 	s64 m_cMagic;		  /* Signature ("EFI PART", 45h 46h 49h 20h 50h 41h 52h 54h or 0x5452415020494645ULL */
-    s32 m_nRevision;	  /* (for GPT version 1.0 (through at least UEFI version 2.3.1), the value is 00h 00h 01h 00h) */
-    s32 m_nHeaderSize;    /* size in little endian (in bytes, usually 5Ch 00h 00h 00h meaning 92 bytes) */
-    s32 m_nCRC32_Header;  /* of header (offset +0 up to header size), with this field zeroed during calculation */
-    s32 m_nReserved;      /* must be zero */
-    s64 m_i64LBA;         /* LBA (location of this header copy) */
-    s64 m_i64BackupLBA;   /* LBA (location of the other header copy) */
-    s64 m_i64FirstLBA;    /* usable LBA for partitions (primary partition table last LBA + 1) */
-    s64 m_i64LastLBA;     /* usable LBA (secondary partition table first LBA - 1) */
-    u8  m_DiskGUID[16];   /* also referred as UUID on UNIXes */
-    s64 m_i64StartingLBA; /* of array of partition entries (always 2 in primary copy) */
-    s32 m_nNumber;        /* of partition entries in array */
-    s32 m_nSize;          /* of a single partition entry (usually 128) */
-    s32 m_nCRC32_Table;   /* of partition array */
+    u32 m_nRevision;	  /* (for GPT version 1.0 (through at least UEFI version 2.3.1), the value is 00h 00h 01h 00h) */
+    u32 m_nHeaderSize;    /* size in little endian (in bytes, usually 5Ch 00h 00h 00h meaning 92 bytes) */
+    u32 m_nCRC32_Header;  /* of header (offset +0 up to header size), with this field zeroed during calculation */
+    u32 m_nReserved;      /* must be zero */
+    u64 m_i64LBA;         /* LBA (location of this header copy) */
+    u64 m_i64BackupLBA;   /* LBA (location of the other header copy) */
+    u64 m_i64FirstLBA;    /* usable LBA for partitions (primary partition table last LBA + 1) */
+    u64 m_i64LastLBA;     /* usable LBA (secondary partition table first LBA - 1) */
+    GUID m_DiskGUID;      /* also referred as UUID on UNIXes */
+    u64 m_i64StartingLBA; /* of array of partition entries (always 2 in primary copy) */
+    u32 m_nNumber;        /* of partition entries in array */
+    u32 m_nSize;          /* of a single partition entry (usually 128) */
+    u32 m_nCRC32_Table;   /* of partition array */
+	u32 m_nPadding;       /* padding */
 };
 
 class CGPTPartitions
@@ -327,8 +349,8 @@ class CGPTPartitions
 public:
 	CGPTPartitions()
 	{
-		ZeroMemory(m_PartTypeGUID, sizeof(m_PartTypeGUID));
-		ZeroMemory(m_PartGUID, sizeof(m_PartGUID));
+		ZeroMemory(&m_PartTypeGUID, sizeof(m_PartTypeGUID));
+		ZeroMemory(&m_PartGUID, sizeof(m_PartGUID));
 		m_i64FirstLBA = 0;
 		m_i64LastLBA = 0;
 		m_i64AttrFlags = 0;
@@ -339,12 +361,137 @@ public:
 	{
 	}
 
+	BOOL IsValid() const
+	{
+		GUID Unused = { 0x00000000, 0x0000, 0x0000, { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 } };
+		return m_PartTypeGUID == Unused ? TRUE : FALSE;
+	}
+
+	GUID PartitionType() const
+	{
+		/*
+		 * Partition type										Globally unique identifier (GUID)
+		 * Unused entry											00000000-0000-0000-0000-000000000000
+		 * MBR partition scheme									024DEE41-33E7-11D3-9D69-0008C781F39F
+		 * EFI System partition									C12A7328-F81F-11D2-BA4B-00A0C93EC93B
+		 * BIOS Boot partition									21686148-6449-6E6F-744E-656564454649
+		 * Intel Fast Flash (iFFS) partition					D3BFE2DE-3DAF-11DF-BA40-E3A556D89593
+		 * Sony boot partition									F4019732-066E-4E12-8273-346C5641494F
+		 * Lenovo boot partition								BFBFAFE7-A34F-448A-9A5B-6213EB736C22
+		 ** Windows
+		 * Microsoft Reserved Partition (MSR)					E3C9E316-0B5C-4DB8-817D-F92DF00215AE
+		 * Basic data partition									EBD0A0A2-B9E5-4433-87C0-68B6B72699C7
+		 * Logical Disk Manager (LDM) metadata partition		5808C8AA-7E8F-42E0-85D2-E1E90434CFB3
+		 * Logical Disk Manager data partition					AF9B60A0-1431-4F62-BC68-3311714A69AD
+		 * Windows Recovery Environment							DE94BBA4-06D1-4D40-A16A-BFD50179D6AC
+		 * IBM General Parallel File System (GPFS) partition	37AFFC90-EF7D-4E96-91C3-2D7AE055B174
+		 * Storage Spaces partition								E75CAF8F-F680-4CEE-AFA3-B001E56EFC2D
+		 ** HP-UX
+		 * Data partition										75894C1E-3AEB-11D3-B7C1-7B03A0000000
+		 * Service Partition									E2A1E728-32E3-11D6-A682-7B03A0000000
+		 ** Linux
+		 * Linux filesystem data								0FC63DAF-8483-4772-8E79-3D69D8477DE4
+		 * RAID partition										A19D880F-05FC-4D3B-A006-743F0F84911E
+		 * Swap partition										0657FD6D-A4AB-43C4-84E5-0933C84B4F4F
+		 * Logical Volume Manager (LVM) partition				E6D6D379-F507-44C2-A23C-238F2A3DF928
+		 * /home partition										933AC7E1-2EB4-4F13-B844-0E14E2AEF915
+		 * /srv (server data) partition							3B8F8425-20E0-4F3B-907F-1A25A76F98E8
+		 * Plain dm-crypt partition								7FFEC5C9-2D00-49B7-8941-3EA10A5586B7
+		 * LUKS partition										CA7D7CCB-63ED-4C53-861C-1742536059CC
+		 * Reserved												8DA63339-0007-60C0-C436-083AC8230908
+		 ** FreeBSD
+		 * Boot partition										83BD6B9D-7F41-11DC-BE0B-001560B84F0F
+		 * Data partition										516E7CB4-6ECF-11D6-8FF8-00022D09712B
+		 * Swap partition										516E7CB5-6ECF-11D6-8FF8-00022D09712B
+		 * Unix File System (UFS) partition						516E7CB6-6ECF-11D6-8FF8-00022D09712B
+		 * Vinum volume manager partition						516E7CB8-6ECF-11D6-8FF8-00022D09712B
+		 * ZFS partition										516E7CBA-6ECF-11D6-8FF8-00022D09712B
+		 ** Mac OS X
+		 * Hierarchical File System Plus (HFS+) partition		48465300-0000-11AA-AA11-00306543ECAC
+		 * Apple UFS											55465300-0000-11AA-AA11-00306543ECAC
+		 * ZFS													6A898CC3-1DD2-11B2-99A6-080020736631
+		 * Apple RAID partition									52414944-0000-11AA-AA11-00306543ECAC
+		 * Apple RAID partition, offline						52414944-5F4F-11AA-AA11-00306543ECAC
+		 * Apple Boot partition									426F6F74-0000-11AA-AA11-00306543ECAC
+		 * Apple Label											4C616265-6C00-11AA-AA11-00306543ECAC
+		 * Apple TV Recovery partition							5265636F-7665-11AA-AA11-00306543ECAC
+		 * Apple Core Storage (i.e. Lion FileVault) partition	53746F72-6167-11AA-AA11-00306543ECAC
+		 ** Solaris
+		 * Boot partition										6A82CB45-1DD2-11B2-99A6-080020736631
+		 * Root partition										6A85CF4D-1DD2-11B2-99A6-080020736631
+		 * Swap partition										6A87C46F-1DD2-11B2-99A6-080020736631
+		 * Backup partition										6A8B642B-1DD2-11B2-99A6-080020736631
+		 * /usr partition										6A898CC3-1DD2-11B2-99A6-080020736631
+		 * /var partition										6A8EF2E9-1DD2-11B2-99A6-080020736631
+		 * /home partition										6A90BA39-1DD2-11B2-99A6-080020736631
+		 * Alternate sector										6A9283A5-1DD2-11B2-99A6-080020736631
+		 * Reserved partition									6A945A3B-1DD2-11B2-99A6-080020736631
+																6A9630D1-1DD2-11B2-99A6-080020736631
+																6A980767-1DD2-11B2-99A6-080020736631
+																6A96237F-1DD2-11B2-99A6-080020736631
+																6A8D2AC7-1DD2-11B2-99A6-080020736631
+		 ** NetBSD
+		 * Swap partition										49F48D32-B10E-11DC-B99B-0019D1879648
+		 * FFS partition										49F48D5A-B10E-11DC-B99B-0019D1879648
+		 * LFS partition										49F48D82-B10E-11DC-B99B-0019D1879648
+		 * RAID partition										49F48DAA-B10E-11DC-B99B-0019D1879648
+		 * Concatenated partition								2DB519C4-B10F-11DC-B99B-0019D1879648
+		 * Encrypted partition									2DB519EC-B10F-11DC-B99B-0019D1879648
+		 ** ChromeOS
+		 * ChromeOS kernel										FE3A2A5D-4F32-41A7-B725-ACCC3285A309
+		 * ChromeOS rootfs										3CB8E202-3B7E-47DD-8A3C-7FF2A13CFCEC
+		 * ChromeOS future use									2E0A753D-9E48-43B0-8337-B15192CB1B5E
+		 ** Haiku
+		 * Haiku BFS											42465331-3BA3-10F1-802A-4861696B7521
+		 ** MidnightBSD
+		 * Boot partition										85D5E45E-237C-11E1-B4B3-E89A8F7FC3A7
+		 * Data partition										85D5E45A-237C-11E1-B4B3-E89A8F7FC3A7
+		 * Swap partition										85D5E45B-237C-11E1-B4B3-E89A8F7FC3A7
+		 * Unix File System (UFS) partition						0394EF8B-237E-11E1-B4B3-E89A8F7FC3A7
+		 * Vinum volume manager partition						85D5E45C-237C-11E1-B4B3-E89A8F7FC3A7
+		 * ZFS partition										85D5E45D-237C-11E1-B4B3-E89A8F7FC3A7
+		 ** Ceph
+		 * Ceph Journal											45B0969E-9B03-4F30-B4C6-B4B80CEFF106
+		 * Ceph dm-crypt Encrypted Journal						45B0969E-9B03-4F30-B4C6-5EC00CEFF106
+		 * Ceph OSD												4FBD7E29-9D25-41B8-AFD0-062C0CEFF05D
+		 * Ceph dm-crypt OSD									4FBD7E29-9D25-41B8-AFD0-5EC00CEFF05D
+		 * Ceph disk in creation								89C57F98-2FE5-4DC0-89C1-F3AD0CEFF2BE
+		 * Ceph dm-crypt disk in creation						89C57F98-2FE5-4DC0-89C1-5EC00CEFF2BE
+		 ** OpenBSD
+		 * Data partition										824CC7A0-36A8-11E3-890A-952519AD3F61
+		 ** QNX
+		 * Power-safe (QNX6) file system						CEF5A9AD-73BC-4601-89F3-CDEEEEE321A1
+		 */
+		return m_PartTypeGUID;
+	}
+
+	u64 NumSectors() const
+	{
+		return m_i64LastLBA - m_i64FirstLBA;
+	}
+
+	/**
+	 * if data disks,
+	 * we need to check the boot record of partitions to get partition type
+	 */
+	BOOL IsDataDisk() const
+	{
+		GUID WindowsDataDisk = { 0xEBD0A0A2, 0xB9E5, 0x4433, { 0x87, 0xC0, 0x68, 0xB6, 0xB7, 0x26, 0x99, 0xC7 } };
+		GUID LinuxFSDataDisk = { 0x0FC63DAF, 0x8483, 0x4772, { 0x8E, 0x79, 0x3D, 0x69, 0xD8, 0x47, 0x7D, 0xE4 } };
+		return (m_PartTypeGUID == WindowsDataDisk || m_PartTypeGUID == LinuxFSDataDisk) ? TRUE : FALSE;
+	}
+
+	CCoreString GetPartitionTypeString() const
+	{
+		return "";
+	}
+
 private:
-	u8 m_PartTypeGUID[16]; /* partition type GUID */
-	u8 m_PartGUID[16];     /* partition GUID */
-	s64 m_i64FirstLBA;     /* start of entry */
-	s64 m_i64LastLBA;      /* end of entry */
-	s64 m_i64AttrFlags;    /* attribute flags (e.g. bit 60 denotes read-only) */
+	GUID m_PartTypeGUID;   /* partition type GUID */
+	GUID m_PartGUID;       /* partition GUID */
+	u64 m_i64FirstLBA;     /* start of entry */
+	u64 m_i64LastLBA;      /* end of entry */
+	u64 m_i64AttrFlags;    /* attribute flags (e.g. bit 60 denotes read-only) */
 	u16 m_cPartName[36];   /* entry name (36 UTF-16LE code units) */
 };
 
