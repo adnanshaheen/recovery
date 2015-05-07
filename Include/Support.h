@@ -176,14 +176,16 @@ typedef enum eWorkType
 } MG_WORK_TYPE;
 
 typedef enum {
-	_E_REP_PARAM_ERROR   = -7,
-	_E_REP_DRIVE_ERROR   = -6,
-	_E_REP_READ_FAIL     = -5,
-	_E_REP_DEVICEIO_FAIL = -4,
-	_E_REP_MEMORY_FAIL   = -3,
-	_E_REP_GEOMTRY_FAIL  = -2,
-	_E_REP_HANDLE_FAIL   = -1,
-	_E_REP_SUCCESS       = 0,
+	_E_REP_UNEXPECTED     = -100,
+	_E_REP_GUID_PART_FAIL = -8,
+	_E_REP_PARAM_ERROR    = -7,
+	_E_REP_DRIVE_ERROR    = -6,
+	_E_REP_READ_FAIL      = -5,
+	_E_REP_DEVICEIO_FAIL  = -4,
+	_E_REP_MEMORY_FAIL    = -3,
+	_E_REP_GEOMTRY_FAIL   = -2,
+	_E_REP_HANDLE_FAIL    = -1,
+	_E_REP_SUCCESS        = 0,
 };
 
 typedef enum {
