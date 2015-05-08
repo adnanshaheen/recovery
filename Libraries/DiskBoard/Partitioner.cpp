@@ -14,6 +14,7 @@
 #include "Partitioner.h"
 #include "MGAPI.h"
 #include "PartitionTable.h"
+#include "NTFS.h"
 
 CPartitioner::CPartitioner(const CAbstractDiskBoardInterface* pDiskBoard, CAbstractLog* pLog)
 {
@@ -232,18 +233,25 @@ BOOL CPartitioner::ReadGPTPartitions(CAbstractDisk* pDisk, CAbstractPartInfo* pD
 					nDiskNumber = -1;
 					pDisk->GetDiskNumber(&nDiskNumber);
 					pInfo->SetDiskNumber(nDiskNumber);
+					pInsertAfter = pInfo;
 				}
-				pInfo = AddPartition(pDiskInfo, pInfo, pPartEntry + cPartitionTableHeader.GetSize());
-				if (pInfo)
+				pInfo = AddPartition(pDiskInfo, pInsertAfter, pPartEntry + cPartitionTableHeader.GetSize());
+				if (pInfo) {
 					pInfo->SetDiskNumber(nDiskNumber);
+					pInsertAfter = pInfo;
+				}
 
-				pInfo = AddPartition(pDiskInfo, pInfo, pPartEntry + cPartitionTableHeader.GetSize() * 2);
-				if (pInfo)
+				pInfo = AddPartition(pDiskInfo, pInsertAfter, pPartEntry + cPartitionTableHeader.GetSize() * 2);
+				if (pInfo) {
 					pInfo->SetDiskNumber(nDiskNumber);
+					pInsertAfter = pInfo;
+				}
 
-				pInfo = AddPartition(pDiskInfo, pInfo, pPartEntry + cPartitionTableHeader.GetSize() * 3);
-				if (pInfo)
+				pInfo = AddPartition(pDiskInfo, pInsertAfter, pPartEntry + cPartitionTableHeader.GetSize() * 3);
+				if (pInfo) {
 					pInfo->SetDiskNumber(nDiskNumber);
+					pInsertAfter = pInfo;
+				}
 			}
 		}
 	}
@@ -300,13 +308,17 @@ CAbstractPartInfo* CPartitioner::AddPartition(CAbstractPartInfo* pDiskInfo, CAbs
 		SetErrorNumber(_E_REP_UNEXPECTED);
 	}
 
-	return pInsertAfter;
+	return pInfo;
 }
 
 
 BOOL CPartitioner::ReadGPTPartType(CAbstractDisk* pDisk, CAbstractPartInfo* pDiskInfo)
 {
 	BOOL bRes = TRUE;
+	CNTFSBootSector* pNTFS;
+	size_t nSectorSize = 0;
+	DWORD dwSectorsRead = 0;
+	BYTE* pBuffer = NULL;
 
 	try {
 		if (!pDisk || !pDiskInfo) {
@@ -314,13 +326,33 @@ BOOL CPartitioner::ReadGPTPartType(CAbstractDisk* pDisk, CAbstractPartInfo* pDis
 			throw _E_REP_PARAM_ERROR;
 		}
 
+		pDisk->GetSectorSize(&nSectorSize);
+		pBuffer = new BYTE[nSectorSize];
+		TEST_AND_THROW(!pBuffer, _E_REP_MEMORY_FAIL);
+		ZeroMemory(pBuffer, nSectorSize);
+
 		CAbstractPartInfo* pPartInfo = pDiskInfo->GetChild();
 		while (pPartInfo) {
 
 			/* currently only checking for windows data partitions */
 			if (pPartInfo->IsFlagExists(MG_PARTINFO_DATA)) {
 
+				/*
+				 * create analyzer class, which will read the boot sector of partition
+				 * and set the partition type accordingly
+				 */
+				if (pDisk->ReadDisk(pBuffer, pPartInfo->GetStartSector(), 1, dwSectorsRead) != 0) {
+					m_pLog->AddLog(_T("Drive read failed at sector 0"), __TFILE__, __LINE__);
+					throw _E_REP_DRIVE_ERROR;
+				}
+
+				pNTFS = (CNTFSBootSector*) pBuffer;
+				if (pNTFS->IsValid()) {
+					pPartInfo->SetPartitionType(pNTFS->GetPartitionType());
+				}
 			}
+
+			pPartInfo = pPartInfo->GetNext();
 		}
 	}
 	catch (int nException) {
@@ -331,6 +363,9 @@ BOOL CPartitioner::ReadGPTPartType(CAbstractDisk* pDisk, CAbstractPartInfo* pDis
 		SetErrorNumber(_E_REP_UNEXPECTED);
 		bRes = FALSE;
 	}
+
+	if (pBuffer)
+		DELETE_ARRAY(pBuffer);
 
 	return bRes;
 }

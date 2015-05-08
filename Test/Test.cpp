@@ -18,35 +18,9 @@
 #include "AbstractPartitioner.h"
 #include "AbstractDiskBoardInterface.h"
 
-CAbstractPartInfo* m_pPartInfo = NULL;
 CAbstractLog* m_pLog = NULL;
 CAbstractPartitioner* m_pPartitioner = NULL;
 CAbstractDiskBoardInterface* pDiskInterface = NULL;
-
-int TestRead()
-{
-	int nRes = 0;
-
-	CAbstractDisk* pDisk = pDiskInterface->CreateDisk(m_pLog);
-	if (pDisk) {
-
-		pDisk->OpenDisk(m_pPartInfo->GetDiskNumber(), GENERIC_READ);
-		BYTE pBuffer[512] = { 0 };
-		DWORD dwBytesRead = 0;
-		DWORD nSector = 0;
-		while (TRUE) {
-
-			nRes = pDisk->ReadDisk(pBuffer,
-				m_pPartInfo->GetSectors() + m_pPartInfo->GetStartSector() + nSector,
-				1,
-				dwBytesRead);
-			++ nSector;
-			TEST_AND_RETURN(nRes != 0, nRes);
-		}
-	}
-
-	return nRes;
-}
 
 void PrintDisks(CAbstractPartitioner* pPartitioner)
 {
@@ -57,17 +31,15 @@ void PrintDisks(CAbstractPartitioner* pPartitioner)
 
 			if (pDiskInfo->IsFlagExists(MG_PARTINFO_DISK)) {
 
+				printf("Disk %d\n", pDiskInfo->GetDiskNumber());
 				CAbstractPartInfo* pPartInfo = pDiskInfo->GetChild();
 				while (pPartInfo) {
 
-					if (pPartInfo->GetPartitionType() == MG_PARTTYPE_HFSPLUS) {
-
-						m_pPartInfo = pPartInfo;
-					}
+					printf("\tPartition Type 0x%x\n", pPartInfo->GetPartitionType());
 					pPartInfo = pPartInfo->GetNext();
 				}
 			}
-
+			printf("\n");
 			pDiskInfo = pDiskInfo->GetNext();
 		}
 	}
@@ -119,7 +91,6 @@ int main(char* argv[], int argc)
 		/* start process here */
 		m_pPartitioner->Initialize();
 		PrintDisks(m_pPartitioner);
-		TestRead();
 
 		pDiskInterface->DeletePartitioner(m_pPartitioner);
 		pDiskInterface->DeleteLogFile(m_pLog);

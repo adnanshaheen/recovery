@@ -14,18 +14,9 @@ class CPartInfoData
 public:
 	CPartInfoData()
 	{
-		m_pParent = NULL;
-		m_pNext = NULL;
-		m_pChild = NULL;
+		memset(this, 0, sizeof(*this));
 		m_nDiskNumber = -1;			// Disk number
 		m_nPartitionNumber = -1;	// Partition number
-
-		m_i64Sectors = 0;			// Number of sectors
-		m_i64StartSector = 0;		// Start sector of this item
-		m_i64PTableStartSector = 0;	// Start sector of partition table.
-
-		m_PartitionType = 0;		// File system used on the partition
-		m_dwInfoFlags = 0;
 	}
 
 public:
@@ -129,7 +120,10 @@ BOOL CPartInfo::IsFlagExists(DWORD dwFlag) const
 }
 void CPartInfo::SetFlags(DWORD dwFlag, BOOL bAdd)
 {
-	m_pPartInfoData->m_dwInfoFlags = (m_pPartInfoData->m_dwInfoFlags & ~dwFlag) || bAdd ? dwFlag : 0;
+	if (bAdd)
+		m_pPartInfoData->m_dwInfoFlags |= dwFlag;
+	else
+		m_pPartInfoData->m_dwInfoFlags &= ~dwFlag;
 }
 
 // Get/Set number of sectors
@@ -142,11 +136,18 @@ void CPartInfo::SetSectors(INT64 i64Sectors)
 	m_pPartInfoData->m_i64Sectors = i64Sectors;
 }
 
-// Get/Set start sector
+/**
+ * Get start sector
+ */
 INT64 CPartInfo::GetStartSector() const
 {
 	return m_pPartInfoData->m_i64StartSector;
 }
+/**
+ * Set start sector
+ *
+ * @i64Sector : sector number
+ */
 void CPartInfo::SetStartSector(INT64 i64Sector)
 {
 	m_pPartInfoData->m_i64StartSector = i64Sector;

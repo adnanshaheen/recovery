@@ -1,0 +1,8 @@
+backup/recovery:
+1-backup file should be a an iso image, mountable as ntfs volume.
+2-user can restore backup on a disk, with options "restore as disk", "restore files"
+2a-restore disk will restore normally as disk
+2b-restore files will fetch files from $MFT of the backup file i.e. ntfs iso created
+3-initially support only ntfs, fat, and hfs (a. hfs+, b. hfsx, c. classic hfs)
+
+recovery:

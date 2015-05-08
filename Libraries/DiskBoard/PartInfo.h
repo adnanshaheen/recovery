@@ -47,8 +47,15 @@ public:
 	virtual INT64				GetSectors() const;
 	virtual void				SetSectors(INT64 i64Sectors);
 
-	// Get/Set start sector
+	/**
+	 * Get start sector
+	 */
 	virtual INT64				GetStartSector() const;
+	/**
+	 * Set start sector
+	 *
+	 * @i64Sector : sector number
+	 */
 	virtual void				SetStartSector(INT64 i64Sector);
 
 	// Get/Set Partition Type

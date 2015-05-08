@@ -135,23 +135,69 @@ public:
 // A partition entry as stored inside a root sector on HD:
 class CPartitionEntry
 {
-	BYTE	m_data[16];
 public:
-	// Access methods:
-	BYTE					Status() const				{ return m_data[0];									}
-	BYTE&					Status()					{ return m_data[0];									}
-	CHeadSectorCylinder		Start() const				{ return *(CHeadSectorCylinder*) &m_data[1];		}
-	CHeadSectorCylinder&	Start()						{ return *(CHeadSectorCylinder*) &m_data[1];		}
-	BYTE					PartitionType() const		{ return m_data[4];									}
-	BYTE&					PartitionType()				{ return m_data[4];									}
-	CHeadSectorCylinder		End() const					{ return *(CHeadSectorCylinder*) &m_data[5];		}
-	CHeadSectorCylinder&	End()						{ return *(CHeadSectorCylinder*) &m_data[5];		}
-	DWORD					DistOfFirstSector() const	{ return *(DWORD*) &m_data[8];						}
-	DWORD&					DistOfFirstSector()			{ return *(DWORD*) &m_data[8];						}
-	DWORD					NumSectors() const			{ return *(DWORD*) &m_data[12];						}
-	DWORD&					NumSectors()				{ return *(DWORD*) &m_data[12];						}
-	BOOL					IsValid() const				{ return (PartitionType() != 0);					}
-	BOOL					IsGPT() const				{ return PartitionType() == 0xEE ? TRUE : FALSE;	}
+	BYTE Status() const
+	{
+		return m_cData[0];
+	}
+	BYTE& Status()
+	{
+		return m_cData[0];
+	}
+
+	CHeadSectorCylinder Start() const
+	{
+		return *(CHeadSectorCylinder*) &m_cData[1];
+	}
+	CHeadSectorCylinder& Start()
+	{
+		return *(CHeadSectorCylinder*) &m_cData[1];
+	}
+
+	BYTE PartitionType() const
+	{
+		return m_cData[4];
+	}
+	BYTE& PartitionType()
+	{
+		return m_cData[4];
+	}
+
+	CHeadSectorCylinder End() const
+	{
+		return *(CHeadSectorCylinder*) &m_cData[5];
+	}
+	CHeadSectorCylinder& End()
+	{
+		return *(CHeadSectorCylinder*) &m_cData[5];
+	}
+
+	DWORD DistOfFirstSector() const
+	{
+		return *(DWORD*) &m_cData[8];
+	}
+	DWORD& DistOfFirstSector()
+	{
+		return *(DWORD*) &m_cData[8];
+	}
+
+	DWORD NumSectors() const
+	{
+		return *(DWORD*) &m_cData[12];
+	}
+	DWORD& NumSectors()
+	{
+		return *(DWORD*) &m_cData[12];
+	}
+
+	BOOL IsValid() const
+	{
+		return (PartitionType() != 0) ? TRUE : FALSE;
+	}
+	BOOL IsGPT() const
+	{
+		return PartitionType() == 0xEE ? TRUE : FALSE;
+	}
 
 	BOOL operator == (const CPartitionEntry& Entry)
 	{
@@ -177,6 +223,9 @@ public:
 	{
 		return (((*this) > Entry) || ((*this) == Entry));
 	}
+
+private:
+	BYTE m_cData[16];
 };
 
 // Root sector as read from hard disk:
@@ -368,7 +417,7 @@ public:
 	BOOL IsValid() const
 	{
 		GUID Unused = { 0x00000000, 0x0000, 0x0000, { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 } };
-		return m_PartTypeGUID == Unused ? TRUE : FALSE;
+		return m_PartTypeGUID == Unused ? FALSE : TRUE;
 	}
 
 	/**
