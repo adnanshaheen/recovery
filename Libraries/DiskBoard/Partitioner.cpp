@@ -15,6 +15,7 @@
 #include "MGAPI.h"
 #include "PartitionTable.h"
 #include "NTFS.h"
+#include "Fat.h"
 
 CPartitioner::CPartitioner(const CAbstractDiskBoardInterface* pDiskBoard, CAbstractLog* pLog)
 {
