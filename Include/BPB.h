@@ -60,6 +60,16 @@ public:
 	{
 	}
 
+	BOOL IsFat16() const
+	{
+		return m_u64FileSystem == 0x00000000; /* "FAT16    " */
+	}
+
+	BOOL IsFat32() const
+	{
+		return m_u64FileSystem == 0x00000000; /* "FAT32    " */
+	}
+
 private:
 	u8 m_u8DriveNumber;				/* Physical Drive number */
 	u8 m_u8Reserved;				/* Reserved, zero */

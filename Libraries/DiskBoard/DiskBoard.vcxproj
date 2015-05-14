@@ -87,13 +87,20 @@
     <ClCompile Include="Disk.cpp" />
     <ClCompile Include="DiskBoard.cpp" />
     <ClCompile Include="DiskBoardInterface.cpp" />
+    <ClCompile Include="FileSystem.cpp" />
+    <ClCompile Include="FileSystemNTFS.cpp" />
     <ClCompile Include="PartInfo.cpp" />
     <ClCompile Include="Partitioner.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\Include\BPB.h" />
+    <ClInclude Include="..\..\Include\Fat.h" />
+    <ClInclude Include="..\..\Include\NTFS.h" />
     <ClInclude Include="Disk.h" />
     <ClInclude Include="DiskBoard.h" />
     <ClInclude Include="DiskBoardInterface.h" />
+    <ClInclude Include="FileSystem.h" />
+    <ClInclude Include="FileSystemNTFS.h" />
     <ClInclude Include="PartitionTable.h" />
     <ClInclude Include="PartInfo.h" />
     <ClInclude Include="Partitioner.h" />

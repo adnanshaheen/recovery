@@ -14,6 +14,7 @@
 #include "LogFile.h"
 #include "PartInfo.h"
 #include "Partitioner.h"
+#include "FileSystem.h"
 #include "CoreString.h"
 #include "MGAPI.h"
 
@@ -121,6 +122,24 @@ CAbstractLog* CDiskBoardInterface::CreateLogFile() const
 void CDiskBoardInterface::DeleteLogFile(CAbstractLog* pLog)
 {
 	DELETEME(pLog);
+}
+
+/**
+ * CreateFileSystem
+ * Create file system interface
+ */
+CAbstractFileSystem* CDiskBoardInterface::CreateFileSystem(CAbstractLog* pLog) const
+{
+	return new CFileSystem(pLog);
+}
+
+/**
+ * DeleteFileSystem
+ * Delete file system interface
+ */
+void CDiskBoardInterface::DeleteFileSystem(CAbstractFileSystem* pFileSystem)
+{
+	DELETEME(pFileSystem);
 }
 
 //

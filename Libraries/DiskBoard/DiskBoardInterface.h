@@ -44,6 +44,17 @@ public:
 	// Create/Delete log
 	virtual CAbstractLog*			CreateLogFile() const;
 	virtual void					DeleteLogFile(CAbstractLog* pLog);
+
+	/**
+	 * CreateFileSystem
+	 * Create file system interface
+	 */
+	virtual CAbstractFileSystem*	CreateFileSystem(CAbstractLog* pLog) const;
+	/**
+	 * DeleteFileSystem
+	 * Delete file system interface
+	 */
+	virtual void					DeleteFileSystem(CAbstractFileSystem* pFileSystem);
 };
 
 //

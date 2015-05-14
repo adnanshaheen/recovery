@@ -150,7 +150,7 @@ BOOL CPartitioner::ReadPartitions(CAbstractDisk* pDisk, CAbstractPartInfo* pDisk
 									throw _E_REP_GUID_PART_FAIL;
 
 								pDiskInfo->SetFlags(MG_PARTINFO_GUID, TRUE);
-								bRes = ReadGPTPartType(pDisk, pDiskInfo);
+								//bRes = ReadGPTPartType(pDisk, pDiskInfo);
 							}
 						}
 					}
@@ -316,7 +316,10 @@ CAbstractPartInfo* CPartitioner::AddPartition(CAbstractPartInfo* pDiskInfo, CAbs
 BOOL CPartitioner::ReadGPTPartType(CAbstractDisk* pDisk, CAbstractPartInfo* pDiskInfo)
 {
 	BOOL bRes = TRUE;
-	CNTFSBootSector* pNTFS;
+	CFat16* pFat16 = NULL;
+	CFat32* pFat32 = NULL;
+	CExFat* pExFat = NULL;
+	CNTFSBootSector* pNTFS = NULL;
 	size_t nSectorSize = 0;
 	DWORD dwSectorsRead = 0;
 	BYTE* pBuffer = NULL;
@@ -347,10 +350,10 @@ BOOL CPartitioner::ReadGPTPartType(CAbstractDisk* pDisk, CAbstractPartInfo* pDis
 					throw _E_REP_DRIVE_ERROR;
 				}
 
+				pFat16 = (CFat16*) pBuffer;
+				pFat32 = (CFat32*) pBuffer;
+				pExFat = (CExFat*) pBuffer;
 				pNTFS = (CNTFSBootSector*) pBuffer;
-				if (pNTFS->IsValid()) {
-					pPartInfo->SetPartitionType(pNTFS->GetPartitionType());
-				}
 			}
 
 			pPartInfo = pPartInfo->GetNext();

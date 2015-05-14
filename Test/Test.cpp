@@ -15,6 +15,7 @@
 
 #include "AbstractDisk.h"
 #include "AbstractPartInfo.h"
+#include "AbstractFileSystem.h"
 #include "AbstractPartitioner.h"
 #include "AbstractDiskBoardInterface.h"
 
@@ -92,6 +93,16 @@ int main(char* argv[], int argc)
 		m_pPartitioner->Initialize();
 		PrintDisks(m_pPartitioner);
 
+		/* all disks are detected, file systems on their partitions are also detected */
+		/* TODO: we have to select a partition with ntfs file system */
+		/* read the ntfs deleted files and recover them */
+		/* create a CFileSystem class, and inherit it to all other CNTFSFileSystem etc */
+		CAbstractFileSystem* pFileSystem = pDiskInterface->CreateFileSystem(m_pLog);
+		if (pFileSystem) {
+			pFileSystem->Scan(NULL);
+		}
+
+		pDiskInterface->DeleteFileSystem(pFileSystem);
 		pDiskInterface->DeletePartitioner(m_pPartitioner);
 		pDiskInterface->DeleteLogFile(m_pLog);
 	}

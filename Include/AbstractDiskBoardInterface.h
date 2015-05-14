@@ -17,6 +17,7 @@ class CAbstractLog;
 class CAbstractDisk;
 class CAbstractPartitioner;
 class CAbstractPartInfo;
+class CAbstractFileSystem;
 
 //
 // class
@@ -41,6 +42,17 @@ public:
 	// Create/Delete log
 	virtual CAbstractLog*			CreateLogFile() const = 0;
 	virtual void					DeleteLogFile(CAbstractLog* pLog) = 0;
+
+	/**
+	 * CreateFileSystem
+	 * Create file system interface
+	 */
+	virtual CAbstractFileSystem*	CreateFileSystem(CAbstractLog* pLog) const = 0;
+	/**
+	 * DeleteFileSystem
+	 * Delete file system interface
+	 */
+	virtual void					DeleteFileSystem(CAbstractFileSystem* pFileSystem) = 0;
 };
 
 //

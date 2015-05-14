@@ -28,6 +28,16 @@ public:
 	{
 	}
 
+	BOOL IsValid() const
+	{
+		return m_u64ID == 0x4D53444F53352E30;
+	}
+
+	BOOL IsFat16() const
+	{
+		return m_cExtendedBPP.IsFat16();
+	}
+
 private:
 	u8 m_u8JumpArray3[3];			/* Irrelevant (jump to boot up code).*/
 	u64 m_u64ID;					/* Magic "MSDOS5.0". */
@@ -52,6 +62,16 @@ public:
 
 	~CFat32()
 	{
+	}
+
+	BOOL IsValid() const
+	{
+		return m_u64ID == 0x4D53444F53352E30;
+	}
+
+	BOOL IsFat32() const
+	{
+		return m_cExtendedBPP.IsFat32();
 	}
 
 private:
@@ -85,6 +105,11 @@ public:
 
 	~CExFat()
 	{
+	}
+
+	BOOL IsValid() const
+	{
+		return m_u64ID == 0x45584641543E;
 	}
 
 private:
