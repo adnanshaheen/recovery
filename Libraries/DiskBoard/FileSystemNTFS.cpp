@@ -13,7 +13,7 @@
 #include "AbstractPartInfo.h"
 #include "FileSystemNTFS.h"
 
-CFileSystemNTFS::CFileSystemNTFS()
+CFileSystemNTFS::CFileSystemNTFS() : CFileSystem(m_pLog)
 {
 }
 
@@ -21,12 +21,21 @@ CFileSystemNTFS::~CFileSystemNTFS()
 {
 }
 
-BOOL CFileSystemNTFS::Scan(CAbstractPartInfo* pPartInfo)
+/**
+ * Scan
+ * Read file system meta data, and data
+ * This data will be shown to user, and to be used for recovery
+ */
+BOOL CFileSystemNTFS::Scan()
 {
 	ASSERT(FALSE);
 	return FALSE;
 }
 
+/**
+ * Recover
+ * Start recovering files
+ */
 BOOL CFileSystemNTFS::Recover()
 {
 	ASSERT(FALSE);

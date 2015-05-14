@@ -19,12 +19,18 @@ public:
 	virtual ~CAbstractFileSystem() {}
 
 	/**
+	 * Initialize
+	 * Initialize file system
+	 * @pPartInfo: Partition to be scanned for meta data and data
+	 */
+	virtual BOOL Initialize(CAbstractPartInfo* pPartInfo) = 0;
+
+	/**
 	 * Scan
 	 * Read file system meta data, and data
 	 * This data will be shown to user, and to be used for recovery
-	 * @pPartInfo: Partition to be scanned for meta data and data
 	 */
-	virtual BOOL Scan(CAbstractPartInfo* pPartInfo) = 0;
+	virtual BOOL Scan() = 0;
 
 	/**
 	 * Recover
