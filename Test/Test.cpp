@@ -22,6 +22,7 @@
 CAbstractLog* m_pLog = NULL;
 CAbstractPartitioner* m_pPartitioner = NULL;
 CAbstractDiskBoardInterface* pDiskInterface = NULL;
+CAbstractPartInfo* m_pSelectedPartInfo = NULL;
 
 void PrintDisks(CAbstractPartitioner* pPartitioner)
 {
@@ -37,6 +38,10 @@ void PrintDisks(CAbstractPartitioner* pPartitioner)
 				while (pPartInfo) {
 
 					printf("\tPartition Type 0x%x\n", pPartInfo->GetPartitionType());
+
+					if (pPartInfo->IsFlagExists(MG_PARTINFO_DATA))
+						m_pSelectedPartInfo = pPartInfo;
+
 					pPartInfo = pPartInfo->GetNext();
 				}
 			}
@@ -99,7 +104,10 @@ int main(char* argv[], int argc)
 		/* create a CFileSystem class, and inherit it to all other CNTFSFileSystem etc */
 		CAbstractFileSystem* pFileSystem = pDiskInterface->CreateFileSystem(m_pLog);
 		if (pFileSystem) {
-			pFileSystem->Scan(NULL);
+			if (pFileSystem->Initialize(m_pSelectedPartInfo)) {
+				/* we have succussfully initialized File System, now start scan process */
+				pFileSystem->Scan();
+			}
 		}
 
 		pDiskInterface->DeleteFileSystem(pFileSystem);

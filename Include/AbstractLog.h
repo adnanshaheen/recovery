@@ -58,6 +58,8 @@ public:
 
 	// Change main log file path.
 	virtual BOOL	ChangeMainLogFile(LPCTSTR lpszTargetPath) = 0;
+
+	virtual BOOL	AddDebugLog(LPCTSTR lpszMessage, LPCTSTR lpszFileName, UINT uiLineNumber, ...) = 0;
 };
 
 //

@@ -30,12 +30,93 @@ public:
 
 	BOOL IsValid() const
 	{
-		return m_u64ID == 0x202020205346544eULL;
+		return IsNTFS() &&
+			IsValidBytesPerSector() &&
+			IsValidSectorsPerCluster() &&
+			IsValidClusterSize() &&
+			IsValidClusterPerValue(m_s8ClustersPerMFTRecord) &&
+			IsValidClusterPerValue(m_s8ClustersPerIndexBlock) &&
+			IsValidEndMarker();
 	}
 
-	BYTE GetPartitionType() const
+	BOOL IsNTFS() const
 	{
-		return 0x07;
+		return m_u64ID == cpu_to_le64(0x202020205346544eULL);
+	}
+
+	BOOL IsValidBytesPerSector() const
+	{
+		return cpu_to_le16(m_cBPB.m_u16BytesPerSector) > 256 && cpu_to_le16(m_cBPB.m_u16BytesPerSector) < 4096;
+	}
+
+	BOOL IsValidSectorsPerCluster() const
+	{
+		BOOL bRes = TRUE;
+		switch (m_cBPB.m_u8SectorsPerCluster) {
+		case 0x1:
+		case 0x2:
+		case 0x4:
+		case 0x8:
+		case 0x10:
+		case 0x20:
+		case 0x40:
+		case 0x80:
+			break;
+		default:
+			bRes = FALSE;
+		}
+		return bRes;
+	}
+
+	BOOL IsValidClusterSize() const
+	{
+		return ((cpu_to_le16(m_cBPB.m_u16BytesPerSector) * m_cBPB.m_u8SectorsPerCluster) < 65536);
+	}
+
+	BOOL IsValidClusterPerValue(s8 s8Value) const
+	{
+		BOOL bRes = TRUE;
+		if (s8Value < 0xE1 || s8Value > 0xF7) {
+			switch (s8Value) {
+			case 0x1:
+			case 0x2:
+			case 0x4:
+			case 0x8:
+			case 0x10:
+			case 0x20:
+			case 0x40:
+				break;
+			default:
+				bRes = FALSE;
+				break;
+			}
+		}
+		return bRes;
+	}
+
+	BOOL IsValidEndMarker() const
+	{
+		return cpu_to_le16(m_u16EndMarker) == 0xAA55;
+	}
+
+	u64 GetMFTClusterNum() const
+	{
+		return cpu_to_le64(m_s64MFT);
+	}
+
+	u16 GetBytesPerSector() const
+	{
+		return cpu_to_le16(m_cBPB.m_u16BytesPerSector);
+	}
+
+	u8 GetSectorsPerCluster() const
+	{
+		return m_cBPB.m_u8SectorsPerCluster;
+	}
+
+	s8 GetClustersPerMFTRecord() const
+	{
+		return m_s8ClustersPerMFTRecord;
 	}
 
 private:

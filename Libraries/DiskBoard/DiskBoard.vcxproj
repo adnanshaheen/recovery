@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
       <Configuration>Debug</Configuration>
@@ -20,12 +20,12 @@
     <ConfigurationType>Application</ConfigurationType>
     <CharacterSet>MultiByte</CharacterSet>
     <WholeProgramOptimization>true</WholeProgramOptimization>
-    <PlatformToolset>v110</PlatformToolset>
+    <PlatformToolset>v140</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <CharacterSet>Unicode</CharacterSet>
-    <PlatformToolset>v110</PlatformToolset>
+    <PlatformToolset>v140</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -89,6 +89,9 @@
     <ClCompile Include="DiskBoardInterface.cpp" />
     <ClCompile Include="FileSystem.cpp" />
     <ClCompile Include="FileSystemNTFS.cpp" />
+    <ClCompile Include="MFTRecord.cpp" />
+    <ClCompile Include="NTFSAttribute.cpp" />
+    <ClCompile Include="NTFSRecord.cpp" />
     <ClCompile Include="PartInfo.cpp" />
     <ClCompile Include="Partitioner.cpp" />
   </ItemGroup>
@@ -101,6 +104,9 @@
     <ClInclude Include="DiskBoardInterface.h" />
     <ClInclude Include="FileSystem.h" />
     <ClInclude Include="FileSystemNTFS.h" />
+    <ClInclude Include="MFTRecord.h" />
+    <ClInclude Include="NTFSAttribute.h" />
+    <ClInclude Include="NTFSRecord.h" />
     <ClInclude Include="PartitionTable.h" />
     <ClInclude Include="PartInfo.h" />
     <ClInclude Include="Partitioner.h" />

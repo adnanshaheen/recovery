@@ -65,6 +65,8 @@ public:
 	// Change main log file path.
 	virtual BOOL	ChangeMainLogFile(LPCTSTR pszTargetPath);
 
+	virtual BOOL	AddDebugLog(LPCTSTR lpszMessage, LPCTSTR lpszFileName, UINT uiLineNumber, ...);
+
 private:
 	// Append log file to main log.
 	BOOL			AppendLogFile();

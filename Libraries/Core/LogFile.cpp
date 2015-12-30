@@ -159,6 +159,11 @@ BOOL CLogFile::AppendLogFile()
 	return FALSE;
 }
 
+BOOL CLogFile::AddDebugLog(LPCTSTR lpszMessage, LPCTSTR lpszFileName, UINT uiLineNumber, ...)
+{
+	return FALSE;
+}
+
 //
 // End of source.
 //

@@ -86,8 +86,17 @@ BOOL CFileSystem::Initialize(CAbstractPartInfo* pPartInfo)
 		pNTFS = (CNTFSBootSector*) pBuffer;
 		if (pNTFS && pNTFS->IsValid()) {
 			m_pFileSystemNTFS = new CFileSystemNTFS();
+			m_pFileSystemNTFS->SetMFTClusterNum(pNTFS->GetMFTClusterNum());
+			m_pFileSystemNTFS->SetBytesPerSector(pNTFS->GetBytesPerSector());
+			m_pFileSystemNTFS->SetSectorsPerCluster(pNTFS->GetSectorsPerCluster());
+			m_pFileSystemNTFS->SetBytesPerCluster(pNTFS->GetSectorsPerCluster() * pNTFS->GetBytesPerSector());
+			m_pFileSystemNTFS->SetClustersPerMFTRecord(pNTFS->GetClustersPerMFTRecord());
 		}
-
+		else {
+			ASSERT(FALSE);
+			m_pLog->AddLog(_T("Recovery for File system not implemented"), __TFILE__, __LINE__);
+			throw _E_REP_NOT_IMPLEMENTED;
+		}
 	}
 	catch (int nException) {
 		SetErrorNumber(nException);
@@ -112,6 +121,9 @@ BOOL CFileSystem::Scan()
 	BOOL bRes = TRUE;
 
 	try {
+		if (m_pFileSystemNTFS) {
+			bRes = m_pFileSystemNTFS->Scan();
+		}
 	}
 	catch (int nException) {
 		SetErrorNumber(nException);

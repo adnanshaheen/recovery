@@ -27,7 +27,6 @@ public:
 	{
 	}
 
-private:
 	u16 m_u16BytesPerSector;		/* Size of a sector in bytes. */
 	u8  m_u8SectorsPerCluster;		/* Size of a cluster in sectors. */
 	u16 m_u16ReservedSectors;		/* zero */
