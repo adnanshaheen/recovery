@@ -23,9 +23,34 @@ CNTFSRecord::~CNTFSRecord()
 {
 }
 
+le32 CNTFSRecord::GetMagic() const
+{
+	return m_nMagic;
+}
+
 void CNTFSRecord::SetMagic(const le32 nMagic)
 {
 	m_nMagic = const_cpu_to_le32(nMagic);
+}
+
+u16 CNTFSRecord::GetUpdSeqArrayOffset() const
+{
+	return m_nUpdateSeqArrayOffset;
+}
+
+void CNTFSRecord::SetUpdSeqArrayOffset(const u16 nUpdSeqArrayOffset)
+{
+	m_nUpdateSeqArrayOffset = nUpdSeqArrayOffset;
+}
+
+u16 CNTFSRecord::GetUpdSeqArrayCount() const
+{
+	return m_nUpdateSeqArrayCount;
+}
+
+void CNTFSRecord::SetUpdSeqArrayCount(const u16 nUpdSeqArrayCount)
+{
+	m_nUpdateSeqArrayCount = nUpdSeqArrayCount;
 }
 
 BOOL CNTFSRecord::IsFile() const

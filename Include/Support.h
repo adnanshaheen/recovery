@@ -263,7 +263,7 @@ inline void ASSERT_MACRO(BOOL bResult, LPCSTR pszFileName, int nLineNo)
 		if (pFileName != NULL)
 		{
 			++ pFileName;
-			printf("Assert Failed! File %s, Line %d\n", pFileName, nLineNo);
+			printf("Assert Failed! File %ws, Line %d\n", pFileName, nLineNo);
 		}
 		else
 		{
