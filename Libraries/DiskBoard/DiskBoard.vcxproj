@@ -84,6 +84,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AttributeDef.cpp" />
+    <ClCompile Include="AttributeRecord.cpp" />
+    <ClCompile Include="AttributeType.cpp" />
     <ClCompile Include="Disk.cpp" />
     <ClCompile Include="DiskBoard.cpp" />
     <ClCompile Include="DiskBoardInterface.cpp" />
@@ -91,6 +94,7 @@
     <ClCompile Include="FileSystemNTFS.cpp" />
     <ClCompile Include="MFTRecord.cpp" />
     <ClCompile Include="NTFSAttribute.cpp" />
+    <ClCompile Include="NTFSCollation.cpp" />
     <ClCompile Include="NTFSRecord.cpp" />
     <ClCompile Include="PartInfo.cpp" />
     <ClCompile Include="Partitioner.cpp" />
@@ -99,6 +103,9 @@
     <ClInclude Include="..\..\Include\BPB.h" />
     <ClInclude Include="..\..\Include\Fat.h" />
     <ClInclude Include="..\..\Include\NTFS.h" />
+    <ClInclude Include="AttributeDef.h" />
+    <ClInclude Include="AttributeRecord.h" />
+    <ClInclude Include="AttributeType.h" />
     <ClInclude Include="Disk.h" />
     <ClInclude Include="DiskBoard.h" />
     <ClInclude Include="DiskBoardInterface.h" />
@@ -106,6 +113,7 @@
     <ClInclude Include="FileSystemNTFS.h" />
     <ClInclude Include="MFTRecord.h" />
     <ClInclude Include="NTFSAttribute.h" />
+    <ClInclude Include="NTFSCollation.h" />
     <ClInclude Include="NTFSRecord.h" />
     <ClInclude Include="PartitionTable.h" />
     <ClInclude Include="PartInfo.h" />
