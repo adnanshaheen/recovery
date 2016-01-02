@@ -24,8 +24,38 @@ CAbstractPartitioner* m_pPartitioner = NULL;
 CAbstractDiskBoardInterface* pDiskInterface = NULL;
 CAbstractPartInfo* m_pSelectedPartInfo = NULL;
 
+void GetPartition(CAbstractPartitioner* pPartitioner)
+{
+	size_t nCounter;
+	printf("Enter partition number: ");
+	scanf("%d", &nCounter);
+	size_t nThisPart = 0;
+	if (pPartitioner) {
+
+		CAbstractPartInfo* pDiskInfo = pPartitioner->GetDiskItem();
+		while (pDiskInfo) {
+
+			if (pDiskInfo->IsFlagExists(MG_PARTINFO_DISK)) {
+
+				CAbstractPartInfo* pPartInfo = pDiskInfo->GetChild();
+				while (pPartInfo) {
+
+					if (nCounter == ++nThisPart) {
+						m_pSelectedPartInfo = pPartInfo;
+						return;
+					}
+					pPartInfo = pPartInfo->GetNext();
+				}
+			}
+			printf("\n");
+			pDiskInfo = pDiskInfo->GetNext();
+		}
+	}
+}
+
 void PrintDisks(CAbstractPartitioner* pPartitioner)
 {
+	size_t nCounter = 0;
 	if (pPartitioner) {
 
 		CAbstractPartInfo* pDiskInfo = pPartitioner->GetDiskItem();
@@ -37,10 +67,7 @@ void PrintDisks(CAbstractPartitioner* pPartitioner)
 				CAbstractPartInfo* pPartInfo = pDiskInfo->GetChild();
 				while (pPartInfo) {
 
-					printf("\tPartition Type 0x%x\n", pPartInfo->GetPartitionType());
-
-					if (pPartInfo->IsFlagExists(MG_PARTINFO_DATA))
-						m_pSelectedPartInfo = pPartInfo;
+					printf("\t%d: Partition Type 0x%x\n", ++ nCounter, pPartInfo->GetPartitionType());
 
 					pPartInfo = pPartInfo->GetNext();
 				}
@@ -97,6 +124,7 @@ int main(char* argv[], int argc)
 		/* start process here */
 		m_pPartitioner->Initialize();
 		PrintDisks(m_pPartitioner);
+		GetPartition(m_pPartitioner);
 
 		/* all disks are detected, file systems on their partitions are also detected */
 		/* TODO: we have to select a partition with ntfs file system */

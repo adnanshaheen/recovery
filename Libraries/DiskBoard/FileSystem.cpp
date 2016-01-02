@@ -85,7 +85,7 @@ BOOL CFileSystem::Initialize(CAbstractPartInfo* pPartInfo)
 
 		pNTFS = (CNTFSBootSector*) pBuffer;
 		if (pNTFS && pNTFS->IsValid()) {
-			m_pFileSystemNTFS = new CFileSystemNTFS();
+			m_pFileSystemNTFS = new CFileSystemNTFS(m_pLog);
 			m_pFileSystemNTFS->SetMFTClusterNum(pNTFS->GetMFTClusterNum());
 			m_pFileSystemNTFS->SetBytesPerSector(pNTFS->GetBytesPerSector());
 			m_pFileSystemNTFS->SetSectorsPerCluster(pNTFS->GetSectorsPerCluster());

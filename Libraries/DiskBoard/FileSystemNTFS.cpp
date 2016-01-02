@@ -13,8 +13,9 @@
 #include "AbstractPartInfo.h"
 #include "MGAPI.h"
 #include "FileSystemNTFS.h"
+#include "MFTRecord.h"
 
-CFileSystemNTFS::CFileSystemNTFS() : CFileSystem(m_pLog)
+CFileSystemNTFS::CFileSystemNTFS(CAbstractLog* pLog) : CFileSystem(pLog)
 {
 }
 
@@ -95,8 +96,16 @@ void CFileSystemNTFS::SetClustersPerMFTRecord(s8 s8ClusterPerMFTRecord)
 BOOL CFileSystemNTFS::ReadMFTData()
 {
 	BOOL bRes = FALSE;
+	DWORD dwRead = 0;
+	BYTE* pMFTRecord = NULL;
+	CMFTRecord* pMFT;
 	try {
+		pMFTRecord = new BYTE[GetClustersPerMFTRecord()];
+		TEST_AND_THROW(pMFTRecord == NULL, _E_REP_MEMORY_FAIL);
 
+		TEST_AND_THROW(m_pDisk == NULL, _E_REP_DRIVE_ERROR);
+		m_pDisk->ReadDisk(pMFTRecord, GetClustersPerMFTRecord(), dwRead);
+		pMFT = reinterpret_cast<CMFTRecord*> (pMFTRecord);
 	}
 	catch (const int nException) {
 		SetErrorNumber(nException);

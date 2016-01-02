@@ -49,9 +49,9 @@ public:
 protected:
 	CAbstractLog* m_pLog;                             /* Log file pointer, to log info */
 	CAbstractPartInfo* m_pPartInfo;                   /* Partition Information interface */
+	CAbstractDisk* m_pDisk;                           /* Disk interface to read/write on disk */
 
 private:
-	CAbstractDisk* m_pDisk;                           /* Disk interface to read/write on disk */
 	CAbstractDiskBoardInterface* m_pThisInterface;    /* This DLL interface to create different objects */
 	CFileSystemNTFS* m_pFileSystemNTFS;               /* NTFS File system class pointer */
 };

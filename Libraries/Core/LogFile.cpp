@@ -124,7 +124,9 @@ CLogFile::CLogFile(const CLogFile& pLogFile)
 //
 /*virtual */BOOL CLogFile::AddLog(LPCTSTR pszMessage, LPCTSTR pszFileName, UINT uiLineNumber, ...)
 {
-	return FALSE;
+	CCoreString csMessage;
+	csMessage.Format(_T("%s\nFILE NAME:%s"), pszMessage, pszFileName != NULL ? pszFileName : _T("Unknown"));
+	return m_pFile->WriteFile(csMessage, csMessage.GetLength());
 }
 
 //

@@ -14,7 +14,7 @@
 class CFileSystemNTFS : public CFileSystem
 {
 public:
-	CFileSystemNTFS();
+	CFileSystemNTFS(CAbstractLog* pLog);
 	virtual ~CFileSystemNTFS();
 
 	/**
@@ -41,6 +41,11 @@ public:
 	void SetBytesPerSector(u16 u16BytesPerSector);
 	void SetSectorsPerCluster(u8 u8SectorsPerCluster);
 	void SetBytesPerCluster(u32 u32BytesPerCluster);
+
+	inline s8 GetClustersPerMFTRecord() const
+	{
+		return m_s8ClustersPerMFTRecord;
+	}
 	void SetClustersPerMFTRecord(s8 s8ClustersPerMFTRecord);
 
 private:
