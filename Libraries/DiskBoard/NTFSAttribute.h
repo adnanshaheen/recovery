@@ -14,5 +14,8 @@ class CNTFSAttribute
 public:
 	CNTFSAttribute();
 	virtual ~CNTFSAttribute();
+
+	s64 Read() { return 0; }
+	s64 Read(int) { return 0; }
 };
 
