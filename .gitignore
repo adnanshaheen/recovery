@@ -1,0 +1,15 @@
+bin
+obj
+Debug
+Release
+packages
+*.suo
+*.opensdf
+*.sdf
+*.pch
+*.aps
+*.user
+*.cache
+*.dll
+*.exe
+.vs

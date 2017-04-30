@@ -90,6 +90,7 @@
     <ClCompile Include="Disk.cpp" />
     <ClCompile Include="DiskBoard.cpp" />
     <ClCompile Include="DiskBoardInterface.cpp" />
+    <ClCompile Include="FileAttributeFlags.cpp" />
     <ClCompile Include="FileSystem.cpp" />
     <ClCompile Include="FileSystemNTFS.cpp" />
     <ClCompile Include="MFTRecord.cpp" />
@@ -98,6 +99,7 @@
     <ClCompile Include="NTFSRecord.cpp" />
     <ClCompile Include="PartInfo.cpp" />
     <ClCompile Include="Partitioner.cpp" />
+    <ClCompile Include="StandInfo.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Include\BPB.h" />
@@ -109,6 +111,7 @@
     <ClInclude Include="Disk.h" />
     <ClInclude Include="DiskBoard.h" />
     <ClInclude Include="DiskBoardInterface.h" />
+    <ClInclude Include="FileAttributeFlags.h" />
     <ClInclude Include="FileSystem.h" />
     <ClInclude Include="FileSystemNTFS.h" />
     <ClInclude Include="MFTRecord.h" />
@@ -118,6 +121,7 @@
     <ClInclude Include="PartitionTable.h" />
     <ClInclude Include="PartInfo.h" />
     <ClInclude Include="Partitioner.h" />
+    <ClInclude Include="StandInfo.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="DiskBoard.rc" />
