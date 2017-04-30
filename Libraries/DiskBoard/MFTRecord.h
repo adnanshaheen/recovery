@@ -10,6 +10,7 @@
 #pragma once
 
 #include "NTFSRecord.h"
+#include "BytePackOn.h"
 
 class CMFTRecord
 {
@@ -38,3 +39,4 @@ private:
 	u32 m_uRecordNumber;
 };
 
+#include "BytePackOff.h"
