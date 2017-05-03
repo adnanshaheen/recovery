@@ -31,8 +31,8 @@ CPartitioner::~CPartitioner()
 BOOL CPartitioner::Initialize()
 {
 	BOOL bRes = FALSE;
-	CAbstractDisk* pDisk = NULL;
-	CAbstractPartInfo* pDiskInfo = NULL;
+	CAbstractDisk* pDisk = nullptr;
+	CAbstractPartInfo* pDiskInfo = nullptr;
 	INT64 i64Sectors = 0;
 
 	try {
@@ -80,7 +80,7 @@ CAbstractPartInfo* CPartitioner::GetDiskItem() const
 
 void CPartitioner::AddHardDiskInfo(CAbstractDisk* pDisk, CAbstractPartInfo** pDiskInfo)
 {
-	CAbstractPartInfo* pInfo = NULL;
+	CAbstractPartInfo* pInfo = nullptr;
 	if (m_pPartInfo) {
 		pInfo = m_pPartInfo->Insert(m_pPartInfo, *pDiskInfo, MG_PARTINFO_DISK);
 		if (pInfo)
@@ -99,9 +99,9 @@ BOOL CPartitioner::ReadPartitions(CAbstractDisk* pDisk, CAbstractPartInfo* pDisk
 	BOOL bRes = TRUE;
 	size_t nSectorSize = 0;
 	DWORD dwSectorsRead = 0;
-	BYTE* pBuffer = NULL;
+	BYTE* pBuffer = nullptr;
 	CRootSector cPartitionTable;
-	CAbstractPartInfo* pInfo = NULL;
+	CAbstractPartInfo* pInfo = nullptr;
 
 	try {
 		if (!pDisk || ! pDiskInfo) {
@@ -186,11 +186,11 @@ BOOL CPartitioner::ReadGPTPartitions(CAbstractDisk* pDisk, CAbstractPartInfo* pD
 	size_t nSectorSize = 0;
 	DWORD dwSectorsRead = 0;
 	s32 nIndex = 2;
-	BYTE* pBuffer = NULL;
-	BYTE* pPartEntry = NULL;
+	BYTE* pBuffer = nullptr;
+	BYTE* pPartEntry = nullptr;
 	CGPTHeader cPartitionTableHeader;
 	CGPTPartitions cGPTPartition;
-	CAbstractPartInfo* pInfo = NULL;
+	CAbstractPartInfo* pInfo = nullptr;
 
 	try {
 		if (!pDisk || ! pDiskInfo) {
@@ -275,7 +275,7 @@ BOOL CPartitioner::ReadGPTPartitions(CAbstractDisk* pDisk, CAbstractPartInfo* pD
 
 CAbstractPartInfo* CPartitioner::AddPartition(CAbstractPartInfo* pDiskInfo, CAbstractPartInfo* pInsertAfter, void* pPartBuffer)
 {
-	CAbstractPartInfo* pInfo = NULL;
+	CAbstractPartInfo* pInfo = nullptr;
 	CGPTPartitions* pGPTPartition = (CGPTPartitions*) pPartBuffer;
 
 	try {
@@ -316,13 +316,13 @@ CAbstractPartInfo* CPartitioner::AddPartition(CAbstractPartInfo* pDiskInfo, CAbs
 BOOL CPartitioner::ReadGPTPartType(CAbstractDisk* pDisk, CAbstractPartInfo* pDiskInfo)
 {
 	BOOL bRes = TRUE;
-	CFat16* pFat16 = NULL;
-	CFat32* pFat32 = NULL;
-	CExFat* pExFat = NULL;
-	CNTFSBootSector* pNTFS = NULL;
+	CFat16* pFat16 = nullptr;
+	CFat32* pFat32 = nullptr;
+	CExFat* pExFat = nullptr;
+	CNTFSBootSector* pNTFS = nullptr;
 	size_t nSectorSize = 0;
 	DWORD dwSectorsRead = 0;
-	BYTE* pBuffer = NULL;
+	BYTE* pBuffer = nullptr;
 
 	try {
 		if (!pDisk || !pDiskInfo) {

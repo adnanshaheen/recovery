@@ -33,30 +33,30 @@ static void SetErrorNumber(int err_no)
 static CCoreString GetErrorMessage(DWORD dwErrorCode)
 {
 #ifdef WIN32
-	LPVOID lpMsgBuf = NULL;
+	LPVOID lpMsgBuf = nullptr;
 
 	// We will use default language so the user can also read it.
 	DWORD dwResult = FormatMessage(	FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
-									NULL,
+									nullptr,
 									dwErrorCode,
 									MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
 									(LPTSTR) &lpMsgBuf,
 									0,
-									NULL);
+									nullptr);
 
 	// If the FormatMessage has been failed.
 	if (dwResult == 0 || !lpMsgBuf) {
 		// Free the message string
 		if (lpMsgBuf) {
 			LocalFree(lpMsgBuf);
-			lpMsgBuf = NULL;
+			lpMsgBuf = nullptr;
 		}
 		return _T("");
 	}
 
 	CCoreString csErrMsg((LPCTSTR) lpMsgBuf);
 	LocalFree(lpMsgBuf);
-	lpMsgBuf = NULL;
+	lpMsgBuf = nullptr;
 
 	// Remove any new line or extra space characters.
 	csErrMsg.TrimRight();
@@ -67,9 +67,9 @@ static CCoreString GetErrorMessage(DWORD dwErrorCode)
 }
 
 // Get unique file name.
-static CCoreString GetUniqueFileName(LPCTSTR pszFilePath = NULL, LPCTSTR pszExtension = NULL)
+static CCoreString GetUniqueFileName(LPCTSTR pszFilePath = nullptr, LPCTSTR pszExtension = nullptr)
 {
-	DWORD dwSize = GetShortPathName(pszFilePath, NULL, 0);
+	DWORD dwSize = GetShortPathName(pszFilePath, nullptr, 0);
 	std::vector<TCHAR> szShortFilePath(dwSize + 1);
 	if (GetShortPathName(pszFilePath, &szShortFilePath[0], dwSize)) {
 		dwSize = MAX_PATH * 2;

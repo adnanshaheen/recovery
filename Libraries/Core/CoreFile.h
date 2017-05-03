@@ -47,16 +47,16 @@ public:
 	virtual int		DeleteFile(LPCTSTR pszFileName);
 
 	// Read the file.
-	virtual int		ReadFile(void* pBuffer, DWORD dwBytesToRead, DWORD* pBytesRead = NULL);
+	virtual int		ReadFile(void* pBuffer, DWORD dwBytesToRead, DWORD* pBytesRead = nullptr);
 
 	// Read a single line from file.
-	virtual int		ReadLine(std::basic_string<TCHAR>& cLine, DWORD* pBytesRead = NULL);
+	virtual int		ReadLine(std::basic_string<TCHAR>& cLine, DWORD* pBytesRead = nullptr);
 
 	// Write the file.
-	virtual int		WriteFile(const void* pBuffer, DWORD dwBytesToWrite, DWORD* pBytesWritten = NULL);
+	virtual int		WriteFile(const void* pBuffer, DWORD dwBytesToWrite, DWORD* pBytesWritten = nullptr);
 
 	// Write a single line to file.
-	virtual int		WriteLine(std::basic_string<TCHAR>& cLine, DWORD* pBytesWritten = NULL);
+	virtual int		WriteLine(std::basic_string<TCHAR>& cLine, DWORD* pBytesWritten = nullptr);
 
 	// Rename the file.
 	virtual BOOL	RenameFile(LPCTSTR pszFileName);
@@ -114,14 +114,14 @@ public:
 
 private:
 	// Get create/modify/access time.
-	BOOL			GetFileTime(FILETIME* const pCreateTime = NULL,
-								FILETIME* const pModifyTime = NULL,
-								FILETIME* const pLastAccessTime = NULL);
+	BOOL			GetFileTime(FILETIME* const pCreateTime = nullptr,
+								FILETIME* const pModifyTime = nullptr,
+								FILETIME* const pLastAccessTime = nullptr);
 
 	// Set create/modify/access time.
-	BOOL			SetFileTime(const FILETIME* pCreateTime = NULL,
-								const FILETIME* pModifyTime = NULL,
-								const FILETIME* pLastAccessTime = NULL);
+	BOOL			SetFileTime(const FILETIME* pCreateTime = nullptr,
+								const FILETIME* pModifyTime = nullptr,
+								const FILETIME* pLastAccessTime = nullptr);
 
 private:
 	HANDLE			m_hFile;		// File handle.

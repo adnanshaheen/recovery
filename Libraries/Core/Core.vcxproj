@@ -10,6 +10,20 @@
       <Platform>Win32</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="CoreFile.h" />
+    <ClInclude Include="CoreString.h" />
+    <ClInclude Include="DateTime.h" />
+    <ClInclude Include="LogFile.h" />
+    <ClInclude Include="MGAPI.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="CoreFile.cpp" />
+    <ClCompile Include="CoreString.cpp" />
+    <ClCompile Include="DateTime.cpp" />
+    <ClCompile Include="LogFile.cpp" />
+    <ClCompile Include="MGAPI.cpp" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectName>Core</ProjectName>
     <ProjectGuid>{008B6187-F0F2-4ED0-8EEA-EEFB2E3DE98D}</ProjectGuid>
@@ -78,18 +92,6 @@
       <TargetMachine>MachineX86</TargetMachine>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="CoreFile.cpp" />
-    <ClCompile Include="CoreString.cpp" />
-    <ClCompile Include="DateTime.cpp" />
-    <ClCompile Include="LogFile.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="CoreString.h" />
-    <ClInclude Include="CoreFile.h" />
-    <ClInclude Include="DateTime.h" />
-    <ClInclude Include="LogFile.h" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

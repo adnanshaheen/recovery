@@ -39,7 +39,7 @@ CAbstractDisk* CDiskBoardInterface::CreateDisk(CAbstractLog *pLog) const
 {
 	CAbstractDisk* pDisk = new CDisk(pLog);
 #ifdef DEBUG
-	if (pDisk == NULL && pLog != NULL)
+	if (pDisk == nullptr && pLog != nullptr)
 		pLog->AddLog(_T("Error initializing Disk object!!!"), __TFILE__, __LINE__);
 	else if (pDisk && pLog)
 		pLog->AddLog(_T("Disk initialized!"), __TFILE__, __LINE__);
@@ -62,7 +62,7 @@ CAbstractPartitioner* CDiskBoardInterface::CreatePartitioner(CAbstractLog* pLog)
 {
 	CAbstractPartitioner* pPartitioner = new CPartitioner(this, pLog);
 #ifdef DEBUG
-	if (pPartitioner == NULL && pLog != NULL)
+	if (pPartitioner == nullptr && pLog != nullptr)
 		pLog->AddLog(_T("Error initializing Partitioner object!!!"), __TFILE__, __LINE__);
 	else if (pPartitioner && pLog)
 		pLog->AddLog(_T("Partitioner initialized!"), __TFILE__, __LINE__);
@@ -85,7 +85,7 @@ CAbstractPartInfo* CDiskBoardInterface::CreatePartInfo(CAbstractLog* pLog) const
 {
 	CAbstractPartInfo* pPartInfo = new CPartInfo(pLog);
 #ifdef DEBUG
-	if (pPartInfo == NULL && pLog != NULL)
+	if (pPartInfo == nullptr && pLog != nullptr)
 		pLog->AddLog(_T("Error initializing PartInfo object!!!"), __TFILE__, __LINE__);
 	else if (pPartInfo && pLog)
 		pLog->AddLog(_T("Partition Info Tree initialized!"), __TFILE__, __LINE__);
@@ -108,9 +108,9 @@ CAbstractLog* CDiskBoardInterface::CreateLogFile() const
 {
 	CAbstractLog* pLog = new CLogFile();
 	if (pLog) {
-		CCoreString csLogFile = fnGetModuleFileName(NULL);
+		CCoreString csLogFile = fnGetModuleFileName(nullptr);
 		csLogFile = csLogFile.Left(csLogFile.ReverseFind(PATH_SEPARATOR));
-		pLog->Initialize(NULL, csLogFile);
+		pLog->Initialize(nullptr, csLogFile);
 	}
 
 	return pLog;

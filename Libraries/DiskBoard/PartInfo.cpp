@@ -57,7 +57,7 @@ CAbstractPartInfo* CPartInfo::Insert(CAbstractPartInfo* pParent, CAbstractPartIn
 {
 	if (!pParent) {
 		ASSERT(FALSE);
-		return NULL;
+		return nullptr;
 	}
 
 	CAbstractPartInfo* pPartInfo = new CPartInfo(m_pLog);

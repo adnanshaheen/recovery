@@ -52,11 +52,11 @@ void CCoreString::RELEASE_BUFF()
 	if (m_pData && m_pData != EMPTYSTRING)
 	{
 		delete [] m_pData;
-		m_pData = NULL;
+		m_pData = nullptr;
 	}
 	else
 	{
-		m_pData = NULL;
+		m_pData = nullptr;
 	}
 }
 
@@ -71,7 +71,7 @@ CCoreString::CCoreString(LPCSTR pszStr)
 {
 	if (GET_LENGTH(pszStr) > 0)
 	{
-		m_pData = NULL;
+		m_pData = nullptr;
 		this->Assign(pszStr);
 	}
 	else
@@ -83,7 +83,7 @@ CCoreString::CCoreString(LPCWSTR pszStr)
 {
 	if (GET_WLENGTH(pszStr) > 0)
 	{
-		m_pData = NULL;
+		m_pData = nullptr;
 		this->Assign(pszStr);
 	}
 	else
@@ -95,7 +95,7 @@ CCoreString::CCoreString(const CCoreString& csParam)
 {
 	if (csParam.GetLength() > 0)
 	{
-		m_pData = NULL;
+		m_pData = nullptr;
 		this->Assign(csParam);
 	}
 	else
@@ -105,7 +105,7 @@ CCoreString::CCoreString(const CCoreString& csParam)
 }
 CCoreString::CCoreString(char ch, size_t nRepeat/* = 1*/)
 {
-	m_pData = NULL;
+	m_pData = nullptr;
 	if (nRepeat > 0 && CreateBuffer(nRepeat))
 	{
 		for (size_t nIndex = 0; nIndex < nRepeat; ++ nIndex)
@@ -119,7 +119,7 @@ CCoreString::CCoreString(char ch, size_t nRepeat/* = 1*/)
 }
 CCoreString::CCoreString(WCHAR ch, size_t nRepeat/* = 1*/)
 {
-	m_pData = NULL;
+	m_pData = nullptr;
 	if (nRepeat > 0 && CreateBuffer(nRepeat))
 	{
 		for (size_t nIndex = 0; nIndex < nRepeat; ++ nIndex)
@@ -133,7 +133,7 @@ CCoreString::CCoreString(WCHAR ch, size_t nRepeat/* = 1*/)
 }
 CCoreString::CCoreString(LPCSTR pszStr, int nLength)
 {
-	m_pData = NULL;
+	m_pData = nullptr;
 	nLength = GET_LENGTH(pszStr) > nLength ? nLength : GET_LENGTH(pszStr);
 	if (nLength > 0 && CreateBuffer(nLength))
 	{
@@ -151,7 +151,7 @@ CCoreString::CCoreString(LPCSTR pszStr, int nLength)
 }
 CCoreString::CCoreString(LPCWSTR pszStr, int nLength)
 {
-	m_pData = NULL;
+	m_pData = nullptr;
 	nLength = GET_WLENGTH(pszStr) > nLength ? nLength : GET_WLENGTH(pszStr);
 
 #ifdef _UNICODE
@@ -193,8 +193,8 @@ CCoreString::CCoreString(LPCWSTR pszStr, int nLength)
 }
 CCoreString::CCoreString(BYTE* pParam, size_t nLength)
 {
-	m_pData = NULL;
-	if (pParam != NULL && nLength > 0 && CreateBuffer(nLength))
+	m_pData = nullptr;
+	if (pParam != nullptr && nLength > 0 && CreateBuffer(nLength))
 	{
 		for (size_t nIndex = 0; nIndex < nLength; ++ nIndex)
 			m_pData[nIndex] = pParam[nIndex];
@@ -557,25 +557,25 @@ void CCoreString::MakeReverse()
 void CCoreString::TrimRight()
 {
 	LPTSTR pszStr = m_pData;
-	LPTSTR pszLast = NULL;
+	LPTSTR pszLast = nullptr;
 
 	while (*pszStr != '\0')
 	{
 		if (isspace(*pszStr))
 		{
-			if (pszLast == NULL)
+			if (pszLast == nullptr)
 				pszLast = pszStr;
 		}
 		else
 		{
-			pszLast = NULL;
+			pszLast = nullptr;
 		}
 
 		STRING_INC_CHAR(pszStr);
 	}
 
 	// Truncate at trailing space start
-	if (pszLast != NULL)
+	if (pszLast != nullptr)
 		*pszLast = '\0';
 }
 
@@ -585,25 +585,25 @@ void CCoreString::TrimRight()
 void CCoreString::TrimRight(TCHAR chTarget)
 {
 	LPTSTR pszStr = m_pData;
-	LPTSTR pszLast = NULL;
+	LPTSTR pszLast = nullptr;
 
 	while (*pszStr != '\0')
 	{
 		if (*pszStr == chTarget)
 		{
-			if (pszLast == NULL)
+			if (pszLast == nullptr)
 				pszLast = pszStr;
 		}
 		else
 		{
-			pszLast = NULL;
+			pszLast = nullptr;
 		}
 
 		STRING_INC_CHAR(pszStr);
 	}
 
 	// Truncate at left-most matching character
-	if (pszLast != NULL)
+	if (pszLast != nullptr)
 		*pszLast = '\0';
 }
 
@@ -729,7 +729,7 @@ int CCoreString::Replace(LPCTSTR pszOld, LPCTSTR pszNew)
 
 	while (pszStart < pszEnd)
 	{
-		while ((pszTarget = _tcsstr(pszStart, pszOld)) != NULL)
+		while ((pszTarget = _tcsstr(pszStart, pszOld)) != nullptr)
 		{
 			nCount ++;
 			pszStart = pszTarget + nSourceLen;
@@ -759,7 +759,7 @@ int CCoreString::Replace(LPCTSTR pszOld, LPCTSTR pszNew)
 		// loop again to actually do the work
 		while (pszStart < pszEnd)
 		{
-			while ((pszTarget = _tcsstr(pszStart, pszOld)) != NULL)
+			while ((pszTarget = _tcsstr(pszStart, pszOld)) != nullptr)
 			{
 				int nBalance = nOldLength - (pszTarget - m_pData + nSourceLen);
 				memmove(pszTarget + nReplacementLen,
@@ -870,7 +870,7 @@ int CCoreString::ReverseFind(TCHAR ch) const
 	LPTSTR pszStr = _tcsrchr(m_pData, ch);
 
 	// Return -1 if not found, distance from beginning otherwise
-	return (pszStr == NULL) ? -1 : (int) (pszStr - m_pData);
+	return (pszStr == nullptr) ? -1 : (int) (pszStr - m_pData);
 }
 
 //
@@ -896,7 +896,7 @@ int CCoreString::Find(LPCTSTR pszSub, int nStart) const
 	LPTSTR pszStr = _tcsstr(m_pData + nStart, pszSub);
 
 	// Return -1 for not found, distance from beginning otherwise
-	return (pszStr == NULL) ? -1 : (int)(pszStr - m_pData);
+	return (pszStr == nullptr) ? -1 : (int)(pszStr - m_pData);
 }
 
 //
@@ -920,7 +920,7 @@ int CCoreString::Find(TCHAR ch, int nStart) const
 	LPTSTR pszStr = _tcschr(m_pData + nStart, ch);
 
 	// return -1 if not found and index otherwise
-	return (pszStr == NULL) ? -1 : (int)(pszStr - m_pData);
+	return (pszStr == nullptr) ? -1 : (int)(pszStr - m_pData);
 }
 
 //
@@ -930,7 +930,7 @@ int CCoreString::FindOneOf(LPCTSTR pszCharSet) const
 {
 	ASSERT(IsValidString(pszCharSet));
 	LPTSTR pszStr = _tcspbrk(m_pData, pszCharSet);
-	return (pszStr == NULL) ? -1 : (int)(pszStr - m_pData);
+	return (pszStr == nullptr) ? -1 : (int)(pszStr - m_pData);
 }
 
 //
@@ -1065,7 +1065,7 @@ void CCoreString::FormatV(LPCTSTR pszFormat, va_list argList)
 		case 's':
 			{
 				LPCTSTR pstrNextArg = va_arg(argList, LPCTSTR);
-				if (pstrNextArg == NULL)
+				if (pstrNextArg == nullptr)
 				   nItemLen = 6;
 				else
 				{
@@ -1078,7 +1078,7 @@ void CCoreString::FormatV(LPCTSTR pszFormat, va_list argList)
 		case 'S':
 			{
 				LPCSTR pstrNextArg = va_arg(argList, LPCSTR);
-				if (pstrNextArg == NULL)
+				if (pstrNextArg == nullptr)
 				   nItemLen = 6;
 				else
 				{
@@ -1092,7 +1092,7 @@ void CCoreString::FormatV(LPCTSTR pszFormat, va_list argList)
 		case 'S'|FORCE_ANSI:
 			{
 				LPCSTR pstrNextArg = va_arg(argList, LPCSTR);
-				if (pstrNextArg == NULL)
+				if (pstrNextArg == nullptr)
 				   nItemLen = 6;
 				else
 				{

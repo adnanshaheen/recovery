@@ -26,7 +26,7 @@ CCoreString GetErrorMessage(DWORD dwErrorCode)
 //
 // Get unique file name
 //
-CCoreString GetUniqueFileName(LPCTSTR pszFilePath/* = NULL*/, LPCTSTR pszExtension/* = NULL*/)
+CCoreString GetUniqueFileName(LPCTSTR pszFilePath/* = nullptr*/, LPCTSTR pszExtension/* = nullptr*/)
 {
 	ASSERT(FALSE);
 	return _T("");

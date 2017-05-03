@@ -45,10 +45,10 @@ CFileSystem::~CFileSystem()
 BOOL CFileSystem::Initialize(CAbstractPartInfo* pPartInfo)
 {
 	BOOL bRes = TRUE;
-	CNTFSBootSector* pNTFS = NULL;
+	CNTFSBootSector* pNTFS = nullptr;
 	size_t nSectorSize = 0;
 	DWORD dwSectorsRead = 0;
-	BYTE* pBuffer = NULL;
+	BYTE* pBuffer = nullptr;
 
 	try {
 		if (!pPartInfo || !m_pDisk) {

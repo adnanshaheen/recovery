@@ -97,13 +97,13 @@ BOOL CFileSystemNTFS::ReadMFTData()
 {
 	BOOL bRes = FALSE;
 	DWORD dwRead = 0;
-	BYTE* pMFTRecord = NULL;
+	BYTE* pMFTRecord = nullptr;
 	CMFTRecord* pMFT;
 	try {
 		pMFTRecord = new BYTE[GetClustersPerMFTRecord()];
-		TEST_AND_THROW(pMFTRecord == NULL, _E_REP_MEMORY_FAIL);
+		TEST_AND_THROW(pMFTRecord == nullptr, _E_REP_MEMORY_FAIL);
 
-		TEST_AND_THROW(m_pDisk == NULL, _E_REP_DRIVE_ERROR);
+		TEST_AND_THROW(m_pDisk == nullptr, _E_REP_DRIVE_ERROR);
 		m_pDisk->ReadDisk(pMFTRecord, GetClustersPerMFTRecord(), dwRead);
 		pMFT = reinterpret_cast<CMFTRecord*> (pMFTRecord);
 	}

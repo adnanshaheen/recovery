@@ -23,12 +23,12 @@
 //
 CCoreFile::CCoreFile()
 {
-	m_hFile = NULL;
+	m_hFile = nullptr;
 }
 CCoreFile::CCoreFile(CAbstractLog *pLog)
 {
 	m_pLog = pLog;
-	m_hFile = NULL;
+	m_hFile = nullptr;
 }
 
 //
@@ -68,10 +68,10 @@ CCoreFile::CCoreFile(const CCoreFile& pFile)
 {
 	// Set the path and file name.
 	CCoreString csFileName;
-	if (pszFileName == NULL || _tcslen(pszFileName) == 0)
+	if (pszFileName == nullptr || _tcslen(pszFileName) == 0)
 	{
 		csFileName = GetUniqueFileName();
-		if (m_pLog != NULL)
+		if (m_pLog != nullptr)
 			m_pLog->AddLog(_T("File name not specified, a file with %s name."), __TFILE__, __LINE__, csFileName);
 
 	}
@@ -87,20 +87,20 @@ CCoreFile::CCoreFile(const CCoreFile& pFile)
 	this->SetFilePath(csFileName);
 
 	// File handle must be invalid at this point.
-	ASSERT(m_hFile == NULL || m_hFile == INVALID_HANDLE_VALUE);
+	ASSERT(m_hFile == nullptr || m_hFile == INVALID_HANDLE_VALUE);
 
 	// Call the WINAPI to Create file.
-	m_hFile = ::CreateFile(csFileName, dwDesiredAccess, dwSharedMode, NULL, dwCreationDisposition, dwFlagsAndAttributes, NULL);
+	m_hFile = ::CreateFile(csFileName, dwDesiredAccess, dwSharedMode, nullptr, dwCreationDisposition, dwFlagsAndAttributes, nullptr);
 
 	// File handle must be valid now.
-	ASSERT(m_hFile != NULL || m_hFile != INVALID_HANDLE_VALUE);
+	ASSERT(m_hFile != nullptr || m_hFile != INVALID_HANDLE_VALUE);
 
 	// Set the file handle correctly.
-	m_hFile = (m_hFile == NULL || m_hFile == INVALID_HANDLE_VALUE) ? NULL : m_hFile;
-	if (m_hFile == NULL)
+	m_hFile = (m_hFile == nullptr || m_hFile == INVALID_HANDLE_VALUE) ? nullptr : m_hFile;
+	if (m_hFile == nullptr)
 	{
 		// Log the errors, file could not be created.
-		if (m_pLog != NULL)
+		if (m_pLog != nullptr)
 		{
 			m_pLog->AddLog(_T("File %s could not be created due to %s."), __TFILE__, __LINE__,
 							csFileName, GetErrorMessage(::GetLastError()));
@@ -108,7 +108,7 @@ CCoreFile::CCoreFile(const CCoreFile& pFile)
 	}
 
 	// Return the result.
-	return m_hFile != NULL ? 0 : -1;
+	return m_hFile != nullptr ? 0 : -1;
 }
 
 //
@@ -119,7 +119,7 @@ CCoreFile::CCoreFile(const CCoreFile& pFile)
 	if (m_csFileName.IsEmpty())
 	{
 		// Nothing to delete, simply return succuess.
-		if (m_pLog != NULL)
+		if (m_pLog != nullptr)
 			m_pLog->AddLog(_T("Nothing to delete!!!"), __TFILE__, __LINE__);
 
 		return 0;
@@ -129,10 +129,10 @@ CCoreFile::CCoreFile(const CCoreFile& pFile)
 }
 /*virtual */int CCoreFile::DeleteFile(LPCTSTR pszFileName)
 {
-	if (pszFileName == NULL)
+	if (pszFileName == nullptr)
 	{
 		// Log the error, file name not available.
-		if (m_pLog != NULL)
+		if (m_pLog != nullptr)
 			m_pLog->AddLog(_T("File name not available to delete!!!"), __TFILE__, __LINE__);
 
 		// Return failure.
@@ -142,7 +142,7 @@ CCoreFile::CCoreFile(const CCoreFile& pFile)
 	if (!::DeleteFile(pszFileName))
 	{
 		// Log the error, file could not be deleted.
-		if (m_pLog != NULL)
+		if (m_pLog != nullptr)
 		{
 			m_pLog->AddLog(_T("File %s could not be deleted due to %s."), __TFILE__, __LINE__,
 							pszFileName, GetErrorMessage(::GetLastError()));
@@ -158,12 +158,12 @@ CCoreFile::CCoreFile(const CCoreFile& pFile)
 //
 // Read the file.
 //
-/*virtual */int CCoreFile::ReadFile(void* pBuffer, DWORD dwBytesToRead, DWORD* pBytesRead/* = NULL*/)
+/*virtual */int CCoreFile::ReadFile(void* pBuffer, DWORD dwBytesToRead, DWORD* pBytesRead/* = nullptr*/)
 {
-	if (pBuffer == NULL || dwBytesToRead == 0)
+	if (pBuffer == nullptr || dwBytesToRead == 0)
 	{
 		// Log error message, invalid buffer.
-		if (m_pLog != NULL)
+		if (m_pLog != nullptr)
 			m_pLog->AddLog(_T("Invalid parameters to read file!!!"), __TFILE__, __LINE__);
 
 		// Return failure.
@@ -173,7 +173,7 @@ CCoreFile::CCoreFile(const CCoreFile& pFile)
 	if (!this->IsFileOpen())
 	{
 		// Log error message, file is not open.
-		if (m_pLog != NULL)
+		if (m_pLog != nullptr)
 			m_pLog->AddLog(_T("File is not opened to read!!!"), __TFILE__, __LINE__);
 
 		// Return failure.
@@ -181,14 +181,14 @@ CCoreFile::CCoreFile(const CCoreFile& pFile)
 	}
 
 	DWORD dwBytesRead = 0;
-	int iRes = ::ReadFile(m_hFile, pBuffer, dwBytesToRead, &dwBytesRead, NULL);
-	if (pBytesRead != NULL)
+	int iRes = ::ReadFile(m_hFile, pBuffer, dwBytesToRead, &dwBytesRead, nullptr);
+	if (pBytesRead != nullptr)
 		pBytesRead = &dwBytesRead;
 
 	if (iRes <= 0)
 	{
 		// Log error message, file could not be read.
-		if (m_pLog != NULL)
+		if (m_pLog != nullptr)
 		{
 			m_pLog->AddLog(_T("File %s could not be read due to %s.!!!"), __TFILE__, __LINE__,
 							m_csFileName, GetErrorMessage(::GetLastError()));
@@ -203,7 +203,7 @@ CCoreFile::CCoreFile(const CCoreFile& pFile)
 //
 // Read a single line from file.
 //
-/*virtual */int CCoreFile::ReadLine(std::basic_string<TCHAR>& cLine, DWORD* pBytesRead/* = NULL*/)
+/*virtual */int CCoreFile::ReadLine(std::basic_string<TCHAR>& cLine, DWORD* pBytesRead/* = nullptr*/)
 {
 	// First read the file normally, then find out the first line and truncate rest of buffer.
 	// This method will read the file from current position.
@@ -219,7 +219,7 @@ CCoreFile::CCoreFile(const CCoreFile& pFile)
 		iRes = this->ReadFile(&cBuffer, kBufferSize, &dwBytesRead);
 
 		TCHAR* pEndLine = _tcsstr(cBuffer, pNewLine);
-		if (pEndLine != NULL)
+		if (pEndLine != nullptr)
 		{
 			*pEndLine = _T('\0');
 			INT64 i64FilePos = 0;
@@ -233,7 +233,7 @@ CCoreFile::CCoreFile(const CCoreFile& pFile)
 	}
 	while (iRes != MG_END_OF_LINE);
 
-	if (pBytesRead != NULL)
+	if (pBytesRead != nullptr)
 		pBytesRead = &dwTotalBytesRead;
 
 	return iRes == MG_END_OF_LINE ? 0 : -1;
@@ -242,12 +242,12 @@ CCoreFile::CCoreFile(const CCoreFile& pFile)
 //
 // Write the file.
 //
-/*virtual */int CCoreFile::WriteFile(const void* pBuffer, DWORD dwBytesToWrite, DWORD* pBytesWritten/* = NULL*/)
+/*virtual */int CCoreFile::WriteFile(const void* pBuffer, DWORD dwBytesToWrite, DWORD* pBytesWritten/* = nullptr*/)
 {
-	if (pBuffer == NULL || dwBytesToWrite == 0)
+	if (pBuffer == nullptr || dwBytesToWrite == 0)
 	{
 		// Log error message, invalid buffer.
-		if (m_pLog != NULL)
+		if (m_pLog != nullptr)
 			m_pLog->AddLog(_T("Invalid parameters to write file!!!"), __TFILE__, __LINE__);
 
 		// Return failure.
@@ -260,7 +260,7 @@ CCoreFile::CCoreFile(const CCoreFile& pFile)
 		if (!this->IsFileOpen())
 		{
 			// Log error message, file is not open.
-			if (m_pLog != NULL)
+			if (m_pLog != nullptr)
 				m_pLog->AddLog(_T("File is not opened to write!!!"), __TFILE__, __LINE__);
 
 			if (m_csFileName.IsEmpty())
@@ -270,7 +270,7 @@ CCoreFile::CCoreFile(const CCoreFile& pFile)
 					throw iRes;
 
 				// Log info message, temp file to be opened.
-				if (m_pLog != NULL)
+				if (m_pLog != nullptr)
 					m_pLog->AddLog(_T("File %s is created for writing."), __TFILE__, __LINE__, m_csFileName);
 			}
 			else
@@ -284,14 +284,14 @@ CCoreFile::CCoreFile(const CCoreFile& pFile)
 		}
 
 		DWORD dwBytesWritten = 0;
-		iRes = ::WriteFile(m_hFile, pBuffer, dwBytesToWrite, &dwBytesWritten, NULL);
-		if (pBytesWritten != NULL)
+		iRes = ::WriteFile(m_hFile, pBuffer, dwBytesToWrite, &dwBytesWritten, nullptr);
+		if (pBytesWritten != nullptr)
 			pBytesWritten = &dwBytesWritten;
 
 		if (iRes <= 0)
 		{
 			// Log the error, file could not be written.
-			if (m_pLog != NULL)
+			if (m_pLog != nullptr)
 			{
 				m_pLog->AddLog(_T("Could not write file %sdue to %s!!!"), __TFILE__, __LINE__,
 								m_csFileName, GetErrorMessage(::GetLastError()));
@@ -308,7 +308,7 @@ CCoreFile::CCoreFile(const CCoreFile& pFile)
 //
 // Write a single line to file.
 //
-/*virtual */int CCoreFile::WriteLine(std::basic_string<TCHAR>& cLine, DWORD* pBytesWritten/* = NULL*/)
+/*virtual */int CCoreFile::WriteLine(std::basic_string<TCHAR>& cLine, DWORD* pBytesWritten/* = nullptr*/)
 {
 	int iRes = 0;
 	try
@@ -339,7 +339,7 @@ CCoreFile::CCoreFile(const CCoreFile& pFile)
 		// Line is ready, now write it.
 		DWORD dwBytesWritten = 0;
 		iRes = this->WriteFile((LPCTSTR) csLine, csLine.GetLength(), &dwBytesWritten);
-		if (pBytesWritten != NULL)
+		if (pBytesWritten != nullptr)
 			pBytesWritten = &dwBytesWritten;
 	}
 	catch (int)
@@ -435,7 +435,7 @@ CCoreFile::CCoreFile(const CCoreFile& pFile)
 	}
 
 	BOOL bRes = ::SetEndOfFile(m_hFile);
-	if (!bRes && m_pLog != NULL)
+	if (!bRes && m_pLog != nullptr)
 	{
 		m_pLog->AddLog(_T("End of file for file %s could not be set due to %s!!!"), __TFILE__, __LINE__,
 						m_csFileName, GetErrorMessage(::GetLastError()));
@@ -449,7 +449,7 @@ CCoreFile::CCoreFile(const CCoreFile& pFile)
 //
 /*virtual */BOOL CCoreFile::IsFileOpen()
 {
-	return m_hFile != NULL ? TRUE : FALSE;
+	return m_hFile != nullptr ? TRUE : FALSE;
 }
 
 //
@@ -464,13 +464,13 @@ CCoreFile::CCoreFile(const CCoreFile& pFile)
 	}
 
 	BOOL bRes = ::CloseHandle(m_hFile);
-	if (!bRes && m_pLog != NULL)
+	if (!bRes && m_pLog != nullptr)
 	{
 		m_pLog->AddLog(_T("File %s could not be closed due to %s!!!"), __TFILE__, __LINE__,
 			m_csFileName, GetErrorMessage(::GetLastError()));
 	}
 	else {
-		m_hFile = NULL;
+		m_hFile = nullptr;
 	}
 
 	return bRes;
@@ -518,7 +518,7 @@ CCoreFile::CCoreFile(const CCoreFile& pFile)
 }
 /*virtual */BOOL CCoreFile::GetFileAttributes(LPCTSTR pszFileName, DWORD& dwFileAttributes)
 {
-	if (pszFileName == NULL || _tcslen(pszFileName) == 0)
+	if (pszFileName == nullptr || _tcslen(pszFileName) == 0)
 	{
 		// File not not valid.
 		// Return with error.
@@ -527,7 +527,7 @@ CCoreFile::CCoreFile(const CCoreFile& pFile)
 	}
 
 	dwFileAttributes = ::GetFileAttributes(pszFileName);
-	if (dwFileAttributes == MG_INVALID_FILE && m_pLog != NULL)
+	if (dwFileAttributes == MG_INVALID_FILE && m_pLog != nullptr)
 	{
 		m_pLog->AddLog(_T("File %s attributes could not be retrieved due to %s!!!"), __TFILE__, __LINE__,
 			pszFileName, GetErrorMessage(::GetLastError()));
@@ -555,7 +555,7 @@ CCoreFile::CCoreFile(const CCoreFile& pFile)
 }
 /*virtual */BOOL CCoreFile::SetFileAttributes(LPCTSTR pszFileName, DWORD dwFileAttributes)
 {
-	if (pszFileName == NULL || _tcslen(pszFileName) == 0)
+	if (pszFileName == nullptr || _tcslen(pszFileName) == 0)
 	{
 		// File not not valid.
 		// Return with error.
@@ -564,7 +564,7 @@ CCoreFile::CCoreFile(const CCoreFile& pFile)
 	}
 
 	BOOL bRes = ::SetFileAttributes(pszFileName, dwFileAttributes);
-	if (!bRes && m_pLog != NULL)
+	if (!bRes && m_pLog != nullptr)
 	{
 		m_pLog->AddLog(_T("File %s attributes could not be set due to %s!!!"), __TFILE__, __LINE__,
 			pszFileName, GetErrorMessage(::GetLastError()));
@@ -590,7 +590,7 @@ CCoreFile::CCoreFile(const CCoreFile& pFile)
 	LONG nLow = 0;
 	LONG nHigh = 0;
 	nLow = ::SetFilePointer(m_hFile, 0, &nHigh, MG_FILE_POS_CURRENT);
-	if (nLow == MG_FILE_POINTER_INVALID && m_pLog != NULL)
+	if (nLow == MG_FILE_POINTER_INVALID && m_pLog != nullptr)
 	{
 		m_pLog->AddLog(_T("File %s position could not be retrieved due to %s!!!"), __TFILE__, __LINE__,
 			m_csFileName, GetErrorMessage(::GetLastError()));
@@ -625,7 +625,7 @@ CCoreFile::CCoreFile(const CCoreFile& pFile)
 	nLow = static_cast<LONG> (i64FilePos);
 	nHigh = static_cast<LONG> (i64FilePos >> 32);
 	DWORD dwLow = ::SetFilePointer(m_hFile, nLow, &nHigh, dwMoveMethod);
-	if (dwLow == MG_FILE_POINTER_INVALID && m_pLog != NULL)
+	if (dwLow == MG_FILE_POINTER_INVALID && m_pLog != nullptr)
 	{
 		m_pLog->AddLog(_T("File %s position could not be set due to %s!!!"),
 			__TFILE__,
@@ -655,7 +655,7 @@ CCoreFile::CCoreFile(const CCoreFile& pFile)
 	DWORD dwLow = 0;
 	DWORD dwHigh = 0;
 	dwLow = ::GetFileSize(m_hFile, &dwHigh);
-	if (dwLow == MG_FILE_POINTER_INVALID && m_pLog != NULL)
+	if (dwLow == MG_FILE_POINTER_INVALID && m_pLog != nullptr)
 	{
 		m_pLog->AddLog(_T("File %s size could not be retrieved due to %s!!!"), __TFILE__, __LINE__,
 			m_csFileName, GetErrorMessage(::GetLastError()));
@@ -692,7 +692,7 @@ CCoreFile::CCoreFile(const CCoreFile& pFile)
 /*virtual */BOOL CCoreFile::GetModifyDateTime(const CDateTime* pLastAccessDateTime)
 {
 	FILETIME cFileTime;
-	BOOL bRes = this->GetFileTime(NULL, &cFileTime);
+	BOOL bRes = this->GetFileTime(nullptr, &cFileTime);
 	CDateTime cLastAccessDateTime(cFileTime);
 	pLastAccessDateTime = &cLastAccessDateTime;
 	return bRes;
@@ -700,17 +700,17 @@ CCoreFile::CCoreFile(const CCoreFile& pFile)
 /*virtual */BOOL CCoreFile::GetAccessDateTime(const CDateTime* pLastAccessDateTime)
 {
 	FILETIME cFileTime;
-	BOOL bRes = this->GetFileTime(NULL, NULL, &cFileTime);
+	BOOL bRes = this->GetFileTime(nullptr, nullptr, &cFileTime);
 	CDateTime cLastAccessDateTime(cFileTime);
 	pLastAccessDateTime = &cLastAccessDateTime;
 	return bRes;
 }
-BOOL CCoreFile::GetFileTime(FILETIME* const pCreateTime/* = NULL*/,
-							FILETIME* const pModifyTime/* = NULL*/,
-							FILETIME* const pLastAccessTime/* = NULL*/)
+BOOL CCoreFile::GetFileTime(FILETIME* const pCreateTime/* = nullptr*/,
+							FILETIME* const pModifyTime/* = nullptr*/,
+							FILETIME* const pLastAccessTime/* = nullptr*/)
 {
 	BOOL bRes = ::GetFileTime(m_hFile, pCreateTime, pModifyTime, pLastAccessTime);
-	if (!bRes && m_pLog != NULL)
+	if (!bRes && m_pLog != nullptr)
 	{
 		m_pLog->AddLog(_T("File %s date/time could not be retrieved due to %s!!!"), __TFILE__, __LINE__,
 			m_csFileName, GetErrorMessage(::GetLastError()));
@@ -733,22 +733,22 @@ BOOL CCoreFile::GetFileTime(FILETIME* const pCreateTime/* = NULL*/,
 {
 	FILETIME cFileTime;
 	BOOL bRes = pLastAccessDateTime->GetAsFileTime(cFileTime);
-	bRes |= this->SetFileTime(NULL, &cFileTime);
+	bRes |= this->SetFileTime(nullptr, &cFileTime);
 	return bRes;
 }
 /*virtual */BOOL CCoreFile::SetAccessDateTime(const CDateTime* pLastAccessDateTime)
 {
 	FILETIME cFileTime;
 	BOOL bRes = pLastAccessDateTime->GetAsFileTime(cFileTime);
-	bRes |= this->SetFileTime(NULL, NULL, &cFileTime);
+	bRes |= this->SetFileTime(nullptr, nullptr, &cFileTime);
 	return bRes;
 }
-BOOL CCoreFile::SetFileTime(const FILETIME* pCreateTime/* = NULL*/,
-							const FILETIME* pModifyTime/* = NULL*/,
-							const FILETIME* pLastAccessTime/* = NULL*/)
+BOOL CCoreFile::SetFileTime(const FILETIME* pCreateTime/* = nullptr*/,
+							const FILETIME* pModifyTime/* = nullptr*/,
+							const FILETIME* pLastAccessTime/* = nullptr*/)
 {
 	BOOL bRes = ::SetFileTime(m_hFile, pCreateTime, pModifyTime, pLastAccessTime);
-	if (!bRes && m_pLog != NULL)
+	if (!bRes && m_pLog != nullptr)
 	{
 		m_pLog->AddLog(_T("File %s date/time could not be set due to %s!!!"), __TFILE__, __LINE__,
 			m_csFileName, GetErrorMessage(::GetLastError()));

@@ -60,7 +60,7 @@ CLogFile::CLogFile(const CLogFile& pLogFile)
 //
 /*virtual */BOOL CLogFile::AddLog(LPCTSTR pszMessage)
 {
-	return AddLog(pszMessage, NULL);
+	return AddLog(pszMessage, nullptr);
 }
 
 //
@@ -68,14 +68,14 @@ CLogFile::CLogFile(const CLogFile& pLogFile)
 //
 /*virtual */BOOL CLogFile::AddLog(LPCTSTR pszMessage, LPCTSTR pszFileName)
 {
-	if (pszMessage == NULL || _tcslen(pszMessage) <= 0)
+	if (pszMessage == nullptr || _tcslen(pszMessage) <= 0)
 	{
 		ASSERT(FALSE);
 		return FALSE;
 	}
 
 	CCoreString csMessage;
-	csMessage.Format(_T("%s\nFILE NAME:%s"), pszMessage, pszFileName != NULL ? pszFileName : _T("Unknown"));
+	csMessage.Format(_T("%s\nFILE NAME:%s"), pszMessage, pszFileName != nullptr ? pszFileName : _T("Unknown"));
 	return m_pFile->WriteFile(csMessage, csMessage.GetLength());
 }
 
@@ -125,7 +125,7 @@ CLogFile::CLogFile(const CLogFile& pLogFile)
 /*virtual */BOOL CLogFile::AddLog(LPCTSTR pszMessage, LPCTSTR pszFileName, UINT uiLineNumber, ...)
 {
 	CCoreString csMessage;
-	csMessage.Format(_T("%s\nFILE NAME:%s"), pszMessage, pszFileName != NULL ? pszFileName : _T("Unknown"));
+	csMessage.Format(_T("%s\nFILE NAME:%s"), pszMessage, pszFileName != nullptr ? pszFileName : _T("Unknown"));
 	return m_pFile->WriteFile(csMessage, csMessage.GetLength());
 }
 

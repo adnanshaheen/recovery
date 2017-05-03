@@ -23,7 +23,7 @@
 //
 CDisk::CDisk()
 {
-	m_pLog = NULL;
+	m_pLog = nullptr;
 	m_pFile = new CCoreFile();
 
 	m_nDiskNumber = -1;
@@ -60,7 +60,7 @@ CDisk::CDisk(CAbstractLog* pLog)
 	{
 		// we are not supporting such a big number.
 #ifdef DEBUG
-		if (m_pLog != NULL)
+		if (m_pLog != nullptr)
 			m_pLog->AddLog(_T("More than %d hard drives are not supported!!!"), __TFILE__, __LINE__, MAX_DRIVE_SUPPORT);
 #endif // DEBUG
 		return -1;
@@ -78,14 +78,14 @@ CDisk::CDisk(CAbstractLog* pLog)
 /*virtual */int CDisk::OpenDisk(LPCTSTR pszDisk, DWORD dwFlags)
 {
 	// Parameter check.
-	if (pszDisk == NULL || _tcslen(pszDisk) == 0)
+	if (pszDisk == nullptr || _tcslen(pszDisk) == 0)
 	{
 		ASSERT(FALSE);
 		return -1;
 	}
 
 	// Close already open disk.
-	if (m_pFile != NULL && m_pFile->IsFileOpen())
+	if (m_pFile != nullptr && m_pFile->IsFileOpen())
 		m_pFile->CloseFile();
 
 	// Try to open the disk.
@@ -106,12 +106,12 @@ CDisk::CDisk(CAbstractLog* pLog)
 	if (!DeviceIoControl(
 		m_pFile->GetFileHandle(),
 		IOCTL_DISK_GET_DRIVE_GEOMETRY,
-		NULL,
+		nullptr,
 		0,
 		&m_cDiskGeometry,
 		sizeof(m_cDiskGeometry),
 		&dwBytesReturned,
-		NULL)) {
+		nullptr)) {
 
 			if (m_pLog) {
 
@@ -157,7 +157,7 @@ CDisk::CDisk(CAbstractLog* pLog)
 //
 /*virtual */int CDisk::CloseDisk()
 {
-	if (m_pFile == NULL)
+	if (m_pFile == nullptr)
 		return 0;
 
 	if (m_pFile->IsFileOpen())
@@ -176,7 +176,7 @@ CDisk::CDisk(CAbstractLog* pLog)
 //
 /*virtual */int CDisk::ReadDisk(BYTE* pBuffer, DWORD dwSectorsToRead, DWORD& dwSectorsRead)
 {
-	if (m_pFile == NULL || !m_pFile->IsFileOpen())
+	if (m_pFile == nullptr || !m_pFile->IsFileOpen())
 	{
 		ASSERT(FALSE);
 		return -1;
@@ -192,7 +192,7 @@ CDisk::CDisk(CAbstractLog* pLog)
 	if ((m_ui64DiskSize) && ((i64DiskPos + dwSectorsRead) > m_ui64DiskSize))
 	{
 #ifdef DEBUG
-		if (m_pLog != NULL)
+		if (m_pLog != nullptr)
 			m_pLog->AddLog(_T("Invalid boundry read detected!!!"), __TFILE__, __LINE__);
 #endif // DEBUG
 		return -1;
@@ -246,7 +246,7 @@ CDisk::CDisk(CAbstractLog* pLog)
 //
 /*virtual */int CDisk::GetDiskPointer(INT64& i64DiskPos)
 {
-	if (m_pFile == NULL || !m_pFile->IsFileOpen())
+	if (m_pFile == nullptr || !m_pFile->IsFileOpen())
 	{
 		ASSERT(FALSE);
 		return -1;
@@ -260,7 +260,7 @@ CDisk::CDisk(CAbstractLog* pLog)
 //
 /*virtual */int CDisk::SetDiskPointer(INT64 i64DiskPos, INT64& i64NewPos)
 {
-	if (m_pFile == NULL || !m_pFile->IsFileOpen())
+	if (m_pFile == nullptr || !m_pFile->IsFileOpen())
 	{
 		ASSERT(FALSE);
 		return -1;

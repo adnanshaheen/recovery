@@ -46,8 +46,8 @@ extern "C" MG_DISK_BOARD_DLL CAbstractDiskBoardInterface* CreateDiskBoardInterfa
 //
 extern "C" MG_DISK_BOARD_DLL void DeleteDiskBoardInterface(CAbstractDiskBoardInterface* pInterface)
 {
-	if (pInterface != NULL)
-		delete pInterface, pInterface = NULL;
+	if (pInterface != nullptr)
+		delete pInterface, pInterface = nullptr;
 }
 
 //

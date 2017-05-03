@@ -19,10 +19,10 @@
 #include "AbstractPartitioner.h"
 #include "AbstractDiskBoardInterface.h"
 
-CAbstractLog* m_pLog = NULL;
-CAbstractPartitioner* m_pPartitioner = NULL;
-CAbstractDiskBoardInterface* pDiskInterface = NULL;
-CAbstractPartInfo* m_pSelectedPartInfo = NULL;
+CAbstractLog* m_pLog = nullptr;
+CAbstractPartitioner* m_pPartitioner = nullptr;
+CAbstractDiskBoardInterface* pDiskInterface = nullptr;
+CAbstractPartInfo* m_pSelectedPartInfo = nullptr;
 
 void GetPartition(CAbstractPartitioner* pPartitioner)
 {
@@ -103,7 +103,7 @@ int main(char* argv[], int argc)
 	csLibrary = _T("../../lib/Release/DiskBoard.dll");
 #endif // DEBUG
 	HMODULE hModule = LoadLibrary(csLibrary);
-	if (hModule == NULL || hModule == INVALID_HANDLE_VALUE)
+	if (hModule == nullptr || hModule == INVALID_HANDLE_VALUE)
 	{
 		// Library could not be loaded
 		DWORD dwError = GetLastError();

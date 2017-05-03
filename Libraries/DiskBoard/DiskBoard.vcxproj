@@ -10,6 +10,49 @@
       <Platform>Win32</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="AttributeDef.cpp" />
+    <ClCompile Include="AttributeRecord.cpp" />
+    <ClCompile Include="AttributeType.cpp" />
+    <ClCompile Include="Disk.cpp" />
+    <ClCompile Include="DiskBoard.cpp" />
+    <ClCompile Include="DiskBoardInterface.cpp" />
+    <ClCompile Include="FileAttributeFlags.cpp" />
+    <ClCompile Include="FileSystem.cpp" />
+    <ClCompile Include="FileSystemNTFS.cpp" />
+    <ClCompile Include="MFTRecord.cpp" />
+    <ClCompile Include="NTFSAttribute.cpp" />
+    <ClCompile Include="NTFSCollation.cpp" />
+    <ClCompile Include="NTFSRecord.cpp" />
+    <ClCompile Include="PartInfo.cpp" />
+    <ClCompile Include="Partitioner.cpp" />
+    <ClCompile Include="StandInfo.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="AttributeDef.h" />
+    <ClInclude Include="AttributeRecord.h" />
+    <ClInclude Include="AttributeType.h" />
+    <ClInclude Include="Disk.h" />
+    <ClInclude Include="DiskBoard.h" />
+    <ClInclude Include="DiskBoardInterface.h" />
+    <ClInclude Include="FileAttributeFlags.h" />
+    <ClInclude Include="FileSystem.h" />
+    <ClInclude Include="FileSystemNTFS.h" />
+    <ClInclude Include="MFTRecord.h" />
+    <ClInclude Include="NTFSAttribute.h" />
+    <ClInclude Include="NTFSCollation.h" />
+    <ClInclude Include="NTFSRecord.h" />
+    <ClInclude Include="PartInfo.h" />
+    <ClInclude Include="Partitioner.h" />
+    <ClInclude Include="PartitionTable.h" />
+    <ClInclude Include="StandInfo.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="DiskBoard.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="res\DiskBoard.rc2" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectName>DiskBoard</ProjectName>
     <ProjectGuid>{1E81F871-B226-406F-A65B-2E21CAAF9F71}</ProjectGuid>
@@ -83,49 +126,6 @@
       <AdditionalDependencies>Core.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="AttributeDef.cpp" />
-    <ClCompile Include="AttributeRecord.cpp" />
-    <ClCompile Include="AttributeType.cpp" />
-    <ClCompile Include="Disk.cpp" />
-    <ClCompile Include="DiskBoard.cpp" />
-    <ClCompile Include="DiskBoardInterface.cpp" />
-    <ClCompile Include="FileAttributeFlags.cpp" />
-    <ClCompile Include="FileSystem.cpp" />
-    <ClCompile Include="FileSystemNTFS.cpp" />
-    <ClCompile Include="MFTRecord.cpp" />
-    <ClCompile Include="NTFSAttribute.cpp" />
-    <ClCompile Include="NTFSCollation.cpp" />
-    <ClCompile Include="NTFSRecord.cpp" />
-    <ClCompile Include="PartInfo.cpp" />
-    <ClCompile Include="Partitioner.cpp" />
-    <ClCompile Include="StandInfo.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="..\..\Include\BPB.h" />
-    <ClInclude Include="..\..\Include\Fat.h" />
-    <ClInclude Include="..\..\Include\NTFS.h" />
-    <ClInclude Include="AttributeDef.h" />
-    <ClInclude Include="AttributeRecord.h" />
-    <ClInclude Include="AttributeType.h" />
-    <ClInclude Include="Disk.h" />
-    <ClInclude Include="DiskBoard.h" />
-    <ClInclude Include="DiskBoardInterface.h" />
-    <ClInclude Include="FileAttributeFlags.h" />
-    <ClInclude Include="FileSystem.h" />
-    <ClInclude Include="FileSystemNTFS.h" />
-    <ClInclude Include="MFTRecord.h" />
-    <ClInclude Include="NTFSAttribute.h" />
-    <ClInclude Include="NTFSCollation.h" />
-    <ClInclude Include="NTFSRecord.h" />
-    <ClInclude Include="PartitionTable.h" />
-    <ClInclude Include="PartInfo.h" />
-    <ClInclude Include="Partitioner.h" />
-    <ClInclude Include="StandInfo.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="DiskBoard.rc" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

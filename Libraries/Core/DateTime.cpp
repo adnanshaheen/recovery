@@ -194,7 +194,7 @@ BOOL CDateTime::SetDateTime(const WORD wYear, const WORD wMonth, const WORD wDay
 LPCTSTR CDateTime::GetDateString() const
 {
 	ASSERT(FALSE);
-	return NULL;
+	return nullptr;
 }
 BOOL CDateTime::SetDateString(LPCTSTR pszDate)
 {
@@ -208,7 +208,7 @@ BOOL CDateTime::SetDateString(LPCTSTR pszDate)
 LPCTSTR CDateTime::GetTimeString() const
 {
 	ASSERT(FALSE);
-	return NULL;
+	return nullptr;
 }
 BOOL CDateTime::SetTimeString(LPCTSTR pszTime)
 {
@@ -222,7 +222,7 @@ BOOL CDateTime::SetTimeString(LPCTSTR pszTime)
 LPCTSTR CDateTime::GetDateTimeString() const
 {
 	ASSERT(FALSE);
-	return NULL;
+	return nullptr;
 }
 BOOL CDateTime::SetDateTimeString(LPCTSTR pszDateTime)
 {
