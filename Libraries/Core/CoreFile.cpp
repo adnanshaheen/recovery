@@ -87,13 +87,13 @@ CCoreFile::CCoreFile(const CCoreFile& pFile)
 	this->SetFilePath(csFileName);
 
 	// File handle must be invalid at this point.
-	ASSERT(m_hFile == nullptr || m_hFile == INVALID_HANDLE_VALUE);
+	ASSERT(!m_hFile || m_hFile == INVALID_HANDLE_VALUE);
 
 	// Call the WINAPI to Create file.
 	m_hFile = ::CreateFile(csFileName, dwDesiredAccess, dwSharedMode, nullptr, dwCreationDisposition, dwFlagsAndAttributes, nullptr);
 
 	// File handle must be valid now.
-	ASSERT(m_hFile != nullptr || m_hFile != INVALID_HANDLE_VALUE);
+	ASSERT(m_hFile || m_hFile != INVALID_HANDLE_VALUE);
 
 	// Set the file handle correctly.
 	m_hFile = (m_hFile == nullptr || m_hFile == INVALID_HANDLE_VALUE) ? nullptr : m_hFile;

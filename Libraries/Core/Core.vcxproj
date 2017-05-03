@@ -22,7 +22,6 @@
     <ClCompile Include="CoreString.cpp" />
     <ClCompile Include="DateTime.cpp" />
     <ClCompile Include="LogFile.cpp" />
-    <ClCompile Include="MGAPI.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectName>Core</ProjectName>
