@@ -427,10 +427,8 @@ const CCoreString& CCoreString::operator += (LPCTSTR pszStr)
 	if (nSize > 0 && this->CreateBuffer(nSize))
 	{
 		m_pData[0] = _T('\0');
-#pragma warning (disable : 4996)
-		if (csOld.GetLength() > 0) _tcscpy(m_pData, csOld);
-		if (GET_TLENGTH(pszStr) > 0) _tcscat(m_pData, pszStr);
-#pragma warning (default : 4996)
+		if (csOld.GetLength() > 0) _tcscpy_s(m_pData, csOld.GetLength(), csOld);
+		if (GET_TLENGTH(pszStr) > 0) _tcscat_s(m_pData, GET_TLENGTH(pszStr), pszStr);
 		m_pData[nSize] = _T('\0');
 	}
 	return *this;

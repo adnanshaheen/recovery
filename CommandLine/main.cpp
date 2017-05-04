@@ -28,7 +28,7 @@ void GetPartition(CAbstractPartitioner* pPartitioner)
 {
 	size_t nCounter;
 	printf("Enter partition number: ");
-	scanf("%d", &nCounter);
+	scanf_s("%d", &nCounter);
 	size_t nThisPart = 0;
 	if (pPartitioner) {
 
@@ -109,6 +109,7 @@ int main(char* argv[], int argc)
 		DWORD dwError = GetLastError();
 		CCoreString csError;
 		csError.Format(_T("Error %d occured while opening library DiskBoard.dll"), dwError);
+		std::cerr << csError.c_str() << std::endl;
 		ASSERT(FALSE);
 		return -1;
 	}

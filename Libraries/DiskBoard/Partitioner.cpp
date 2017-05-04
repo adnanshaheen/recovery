@@ -217,7 +217,7 @@ BOOL CPartitioner::ReadGPTPartitions(CAbstractDisk* pDisk, CAbstractPartInfo* pD
 			pPartEntry = new BYTE[nSectorSize];
 			int nDiskNumber = -1;
 
-			for (int nPart = 0; nPart < cPartitionTableHeader.GetPartitions(); ++ nPart) {
+			for (uint32_t nPart = 0; nPart < cPartitionTableHeader.GetPartitions(); ++ nPart) {
 
 				ZeroMemory(pPartEntry, nSectorSize);
 

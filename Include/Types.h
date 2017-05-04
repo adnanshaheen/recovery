@@ -14,23 +14,10 @@
 // types
 //
 
-#include <string>
-#include <assert.h>
-#include <windows.h>
-#include <tchar.h>
-
 #undef DEBUG
 #ifdef _DEBUG
 #define DEBUG
 #endif // _DEBUG
-
-#include "Bits.h"
-
-/**
- * consts/defines
- */
-const TCHAR kszApp[]	= _T("recovery");
-#define MAX_HDD_SUPPORTED 50
 
 #ifdef WIN32
 //
@@ -39,7 +26,6 @@ const TCHAR kszApp[]	= _T("recovery");
 #define MG_DECL						__cdecl
 
 #define MG_INVALID_FILE				((DWORD)-1)
-#define PATH_SEPARATOR	_T('\\')
 
 #else // WIN32
 //
@@ -48,7 +34,6 @@ const TCHAR kszApp[]	= _T("recovery");
 #define MG_DECL
 
 #define MG_INVALID_FILE		-1
-#define PATH_SEPARATOR	_T('/')
 
 typedef enum eMediaType
 {
@@ -99,8 +84,8 @@ typedef union _LARGE_INTEGER		// LARGE_INTEGER
 
 typedef union _ULARGE_INTEGER		// ULARGE_INTEGER
 {
-  struct
-  {
+	struct
+	{
 		DWORD LowPart;
 		DWORD HighPart;
 	};
@@ -118,20 +103,20 @@ typedef struct cDiskGeometry
 {
 	cDiskGeometry()
 	{
-		nCylinders.LowPart	= 0;
-		nCylinders.HighPart	= 0;
-		cMediaType			= HD_Unknown;
-		dwTracksPerCylinder	= 0;
-		dwSectorsPerTrack	= 0;
-		dwBytesPerSector	= 0;
-		dwHeads				= 0;
+		nCylinders.LowPart = 0;
+		nCylinders.HighPart = 0;
+		cMediaType = HD_Unknown;
+		dwTracksPerCylinder = 0;
+		dwSectorsPerTrack = 0;
+		dwBytesPerSector = 0;
+		dwHeads = 0;
 	}
 
-    LARGE_INTEGER			nCylinders;
-    LR_MEDIA_TYPE			cMediaType;
-    DWORD					dwTracksPerCylinder;
-    DWORD					dwSectorsPerTrack;
-    DWORD					dwBytesPerSector;
+	LARGE_INTEGER			nCylinders;
+	LR_MEDIA_TYPE			cMediaType;
+	DWORD					dwTracksPerCylinder;
+	DWORD					dwSectorsPerTrack;
+	DWORD					dwBytesPerSector;
 	DWORD					dwHeads;
 } MG_DISK_GEOMETRY, *PMG_DISK_GEOMETRY;
 
@@ -161,9 +146,9 @@ typedef enum eIconType
 
 typedef enum eFileMove
 {
-	MG_FILE_POS_BEGIN	= 0,
+	MG_FILE_POS_BEGIN = 0,
 	MG_FILE_POS_CURRENT = 1,
-	MG_FILE_POS_END		= 2
+	MG_FILE_POS_END = 2
 } MG_FILE_MOVE;
 
 typedef enum eFileResult
@@ -174,31 +159,6 @@ typedef enum eFileResult
 typedef enum eWorkType
 {
 } MG_WORK_TYPE;
-
-typedef enum : int32_t {
-	_E_REP_UNEXPECTED      = -100,
-	_E_REP_NOT_IMPLEMENTED = -99,
-	_E_REP_GUID_PART_FAIL  = -8,
-	_E_REP_PARAM_ERROR     = -7,
-	_E_REP_DRIVE_ERROR     = -6,
-	_E_REP_READ_FAIL       = -5,
-	_E_REP_DEVICEIO_FAIL   = -4,
-	_E_REP_MEMORY_FAIL     = -3,
-	_E_REP_GEOMTRY_FAIL    = -2,
-	_E_REP_HANDLE_FAIL     = -1,
-	_E_REP_SUCCESS         = 0,
-} MG_ERROR;
-
-typedef enum : uint32_t {
-	MG_PARTINFO_DISK	= 0x00000001,
-	MG_PARTINFO_GUID	= 0x00000002,
-	MG_PARTINFO_EFI		= 0x00000004,
-	MG_PARTINFO_DATA	= 0x00000010,
-} MG_PARTINFO_TYPE;
-
-typedef enum : uint32_t {
-	MG_PARTTYPE_HFSPLUS	= 0xAF,
-} MG_PARTTYPE;
 
 //
 // COMMON CONST
@@ -255,15 +215,19 @@ typedef enum : uint32_t {
 #define STRLWR(a)					for(size_t i=0;i<_tcslen(a);++i)\
 									{ a[i]=tolower(a[i]); }
 
+#include <string>
+#include <assert.h>
+#include <windows.h>
+#include <tchar.h>
 inline void ASSERT_MACRO(BOOL bResult, LPCSTR pszFileName, int nLineNo)
 {
 	if (!bResult)
 	{
-		LPTSTR pFileName = (LPTSTR) strrchr(pszFileName, '/');
+		LPTSTR pFileName = (LPTSTR)strrchr(pszFileName, '/');
 		if (pFileName != NULL)
 		{
-			++ pFileName;
-			printf("Assert Failed! File %ws, Line %d\n", pFileName, nLineNo);
+			++pFileName;
+			printf("Assert Failed! File %s, Line %d\n", (char*) pFileName, nLineNo);
 		}
 		else
 		{
@@ -287,14 +251,6 @@ inline void ASSERT_MACRO(BOOL bResult, LPCSTR pszFileName, int nLineNo)
 #ifndef assert
 #define assert		ASSERT
 #endif // assert
-
-/**
- * macros
- */
-#define TEST_AND_THROW(a,b)		if (a) throw b;
-#define TEST_AND_RETURN(a,b)	if (a) return b;
-#define DELETEME(a)				if (a) delete a, a = NULL;
-#define DELETE_ARRAY(a)			if (a) delete[] a, a = NULL;
 
 #endif // TYPES_HEADER
 
